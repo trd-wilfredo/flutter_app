@@ -10,16 +10,25 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
   int counter = 0;
 
+  void getData() async {
+    // simulate network request for a user 
+    String user = await Future.delayed(Duration(seconds: 3 ), () {
+      return 'Uwuee';
+    });
+    String reaction = await Future.delayed(Duration(seconds: 2 ), () {
+      return  'Uvuavuawaw';
+    });
+    print('$user -  $reaction');
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    print('initSatate function run');
+    getData();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('build function run');
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
