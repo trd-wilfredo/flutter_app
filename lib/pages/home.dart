@@ -59,13 +59,14 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 50.0),
-                child: Column(children: <Widget>[
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
+              child: Column(
+                children: <Widget>[
                   Container(
                     // color: Colors.cyan,
                     child: Center(
@@ -83,20 +84,27 @@ class _HomeState extends State<Home> {
                   ),
                   SizedBox(height: 10.0),
                   Container(
-                      constraints: BoxConstraints(maxWidth: 400),
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                  color: Color.fromARGB(255, 10, 0, 0)))),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: pages
-                            .map(
-                                (page) => PageListCard(title: page, part: page))
-                            .toList(),
-                      ))
-                ]),
-              ))),
-    ));
+                    constraints: BoxConstraints(maxWidth: 400),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Color.fromARGB(255, 10, 0, 0),
+                        ),
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: pages
+                          .map((page) => PageListCard(title: page, part: page))
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

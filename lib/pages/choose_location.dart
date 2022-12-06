@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class ChooseLocation extends StatefulWidget {
   const ChooseLocation({Key? key}) : super(key: key);
 
@@ -7,16 +8,15 @@ class ChooseLocation extends StatefulWidget {
 }
 
 class _ChooseLocationState extends State<ChooseLocation> {
-
   int counter = 0;
 
   void getData() async {
-    // simulate network request for a user 
-    String user = await Future.delayed(Duration(seconds: 3 ), () {
+    // simulate network request for a user
+    String user = await Future.delayed(Duration(seconds: 3), () {
       return 'Uwuee';
     });
-    String reaction = await Future.delayed(Duration(seconds: 2 ), () {
-      return  'Uvuavuawaw';
+    String reaction = await Future.delayed(Duration(seconds: 2), () {
+      return 'Uvuavuawaw';
     });
     print('$user -  $reaction');
   }
@@ -39,9 +39,11 @@ class _ChooseLocationState extends State<ChooseLocation> {
       ),
       body: ElevatedButton(
         onPressed: () {
-          setState(() {
-            counter += 1;
-          });
+          setState(
+            () {
+              counter += 1;
+            },
+          );
         },
         child: Text('counter is $counter'),
       ),

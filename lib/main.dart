@@ -50,6 +50,6 @@ void main() {
     '/stamp_rally': (context) => ChooseLocation(),
     '/stress_check': (context) => ChooseLocation(),
     '/smoking_check': (context) => ChooseLocation(),
-    '/kfg_men': (context) => ChooseLocation(),
+    '/kfg_menu': (context) => ChooseLocation(),
   }));
 }
