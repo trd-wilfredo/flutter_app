@@ -1,0 +1,122 @@
+Scaffold(
+      body: Column(
+        children: <Widget>[
+          // Header
+          Container(
+            padding: EdgeInsets.only(
+              top: 40.0,
+              bottom: 20.0,
+              left: 20.0,
+              right: 20.0,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text('Friend',
+                    style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    )),
+                // Profile Button
+                TextButton(
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        'https://images.unsplash.com/photo-1499084732479-de2c02d45fcc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'),
+                  ),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+          // Message List
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0)),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0)),
+                child: ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: EdgeInsets.symmetric(vertical: 10.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          // Profile Image
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                'https://images.unsplash.com/photo-1499084732479-de2c02d45fcc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'),
+                          ),
+                          SizedBox(width: 15.0),
+                          // Message Box
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                // Username
+                                Text(
+                                  'Friend',
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                // Message
+                                SizedBox(height: 10.0),
+                                Text(
+                                  'Message Body',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+          // Input field
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 50.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0),
+              ),
+            ),
+            child: Row(
+              children: <Widget>[
+                // Send Button
+                TextButton(
+                  child: Icon(Icons.send),
+                  // color: Color(0xFF2196F3),
+                  onPressed: () {},
+                ),
+                // Message Input
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration.collapsed(
+                      hintText: 'Type your message...',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
