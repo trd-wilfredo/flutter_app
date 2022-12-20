@@ -8,11 +8,11 @@ import 'package:flutter_features/components/menu/skill_i.dart';
 import 'package:flutter_features/components/menu/skill_ii.dart';
 import 'package:flutter_features/fall_queen/pages/Home.dart';
 import 'package:flutter_features/messaging_app/messaging.dart';
+import 'package:flutter_features/pages/login/login.dart';
 import 'package:flutter_features/shared/constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: FirebaseOptions(
@@ -28,9 +28,10 @@ void main() async {
 
   runApp(
     MaterialApp(
-      initialRoute: '/home',
+      initialRoute: '/login',
       routes: {
         '/': (context) => Loading(),
+        '/login': (context) => LoginApp(),
         '/home': (context) => Home(),
         '/skill_i': (context) => SkillI(),
         '/skill_ii': (context) => SkillII(),
