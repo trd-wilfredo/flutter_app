@@ -8,7 +8,7 @@ class AuthService {
 
   Future loginInWithEmailandPassword(String email, String password) async {
     try {
-      User user = (await firebaseAuth.createUserWithEmailAndPassword(
+      User user = (await firebaseAuth.signInWithEmailAndPassword(
               email: email, password: password))
           .user!;
       if (user != null) {
