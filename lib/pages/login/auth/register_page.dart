@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/pages/login/auth/login_page.dart';
+import 'package:flutter_features/pages/login/login.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
 import 'package:flutter_features/widgets/widget.dart';
 
@@ -179,23 +182,22 @@ class _RegisterPageState extends State<RegisterPage> {
 
   register() async {
     if (formKey.currentState!.validate()) {
-      setState(
-        () {
-          _isLoading = true;
-        },
-      );
+      setState(() {
+        _isLoading = true;
+      });
       await authService
           .registerUserWithEmailandPassword(fullname, email, password)
-          .then(
-        (value) {
-          if (value == true) {
-            //
-          } else {
-            showSnackBr(context, Colors.red, value);
-            _isLoading = false;
-          }
-        },
-      );
+          .then((value) async {
+        if (value == true || Platform.isAndroid || Platform.isIOS) {
+          await HelperFunction.saveUserLoggedInStatus(true);
+          await HelperFunction.saveUseNameSF(fullname);
+          await HelperFunction.saveUserEmailSF(email);
+          nextScreenReplace(context, LoginApp());
+        } else {
+          showSnackBr(context, Colors.red, value);
+          _isLoading = false;
+        }
+      });
     }
   }
 }
