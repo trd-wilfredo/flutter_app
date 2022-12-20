@@ -23,6 +23,11 @@ class _HomeState extends State<Home> {
     ),
     PageList(
       part: 'null',
+      page: 'login',
+      title: 'Login To App',
+    ),
+    PageList(
+      part: 'null',
       page: 'messaging_app',
       title: 'Messaging App',
     ),
