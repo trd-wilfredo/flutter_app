@@ -1,4 +1,3 @@
-// ignore: depend_on_referenced_packages
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +27,7 @@ void main() async {
 
   runApp(
     MaterialApp(
-      initialRoute: '/login',
+      initialRoute: '/home',
       routes: {
         '/': (context) => Loading(),
         '/login': (context) => LoginApp(),
