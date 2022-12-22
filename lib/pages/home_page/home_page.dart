@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/home_page/search_page.dart';
+import 'package:flutter_features/pages/login/service/auth_service.dart';
 import 'package:flutter_features/widgets/widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,6 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  AuthService authService = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +37,12 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: Center(
-        child: Text("Login Page"),
+        child: ElevatedButton(
+          child: Text("Logout"),
+          onPressed: () {
+            authService.signOut();
+          },
+        ),
       ),
     );
   }

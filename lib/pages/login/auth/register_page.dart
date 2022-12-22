@@ -190,7 +190,7 @@ class _RegisterPageState extends State<RegisterPage> {
           .then((value) async {
         if (value == true || Platform.isAndroid || Platform.isIOS) {
           await HelperFunction.saveUserLoggedInStatus(true);
-          await HelperFunction.saveUseNameSF(fullname);
+          await HelperFunction.saveUserNameSF(fullname);
           await HelperFunction.saveUserEmailSF(email);
           nextScreenReplace(context, LoginApp());
         } else {
