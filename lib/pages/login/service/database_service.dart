@@ -22,6 +22,11 @@ class DatabaseService {
     });
   }
 
+  // get user groups
+  getUserGroups() async {
+    return userCollection.doc(uid).snapshots();
+  }
+
   // saving the userdata
   Future savingUserData(String fullName, String email) async {
     return await userCollection.doc(uid).set({

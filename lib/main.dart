@@ -27,7 +27,7 @@ void main() async {
 
   runApp(
     MaterialApp(
-      initialRoute: '/login',
+      initialRoute: '/home',
       routes: {
         '/': (context) => Loading(),
         '/login': (context) => LoginApp(),
