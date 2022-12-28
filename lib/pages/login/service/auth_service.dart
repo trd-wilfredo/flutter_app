@@ -13,13 +13,28 @@ class AuthService {
               email: email, password: password))
           .user!;
       if (user != null) {
+        print(['login', user]);
         return true;
       }
     } on FirebaseAuthException catch (e) {
-      print(e);
+      print(['error ni sa login', e]);
       return e.message;
     }
   }
+  // // login
+  // Future loginWithUserNameandPassword(String email, String password) async {
+  //   try {
+  //     User user = (await firebaseAuth.signInWithEmailAndPassword(
+  //             email: email, password: password))
+  //         .user!;
+
+  //     if (user != null) {
+  //       return true;
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     return e.message;
+  //   }
+  // }
 
   // register
 
@@ -36,7 +51,7 @@ class AuthService {
         return true;
       }
     } on FirebaseAuthException catch (e) {
-      print(e);
+      print(['error ni sa register', e]);
       return e.message;
     }
   }
