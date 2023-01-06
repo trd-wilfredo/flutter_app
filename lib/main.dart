@@ -1,7 +1,10 @@
+import 'dart:js';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/home.dart';
+import 'package:flutter_features/pages/info_registeration/info_registeration.dart';
 import 'package:flutter_features/pages/loading.dart';
 import 'package:flutter_features/components/menu/skill_i.dart';
 import 'package:flutter_features/components/menu/skill_ii.dart';
@@ -30,14 +33,18 @@ void main() async {
       initialRoute: '/home',
       routes: {
         '/': (context) => Loading(),
-        '/login': (context) => LoginApp(),
+        '/cv': (context) => Home(),
         '/home': (context) => Home(),
+        '/login': (context) => LoginApp(),
         '/skill_i': (context) => SkillI(),
         '/skill_ii': (context) => SkillII(),
         '/fall_queen': (context) => FallQueen(),
         '/ github_monitoring': (context) => Home(),
-        '/cv': (context) => Home(),
         '/messaging_app': (context) => MessagingApp(),
+        '/file_upload': (context) => MessagingApp(),
+        '/information_registration': (context) => InfoRegister(),
+        '/company_search': (context) => MessagingApp(),
+        '/company_list': (context) => MessagingApp(),
       },
     ),
   );
