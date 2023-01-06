@@ -15,10 +15,12 @@ class AddProduct extends StatefulWidget {
 class _AddProductState extends State<AddProduct> {
   bool _isLoading = false;
   final formKey = GlobalKey<FormState>();
-  String name = "";
+  String producName = "";
+  String stocks = "";
   String currentSelectedValue = '';
-  List levels = ['admin', 'normal'];
+  List avilability = ['true', 'false '];
   List company = ['company1', 'company2'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +29,7 @@ class _AddProductState extends State<AddProduct> {
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
-          'Add Produt',
+          'Add Product',
           style: TextStyle(
             color: Colors.white,
             fontSize: 27,
@@ -45,24 +47,45 @@ class _AddProductState extends State<AddProduct> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 CheetahInput(
-                  labelText: 'Name',
+                  labelText: 'Product Name',
                   onSaved: (String value) {
-                    name = value;
+                    producName = value;
                   },
                 ),
                 SizedBox(height: 16),
                 CheetahInput(
-                  labelText: 'Email',
+                  labelText: 'Stocks',
                   onSaved: (String value) {
-                    name = value;
+                    stocks = value;
                   },
                 ),
                 SizedBox(height: 16),
-                CheetahInput(
-                  labelText: 'Password',
-                  onSaved: (String value) {
-                    name = value;
+                DropdownButtonFormField(
+                  items: avilability.map((category) {
+                    return new DropdownMenuItem(
+                        value: category,
+                        child: Row(
+                          children: <Widget>[
+                            Text(category),
+                          ],
+                        ));
+                  }).toList(),
+                  onChanged: (newValue) {
+                    print([newValue, 'asd']);
+                    // do other stuff with _category
+                    // setState(() => level = newValue);
                   },
+                  // value: level,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    hintText: 'Avilability',
+                    //  errorText: errorSnapshot.data == 0 ? Localization.of(context).categoryEmpty : null),
+                  ),
                 ),
                 SizedBox(height: 16),
                 DropdownButtonFormField(
@@ -89,34 +112,6 @@ class _AddProductState extends State<AddProduct> {
                     filled: true,
                     fillColor: Colors.grey[200],
                     hintText: 'Company',
-                    //  errorText: errorSnapshot.data == 0 ? Localization.of(context).categoryEmpty : null),
-                  ),
-                ),
-                SizedBox(height: 16),
-                DropdownButtonFormField(
-                  items: levels.map((category) {
-                    return new DropdownMenuItem(
-                        value: category,
-                        child: Row(
-                          children: <Widget>[
-                            Text(category),
-                          ],
-                        ));
-                  }).toList(),
-                  onChanged: (newValue) {
-                    print([newValue, 'asd']);
-                    // do other stuff with _category
-                    // setState(() => level = newValue);
-                  },
-                  // value: level,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    hintText: 'level',
                     //  errorText: errorSnapshot.data == 0 ? Localization.of(context).categoryEmpty : null),
                   ),
                 ),
