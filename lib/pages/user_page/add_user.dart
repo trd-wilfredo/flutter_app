@@ -1,9 +1,14 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_features/helper/helper_function.dart';
+import 'package:flutter_features/pages/login/service/auth_service.dart';
+import 'package:flutter_features/pages/user_page/user_page.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
+import 'package:flutter_features/widgets/widget.dart';
 
 class AddUser extends StatefulWidget {
   const AddUser({super.key});
@@ -14,12 +19,16 @@ class AddUser extends StatefulWidget {
 
 class _AddUserState extends State<AddUser> {
   bool _isLoading = false;
+
   final formKey = GlobalKey<FormState>();
-  String name = "";
-  String email = "";
-  String password = "";
+  String email = '';
+  String password = '';
+  String level = '';
+  String fullname = '';
+  String company = '';
   List levels = ['admin', 'normal'];
-  List company = ['company1', 'company2'];
+  List companies = ['company1', 'company2'];
+  AuthService authService = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,13 +55,15 @@ class _AddUserState extends State<AddUser> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 CheetahInput(
+                  obscureText: false,
                   labelText: 'Name',
                   onSaved: (String value) {
-                    name = value;
+                    fullname = value;
                   },
                 ),
                 SizedBox(height: 16),
                 CheetahInput(
+                  obscureText: false,
                   labelText: 'Email',
                   onSaved: (String value) {
                     email = value;
@@ -60,6 +71,7 @@ class _AddUserState extends State<AddUser> {
                 ),
                 SizedBox(height: 16),
                 CheetahInput(
+                  obscureText: true,
                   labelText: 'Password',
                   onSaved: (String value) {
                     password = value;
@@ -67,7 +79,7 @@ class _AddUserState extends State<AddUser> {
                 ),
                 SizedBox(height: 16),
                 DropdownButtonFormField(
-                  items: company.map((category) {
+                  items: companies.map((category) {
                     return new DropdownMenuItem(
                         value: category,
                         child: Row(
@@ -77,9 +89,15 @@ class _AddUserState extends State<AddUser> {
                         ));
                   }).toList(),
                   onChanged: (newValue) {
-                    print([newValue, 'asd']);
                     // do other stuff with _category
-                    // setState(() => level = newValue);
+                    setState(() => {company = '$newValue'});
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'select company';
+                    } else {
+                      return null;
+                    }
                   },
                   // value: level,
                   decoration: InputDecoration(
@@ -107,9 +125,16 @@ class _AddUserState extends State<AddUser> {
                   onChanged: (newValue) {
                     print([newValue, 'asd']);
                     // do other stuff with _category
-                    // setState(() => level = newValue);
+                    setState(() => level = '$newValue');
                   },
-                  // value: level,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'select level';
+                    } else {
+                      return null;
+                    }
+                  },
+                  // value: Company,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
                     border: OutlineInputBorder(
@@ -160,7 +185,7 @@ class _AddUserState extends State<AddUser> {
                   height: 45,
                   child: ElevatedButton(
                     onPressed: () {
-                      // register();
+                      addUser();
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).primaryColor,
@@ -181,5 +206,27 @@ class _AddUserState extends State<AddUser> {
         ),
       ),
     );
+  }
+
+  addUser() async {
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      await authService
+          .registerUserWithEmailandPassword(
+              fullname, email, password, level, company)
+          .then((value) async {
+        if (value == true || Platform.isAndroid || Platform.isIOS) {
+          await HelperFunction.saveUserLoggedInStatus(true);
+          await HelperFunction.saveUserNameSF(fullname);
+          await HelperFunction.saveUserEmailSF(email);
+          nextScreenReplace(context, UserPage());
+        } else {
+          showSnackBr(context, Colors.red, value);
+          _isLoading = false;
+        }
+      });
+    }
   }
 }
