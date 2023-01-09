@@ -38,15 +38,16 @@ class AuthService {
 
   // register
 
-  Future registerUserWithEmailandPassword(
-      String fullname, String email, String password) async {
+  Future registerUserWithEmailandPassword(String fullname, String email,
+      String password, String level, String company) async {
     try {
       User user = (await firebaseAuth.createUserWithEmailAndPassword(
               email: email, password: password))
           .user!;
       if (user != null) {
         // database call
-        await DatabaseService(uid: user.uid).savingUserData(fullname, email);
+        await DatabaseService(uid: user.uid)
+            .savingUserData(fullname, email, level, company);
 
         return true;
       }
