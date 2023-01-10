@@ -47,6 +47,7 @@ class _AddProductState extends State<AddProduct> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 CheetahInput(
+                  hideText: false,
                   labelText: 'Product Name',
                   onSaved: (String value) {
                     producName = value;
@@ -54,6 +55,7 @@ class _AddProductState extends State<AddProduct> {
                 ),
                 SizedBox(height: 16),
                 CheetahInput(
+                  hideText: false,
                   labelText: 'Stocks',
                   onSaved: (String value) {
                     stocks = value;
