@@ -5,21 +5,18 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 
-class AddUser extends StatefulWidget {
-  const AddUser({super.key});
+class AddCompany extends StatefulWidget {
+  const AddCompany({super.key});
 
   @override
-  State<AddUser> createState() => _AddUserState();
+  State<AddCompany> createState() => _AddCompanyState();
 }
 
-class _AddUserState extends State<AddUser> {
+class _AddCompanyState extends State<AddCompany> {
   bool _isLoading = false;
   final formKey = GlobalKey<FormState>();
-  String name = "";
-  String email = "";
-  String password = "";
-  List levels = ['admin', 'normal'];
-  List company = ['company1', 'company2'];
+  String companyName = "";
+  List avilability = ['true', 'false'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +25,7 @@ class _AddUserState extends State<AddUser> {
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
-          'Add User',
+          'Add Company',
           style: TextStyle(
             color: Colors.white,
             fontSize: 27,
@@ -46,28 +43,14 @@ class _AddUserState extends State<AddUser> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 CheetahInput(
-                  labelText: 'Name',
+                  labelText: 'Product Name',
                   onSaved: (String value) {
-                    name = value;
-                  },
-                ),
-                SizedBox(height: 16),
-                CheetahInput(
-                  labelText: 'Email',
-                  onSaved: (String value) {
-                    email = value;
-                  },
-                ),
-                SizedBox(height: 16),
-                CheetahInput(
-                  labelText: 'Password',
-                  onSaved: (String value) {
-                    password = value;
+                    companyName = value;
                   },
                 ),
                 SizedBox(height: 16),
                 DropdownButtonFormField(
-                  items: company.map((category) {
+                  items: avilability.map((category) {
                     return new DropdownMenuItem(
                         value: category,
                         child: Row(
@@ -89,35 +72,7 @@ class _AddUserState extends State<AddUser> {
                     ),
                     filled: true,
                     fillColor: Colors.grey[200],
-                    hintText: 'Company',
-                    //  errorText: errorSnapshot.data == 0 ? Localization.of(context).categoryEmpty : null),
-                  ),
-                ),
-                SizedBox(height: 16),
-                DropdownButtonFormField(
-                  items: levels.map((category) {
-                    return new DropdownMenuItem(
-                        value: category,
-                        child: Row(
-                          children: <Widget>[
-                            Text(category),
-                          ],
-                        ));
-                  }).toList(),
-                  onChanged: (newValue) {
-                    print([newValue, 'asd']);
-                    // do other stuff with _category
-                    // setState(() => level = newValue);
-                  },
-                  // value: level,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    hintText: 'level',
+                    hintText: 'Avilability',
                     //  errorText: errorSnapshot.data == 0 ? Localization.of(context).categoryEmpty : null),
                   ),
                 ),
