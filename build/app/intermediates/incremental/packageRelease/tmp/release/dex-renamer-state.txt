@@ -1,0 +1,4 @@
+#Thu Dec 29 18:56:56 PST 2022
+base.0=/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

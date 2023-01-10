@@ -1,0 +1,46 @@
+[
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/firebase_auth/intermediates/merged_res/release/drawable-mdpi-v4/notify_panel_notification_icon_bg.png",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/d4be00ef9362846b7e5ef168486a55d7/transformed/core-1.6.0/res/drawable-mdpi-v4/notify_panel_notification_icon_bg.png"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/firebase_auth/intermediates/merged_res/release/drawable-mdpi-v4/common_google_signin_btn_icon_light_normal_background.9.png",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/215a8073985fb933e47e79a668208ff1/transformed/jetified-play-services-base-17.1.0/res/drawable-mdpi-v4/common_google_signin_btn_icon_light_normal_background.9.png"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/firebase_auth/intermediates/merged_res/release/drawable-mdpi-v4/notification_bg_normal_pressed.9.png",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/d4be00ef9362846b7e5ef168486a55d7/transformed/core-1.6.0/res/drawable-mdpi-v4/notification_bg_normal_pressed.9.png"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/firebase_auth/intermediates/merged_res/release/drawable-mdpi-v4/googleg_disabled_color_18.png",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/215a8073985fb933e47e79a668208ff1/transformed/jetified-play-services-base-17.1.0/res/drawable-mdpi-v4/googleg_disabled_color_18.png"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/firebase_auth/intermediates/merged_res/release/drawable-mdpi-v4/notification_bg_normal.9.png",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/d4be00ef9362846b7e5ef168486a55d7/transformed/core-1.6.0/res/drawable-mdpi-v4/notification_bg_normal.9.png"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/firebase_auth/intermediates/merged_res/release/drawable-mdpi-v4/common_google_signin_btn_text_dark_normal_background.9.png",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/215a8073985fb933e47e79a668208ff1/transformed/jetified-play-services-base-17.1.0/res/drawable-mdpi-v4/common_google_signin_btn_text_dark_normal_background.9.png"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/firebase_auth/intermediates/merged_res/release/drawable-mdpi-v4/notification_bg_low_pressed.9.png",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/d4be00ef9362846b7e5ef168486a55d7/transformed/core-1.6.0/res/drawable-mdpi-v4/notification_bg_low_pressed.9.png"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/firebase_auth/intermediates/merged_res/release/drawable-mdpi-v4/common_google_signin_btn_text_light_normal_background.9.png",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/215a8073985fb933e47e79a668208ff1/transformed/jetified-play-services-base-17.1.0/res/drawable-mdpi-v4/common_google_signin_btn_text_light_normal_background.9.png"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/firebase_auth/intermediates/merged_res/release/drawable-mdpi-v4/googleg_standard_color_18.png",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/215a8073985fb933e47e79a668208ff1/transformed/jetified-play-services-base-17.1.0/res/drawable-mdpi-v4/googleg_standard_color_18.png"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/firebase_auth/intermediates/merged_res/release/drawable-mdpi-v4/notification_bg_low_normal.9.png",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/d4be00ef9362846b7e5ef168486a55d7/transformed/core-1.6.0/res/drawable-mdpi-v4/notification_bg_low_normal.9.png"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/firebase_auth/intermediates/merged_res/release/drawable-mdpi-v4/common_google_signin_btn_icon_dark_normal_background.9.png",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/215a8073985fb933e47e79a668208ff1/transformed/jetified-play-services-base-17.1.0/res/drawable-mdpi-v4/common_google_signin_btn_icon_dark_normal_background.9.png"
+    }
+]

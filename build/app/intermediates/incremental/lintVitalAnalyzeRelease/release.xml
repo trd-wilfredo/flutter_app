@@ -1,0 +1,37 @@
+<variant
+    name="release"
+    package="com.example.flutter_features"
+    minSdkVersion="21"
+    targetSdkVersion="31"
+    shrinking="true"
+    mergedManifest="/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/intermediates/merged_manifest/release/AndroidManifest.xml"
+    proguardFiles="/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/intermediates/default_proguard_files/global/proguard-android.txt-7.1.2:/home/trd-staff/snap/flutter/common/flutter/packages/flutter_tools/gradle/flutter_proguard_rules.pro:proguard-rules.pro"
+    partialResultsDir="/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/intermediates/lint_vital_partial_results/release/out">
+  <buildFeatures
+      namespacing="REQUIRED"/>
+  <sourceProviders>
+    <sourceProvider
+        manifest="src/main/AndroidManifest.xml"
+        javaDirectories="src/main/java:src/main/kotlin"
+        resDirectories="src/main/res"
+        assetsDirectories="src/main/assets"/>
+    <sourceProvider
+        manifest="src/release/AndroidManifest.xml"
+        javaDirectories="src/release/java:src/release/kotlin"
+        resDirectories="src/release/res"
+        assetsDirectories="src/release/assets"/>
+  </sourceProviders>
+  <testSourceProviders>
+  </testSourceProviders>
+  <manifestPlaceholders>
+    <placeholder
+        name="applicationName"
+        value="android.app.Application" />
+  </manifestPlaceholders>
+  <mainArtifact
+      classOutputs="/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/intermediates/javac/release/classes:/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/tmp/kotlin-classes/release:/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/kotlinToolingMetadata:/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/intermediates/compile_and_runtime_not_namespaced_r_class_jar/release/R.jar"
+      applicationId="com.example.flutter_features"
+      generatedSourceFolders="/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/generated/ap_generated_sources/release/out:/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/generated/aidl_source_output_dir/release/out:/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/generated/source/buildConfig/release:/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/generated/renderscript_source_output_dir/release/out"
+      generatedResourceFolders="/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/generated/res/google-services/release:/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/generated/res/rs/release:/home/trd-staff/AndroidStudioProjects/flutter_app/build/app/generated/res/resValues/release">
+  </mainArtifact>
+</variant>

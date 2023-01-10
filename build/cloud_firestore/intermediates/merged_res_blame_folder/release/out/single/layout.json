@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/cloud_firestore/intermediates/merged_res/release/layout/notification_template_part_chronometer.xml",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/d4be00ef9362846b7e5ef168486a55d7/transformed/core-1.6.0/res/layout/notification_template_part_chronometer.xml"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/cloud_firestore/intermediates/merged_res/release/layout/notification_action_tombstone.xml",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/d4be00ef9362846b7e5ef168486a55d7/transformed/core-1.6.0/res/layout/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/cloud_firestore/intermediates/merged_res/release/layout/notification_template_icon_group.xml",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/d4be00ef9362846b7e5ef168486a55d7/transformed/core-1.6.0/res/layout/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/cloud_firestore/intermediates/merged_res/release/layout/notification_template_part_time.xml",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/d4be00ef9362846b7e5ef168486a55d7/transformed/core-1.6.0/res/layout/notification_template_part_time.xml"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/cloud_firestore/intermediates/merged_res/release/layout/notification_action.xml",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/d4be00ef9362846b7e5ef168486a55d7/transformed/core-1.6.0/res/layout/notification_action.xml"
+    },
+    {
+        "merged": "/home/trd-staff/AndroidStudioProjects/flutter_app/build/cloud_firestore/intermediates/merged_res/release/layout/custom_dialog.xml",
+        "source": "/home/trd-staff/.gradle/caches/transforms-3/d4be00ef9362846b7e5ef168486a55d7/transformed/core-1.6.0/res/layout/custom_dialog.xml"
+    }
+]
