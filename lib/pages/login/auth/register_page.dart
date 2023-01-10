@@ -19,6 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
+  String level = 'normal';
   String fullname = '';
   AuthService authService = AuthService();
   @override
@@ -186,7 +187,8 @@ class _RegisterPageState extends State<RegisterPage> {
         _isLoading = true;
       });
       await authService
-          .registerUserWithEmailandPassword(fullname, email, password)
+          .registerUserWithEmailandPassword(
+              fullname, email, password, level, '')
           .then((value) async {
         if (value == true || Platform.isAndroid || Platform.isIOS) {
           await HelperFunction.saveUserLoggedInStatus(true);

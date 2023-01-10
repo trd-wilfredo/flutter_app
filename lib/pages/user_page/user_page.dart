@@ -12,6 +12,11 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   bool _isLoading = false;
   final formKey = GlobalKey<FormState>();
+  String email = '';
+  String password = '';
+  String level = '';
+  String fullname = '';
+  String company = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
