@@ -10,6 +10,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection("users");
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection("group");
+  final CollectionReference csCollection =
+      FirebaseFirestore.instance.collection("cs");
 
   // saving user data
   Future updateUserData(String fullname, String email) async {
@@ -144,5 +146,10 @@ class DatabaseService {
       "recentMessageSender": chatMessageData['sender'],
       "recentMessageTime": chatMessageData['time'].toString(),
     });
+  }
+
+  // send message
+  csSendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
+    csCollection.doc(groupId).collection("messages").add(chatMessageData);
   }
 }
