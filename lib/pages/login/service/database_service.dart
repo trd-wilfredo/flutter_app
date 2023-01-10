@@ -12,6 +12,10 @@ class DatabaseService {
       FirebaseFirestore.instance.collection("group");
   final CollectionReference csCollection =
       FirebaseFirestore.instance.collection("cs");
+  final CollectionReference companyCollection =
+      FirebaseFirestore.instance.collection("company");
+  final CollectionReference productCollection =
+      FirebaseFirestore.instance.collection("product");
 
   // saving user data
   Future updateUserData(String fullname, String email) async {
@@ -139,6 +143,23 @@ class DatabaseService {
       "profilePic": "",
       "uid": uid,
     });
+  }
+
+  // Save Company
+
+  Future<void> addSaveCompany(
+      String companyName, String avilability, String timeCreated) async {
+    return await companyCollection
+        .doc('company')
+        .set({
+          "avilability": avilability,
+          "companyName": companyName,
+          "timeCreated": timeCreated,
+          "timeEdited": '',
+          "timeDeleted": ''
+        })
+        .then((value) => print("Company Added"))
+        .catchError((error) => print("Failed to add Company: $error"));
   }
 
   // send message
