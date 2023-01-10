@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -28,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
       // appBar: AppBar(
       //   backgroundColor: Theme.of(context).primaryColor,
       // ),
-      backgroundColor: Color.fromARGB(255, 53, 53, 53),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(
@@ -167,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
       await authService
           .loginInWithEmailandPassword(email, password)
           .then((value) async {
-        if (value == true) {
+        if (value == true || Platform.isAndroid || Platform.isIOS) {
           QuerySnapshot snapshot =
               await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
                   .gettingUserData(email);

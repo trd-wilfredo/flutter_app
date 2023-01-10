@@ -18,7 +18,7 @@ class _AddProductState extends State<AddProduct> {
   String producName = "";
   String stocks = "";
   String currentSelectedValue = '';
-  List avilability = ['true', 'false '];
+  List avilability = ['yes', 'no '];
   List company = ['company1', 'company2'];
 
   @override

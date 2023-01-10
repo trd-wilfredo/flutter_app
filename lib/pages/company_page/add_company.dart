@@ -16,7 +16,7 @@ class _AddCompanyState extends State<AddCompany> {
   bool _isLoading = false;
   final formKey = GlobalKey<FormState>();
   String companyName = "";
-  List avilability = ['true', 'false'];
+  List avilability = ['yes', 'no'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

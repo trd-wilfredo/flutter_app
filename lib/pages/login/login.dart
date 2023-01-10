@@ -22,8 +22,6 @@ class _LoginAppState extends State<LoginApp> {
 
   getUserLoggedInStatus() async {
     await HelperFunction.getUserLoggedInStatus().then((value) {
-      print(['sdfds', value]);
-
       if (value != null) {
         print('gooo');
         setState(() {
