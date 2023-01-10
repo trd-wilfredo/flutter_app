@@ -163,7 +163,15 @@ class _AddCompanyState extends State<AddCompany> {
         timeCreated = DateTime.now().millisecondsSinceEpoch.toString();
       });
       await DatabaseService()
-          .addSaveCompany(companyName, avilability, timeCreated);
+          .addSaveCompany(companyName, avilability, timeCreated)
+          .then((value) async {
+        if (value == true) {
+          nextScreenReplace(context, AddCompany());
+        } else {
+          showSnackBr(context, Colors.red, value);
+          _isLoading = false;
+        }
+      });
     }
   }
 }
