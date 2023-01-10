@@ -1,10 +1,12 @@
-import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_features/helper/helper_function.dart';
+import 'package:flutter_features/pages/home_page/home_page.dart';
 import 'package:flutter_features/pages/login/auth/register_page.dart';
-import 'package:flutter_features/pages/login/login.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
+import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/widgets/widget.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
       // appBar: AppBar(
       //   backgroundColor: Theme.of(context).primaryColor,
       // ),
+      backgroundColor: Color.fromARGB(255, 53, 53, 53),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(
@@ -165,10 +168,19 @@ class _LoginPageState extends State<LoginPage> {
           .loginInWithEmailandPassword(email, password)
           .then((value) async {
         if (value == true) {
-          nextScreenReplace(context, LoginApp());
+          QuerySnapshot snapshot =
+              await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+                  .gettingUserData(email);
+          // saving the values to our shared preferences
+          await HelperFunction.saveUserLoggedInStatus(true);
+          await HelperFunction.saveUserEmailSF(email);
+          await HelperFunction.saveUserNameSF(snapshot.docs[0]['fullName']);
+          nextScreenReplace(context, const HomePage());
         } else {
           showSnackBr(context, Colors.red, value);
-          _isLoading = false;
+          setState(() {
+            _isLoading = false;
+          });
         }
       });
     }
