@@ -165,7 +165,7 @@ class DatabaseService {
   Future<void> addSaveProduct(
       String companyName, String avilability, String timeCreated) async {
     return await companyCollection
-        .doc('company')
+        .doc(uid)
         .set({
           "avilability": avilability,
           "companyName": companyName,
