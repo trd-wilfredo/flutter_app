@@ -33,6 +33,26 @@ class _HomeState extends State<Home> {
     ),
     PageList(
       part: 'null',
+      page: 'file_upload',
+      title: 'File Upload',
+    ),
+    PageList(
+      part: 'null',
+      page: 'information_registration',
+      title: 'Information Registration',
+    ),
+    PageList(
+      part: 'null',
+      page: 'company_search',
+      title: 'Company Search',
+    ),
+    PageList(
+      part: 'null',
+      page: 'company_list',
+      title: 'Company List',
+    ),
+    PageList(
+      part: 'null',
       page: 'fall_queen',
       title: 'Fall Queen',
     ),
@@ -51,6 +71,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Color.fromARGB(255, 53, 53, 53),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Align(

@@ -19,6 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final formKey = GlobalKey<FormState>();
   String email = '';
   String password = '';
+  String level = 'normal';
   String fullname = '';
   AuthService authService = AuthService();
   @override
@@ -44,7 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Chat App",
+                        "Study App",
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
@@ -61,6 +62,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       // Image.asset("GSP-logo.png"),
                       SizedBox(height: 15),
                       TextFormField(
+                        onFieldSubmitted: (value) {
+                          register();
+                        },
                         decoration: textInputDocoration.copyWith(
                           labelText: "Full Name",
                           prefixIcon: Icon(
@@ -84,6 +88,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       SizedBox(height: 15),
                       TextFormField(
+                        onFieldSubmitted: (value) {
+                          register();
+                        },
                         decoration: textInputDocoration.copyWith(
                           labelText: "Email",
                           prefixIcon: Icon(
@@ -108,6 +115,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       SizedBox(height: 15),
                       TextFormField(
+                        onFieldSubmitted: (value) {
+                          register();
+                        },
                         obscureText: true,
                         decoration: textInputDocoration.copyWith(
                           labelText: "Password",
@@ -186,11 +196,12 @@ class _RegisterPageState extends State<RegisterPage> {
         _isLoading = true;
       });
       await authService
-          .registerUserWithEmailandPassword(fullname, email, password)
+          .registerUserWithEmailandPassword(
+              fullname, email, password, level, '')
           .then((value) async {
         if (value == true || Platform.isAndroid || Platform.isIOS) {
           await HelperFunction.saveUserLoggedInStatus(true);
-          await HelperFunction.saveUseNameSF(fullname);
+          await HelperFunction.saveUserNameSF(fullname);
           await HelperFunction.saveUserEmailSF(email);
           nextScreenReplace(context, LoginApp());
         } else {

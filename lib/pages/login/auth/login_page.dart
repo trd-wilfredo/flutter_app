@@ -1,10 +1,13 @@
-import 'dart:developer';
-
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_features/helper/helper_function.dart';
+import 'package:flutter_features/pages/home_page/home_page.dart';
 import 'package:flutter_features/pages/login/auth/register_page.dart';
-import 'package:flutter_features/pages/login/login.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
+import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/widgets/widget.dart';
 
 class LoginPage extends StatefulWidget {
@@ -42,15 +45,15 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        "Chat App",
+                      const Text(
+                        "Study App",
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Text(
+                      const SizedBox(height: 10),
+                      const Text(
                         "Login here",
                         style: TextStyle(
                           fontSize: 15,
@@ -58,8 +61,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       // Image.asset("GSP-logo.png"),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       TextFormField(
+                        onFieldSubmitted: (value) {
+                          login();
+                        },
                         decoration: textInputDocoration.copyWith(
                           labelText: "Email",
                           prefixIcon: Icon(
@@ -82,9 +88,12 @@ class _LoginPageState extends State<LoginPage> {
                               : "Please enter a valid email";
                         },
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       TextFormField(
                         obscureText: true,
+                        onFieldSubmitted: (value) {
+                          login();
+                        },
                         decoration: textInputDocoration.copyWith(
                           labelText: "Password",
                           prefixIcon: Icon(
@@ -105,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                           });
                         },
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
@@ -119,20 +128,20 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             "Sign In",
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       Text.rich(
                         TextSpan(
                           text: "Don't have account? ",
                           children: <TextSpan>[
                             TextSpan(
                               text: "Register here",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                                 decoration: TextDecoration.underline,
                               ),
@@ -142,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                             ),
                           ],
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 14,
                           ),
@@ -164,11 +173,20 @@ class _LoginPageState extends State<LoginPage> {
       await authService
           .loginInWithEmailandPassword(email, password)
           .then((value) async {
-        if (value == true) {
-          nextScreenReplace(context, LoginApp());
+        if (value == true || Platform.isAndroid || Platform.isIOS) {
+          QuerySnapshot snapshot =
+              await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+                  .gettingUserData(email);
+          // saving the values to our shared preferences
+          await HelperFunction.saveUserLoggedInStatus(true);
+          await HelperFunction.saveUserEmailSF(email);
+          await HelperFunction.saveUserNameSF(snapshot.docs[0]['fullName']);
+          nextScreenReplace(context, const HomePage());
         } else {
           showSnackBr(context, Colors.red, value);
-          _isLoading = false;
+          setState(() {
+            _isLoading = false;
+          });
         }
       });
     }
