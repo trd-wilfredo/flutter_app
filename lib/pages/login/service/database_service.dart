@@ -66,21 +66,49 @@ class DatabaseService {
           "timeDeleted": timeDeleted,
         })
         .then((value) => true)
-        .catchError((error) => print("Failed to add Delete User: $error"));
+        .catchError((error) => print("Failed to add delete User: $error"));
 
     return delete;
   }
 
   //get all producy
   Future getAllProduct() async {
-    QuerySnapshot snapshot = await productCollection.get();
+    QuerySnapshot snapshot =
+        await productCollection.where('timeDeleted', isEqualTo: 'false').get();
     return snapshot;
+  }
+
+  // soft delete product
+  Future deleteProduct(String uid, String timeDeleted) async {
+    DocumentReference userDocumentReference = productCollection.doc(uid);
+    var delete = await userDocumentReference
+        .update({
+          "timeDeleted": timeDeleted,
+        })
+        .then((value) => true)
+        .catchError((error) => print("Failed to add delete Product: $error"));
+
+    return delete;
   }
 
   //get all company
   Future getAllCompany() async {
-    QuerySnapshot snapshot = await companyCollection.get();
+    QuerySnapshot snapshot =
+        await companyCollection.where('timeDeleted', isEqualTo: 'false').get();
     return snapshot;
+  }
+
+  // soft delete company
+  Future deleteCompany(String uid, String timeDeleted) async {
+    DocumentReference userDocumentReference = productCollection.doc(uid);
+    var delete = await userDocumentReference
+        .update({
+          "timeDeleted": timeDeleted,
+        })
+        .then((value) => true)
+        .catchError((error) => print("Failed to add delete Product: $error"));
+
+    return delete;
   }
 
   // getting user data
@@ -192,22 +220,22 @@ class DatabaseService {
       "company": company,
       "profilePic": "",
       "timeDeleted": "false",
-      "uid": uid,
     });
   }
 
   // Save Company
   Future addSaveCompany(
       String companyName, String avilability, String timeCreated) async {
-    var company = await companyCollection
-        .doc(uid)
-        .set({
-          "id": uid,
-          "avilability": avilability,
-          "companyName": companyName,
-          "timeCreated": timeCreated,
-          "timeEdited": '',
-          "timeDeleted": ''
+    DocumentReference groupDocumentReference = await companyCollection.add({
+      "avilability": avilability,
+      "companyName": companyName,
+      "timeCreated": timeCreated,
+      "timeEdited": '',
+      "timeDeleted": "false",
+    });
+    var company = await groupDocumentReference
+        .update({
+          "uid": groupDocumentReference.id,
         })
         .then((value) => true)
         .catchError((error) => print("Failed to add Company: $error"));
@@ -222,20 +250,25 @@ class DatabaseService {
   // Save Product
   Future addSaveProduct(String productName, String companyName, String stocks,
       String avilability, String timeCreated) async {
-    var product = await productCollection
-        .doc(uid)
-        .set({
-          "id": uid,
-          "productName": productName,
-          "stocks": stocks,
-          "avilability": avilability,
-          "companyName": companyName,
-          "timeCreated": timeCreated,
-          "timeEdited": '',
-          "timeDeleted": ''
+    // var product = await
+
+    DocumentReference groupDocumentReference = await productCollection.add({
+      "productName": productName,
+      "stocks": stocks,
+      "avilability": avilability,
+      "companyName": companyName,
+      "timeCreated": timeCreated,
+      "timeEdited": '',
+      "timeDeleted": "false",
+    });
+
+    var product = await groupDocumentReference
+        .update({
+          "uid": groupDocumentReference.id,
         })
         .then((value) => true)
         .catchError((error) => print("Failed to add Company: $error"));
+
     if (product == true) {
       return true;
     } else {

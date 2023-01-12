@@ -36,6 +36,7 @@ class _ProductPageState extends State<ProductPage> {
           'name': f['productName'],
           'company': f['companyName'],
           'stocks': f['stocks'],
+          'id': f['uid'],
         }),
       },
     );
@@ -46,6 +47,7 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(products);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -138,7 +140,7 @@ class _ProductPageState extends State<ProductPage> {
                                     primary: Colors.red,
                                   ),
                                   onPressed: () {
-                                    // nextScreen(context, AddUser());
+                                    deleteProduct(val['id'], val);
                                   },
                                 ),
                               ],
@@ -155,5 +157,15 @@ class _ProductPageState extends State<ProductPage> {
         ),
       ),
     );
+  }
+
+  deleteProduct(id, i) async {
+    var timeDeleted = DateTime.now().millisecondsSinceEpoch.toString();
+    var userDlt = await DatabaseService(uid: id).deleteProduct(id, timeDeleted);
+    if (userDlt == true) {
+      setState(() {
+        products.remove(i);
+      });
+    }
   }
 }
