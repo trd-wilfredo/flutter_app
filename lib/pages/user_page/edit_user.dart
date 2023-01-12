@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
+import 'package:flutter_features/pages/login/service/database_service.dart';
+import 'package:flutter_features/pages/user_page/user_page.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
+import 'package:flutter_features/widgets/widget.dart';
 
 class EditUser extends StatefulWidget {
   String valName = '';
@@ -36,7 +39,6 @@ class _EditUserState extends State<EditUser> {
   AuthService authService = AuthService();
   @override
   Widget build(BuildContext context) {
-    print(['ssdf', widget.valName]);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -97,7 +99,6 @@ class _EditUserState extends State<EditUser> {
                         value:
                             widget.valCompany == "" ? null : widget.valCompany,
                         items: companies.map((category) {
-                          print(category);
                           return new DropdownMenuItem(
                               value: category,
                               child: Row(
@@ -141,7 +142,6 @@ class _EditUserState extends State<EditUser> {
                               ));
                         }).toList(),
                         onChanged: (newValue) {
-                          print([newValue, 'asd']);
                           // do other stuff with _category
                           setState(() => level = '$newValue');
                         },
@@ -202,7 +202,7 @@ class _EditUserState extends State<EditUser> {
                         height: 45,
                         child: ElevatedButton(
                           onPressed: () {
-                            editUser();
+                            editUser(widget.valId);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Theme.of(context).primaryColor,
@@ -225,12 +225,21 @@ class _EditUserState extends State<EditUser> {
     );
   }
 
-  editUser() async {
+  editUser(id) async {
     if (formKey.currentState!.validate()) {
-      print([fullname, email, password, level, company]);
-      // setState(() {
-      //   _isLoading = true;
-      // });
+      setState(() {
+        _isLoading = true;
+      });
+      print([fullname, email, password, company, level]);
+      var timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
+      var userDlt = await DatabaseService(uid: id)
+          .editUser(id, fullname, email, company, level, timeEdited);
+      if (userDlt == true) {
+        setState(() {
+          nextScreenReplace(context, UserPage());
+          _isLoading = false;
+        });
+      }
     }
   }
 }

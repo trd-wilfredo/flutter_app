@@ -173,11 +173,11 @@ class _UserPageState extends State<UserPage> {
 
   deleteUser(id, i) async {
     var timeDeleted = DateTime.now().millisecondsSinceEpoch.toString();
-    // var userDlt = await DatabaseService(uid: id).deleteUser(id, timeDeleted);
-    // if (userDlt == true) {
-    setState(() {
-      users.remove(i);
-    });
-    // }
+    var userDlt = await DatabaseService(uid: id).deleteUser(id, timeDeleted);
+    if (userDlt == true) {
+      setState(() {
+        users.remove(i);
+      });
+    }
   }
 }
