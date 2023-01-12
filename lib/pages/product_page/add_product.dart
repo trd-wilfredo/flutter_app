@@ -54,6 +54,7 @@ class _AddProductState extends State<AddProduct> {
                 CheetahInput(
                   hideText: false,
                   labelText: 'Product Name',
+                  initVal: '',
                   onSaved: (String value) {
                     producName = value;
                   },
@@ -61,6 +62,7 @@ class _AddProductState extends State<AddProduct> {
                 SizedBox(height: 16),
                 CheetahInput(
                   hideText: false,
+                  initVal: '',
                   labelText: 'Stocks',
                   onSaved: (String value) {
                     stocks = value;
@@ -79,7 +81,7 @@ class _AddProductState extends State<AddProduct> {
                   }).toList(),
                   onChanged: (newValue) {
                     // do other stuff with _category
-                    setState(() => company = '$newValue');
+                    setState(() => avilability = '$newValue');
                   },
                   validator: (value) {
                     if (value == null) {
