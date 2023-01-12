@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_features/pages/user_page/user_page.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_features/widgets/widget.dart';
+
+import '../login/service/database_service.dart';
 
 class AddUser extends StatefulWidget {
   const AddUser({super.key});
@@ -24,8 +27,26 @@ class _AddUserState extends State<AddUser> {
   String fullname = '';
   String company = '';
   List levels = ['admin', 'normal'];
-  List companies = ['company1', 'company2'];
+  List companies = [];
   AuthService authService = AuthService();
+
+  void initState() {
+    super.initState();
+    gettingAllCompany();
+  }
+
+  gettingAllCompany() async {
+    QuerySnapshot snapshot = await DatabaseService().getAllCompany();
+
+    for (var f in snapshot.docs) {
+      setState(() {
+        companies.add(
+          f['companyName'],
+        );
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -223,10 +244,7 @@ class _AddUserState extends State<AddUser> {
           .registerUserWithEmailandPassword(
               fullname, email, password, level, company)
           .then((value) async {
-        if (value == true || Platform.isAndroid || Platform.isIOS) {
-          await HelperFunction.saveUserLoggedInStatus(false);
-          await HelperFunction.saveUserNameSF(fullname);
-          await HelperFunction.saveUserEmailSF(email);
+        if (value == true) {
           nextScreenReplace(context, UserPage());
         } else {
           showSnackBr(context, Colors.red, value);

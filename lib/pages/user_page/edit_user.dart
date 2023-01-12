@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
@@ -35,8 +36,26 @@ class _EditUserState extends State<EditUser> {
   String fullname = '';
   String company = '';
   List levels = ['admin', 'normal'];
-  List companies = ['company1', 'company2'];
+  List companies = [];
   AuthService authService = AuthService();
+  @override
+  void initState() {
+    super.initState();
+    gettingAllCompany();
+  }
+
+  gettingAllCompany() async {
+    QuerySnapshot snapshot = await DatabaseService().getAllCompany();
+
+    for (var f in snapshot.docs) {
+      setState(() {
+        companies.add(
+          f['companyName'],
+        );
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

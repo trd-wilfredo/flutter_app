@@ -254,6 +254,7 @@ class DatabaseService {
       "company": company,
       "profilePic": "",
       "timeDeleted": "false",
+      "uid": uid,
     });
   }
 
@@ -294,6 +295,7 @@ class DatabaseService {
       "timeCreated": timeCreated,
       "timeEdited": '',
       "timeDeleted": "false",
+      "companyId": ''
     });
 
     var product = await groupDocumentReference

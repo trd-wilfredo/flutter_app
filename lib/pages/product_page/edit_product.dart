@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/product_page/product_page.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
@@ -36,7 +34,24 @@ class _EditProductState extends State<EditProduct> {
   String avilability = '';
   String timeEdited = "";
   List avilabilities = ['yes', 'no'];
-  List companies = ['company1', 'company2'];
+  List companies = [];
+  @override
+  void initState() {
+    super.initState();
+    gettingAllCompany();
+  }
+
+  gettingAllCompany() async {
+    QuerySnapshot snapshot = await DatabaseService().getAllCompany();
+
+    for (var f in snapshot.docs) {
+      setState(() {
+        companies.add(
+          f['companyName'],
+        );
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +144,9 @@ class _EditProductState extends State<EditProduct> {
                   }).toList(),
                   onChanged: (newValue) {
                     // do other stuff with _category
-                    setState(() => company = '$newValue');
+                    setState(
+                      () => {company = '$newValue'},
+                    );
                   },
                   validator: (value) {
                     if (value == null) {
@@ -171,9 +188,9 @@ class _EditProductState extends State<EditProduct> {
                             'png, jpeg, ' // Only if FileTypeCross.custom . May be any file extension like `dot`, `ppt,pptx,odp`
                         );
 
-                    if (picked != null) {
-                      print(picked.fileName);
-                    }
+                    // if (picked != null) {
+                    //   print(picked.fileName);
+                    // }
                     // } else if (defaultTargetPlatform == TargetPlatform.linux ||
                     //     defaultTargetPlatform == TargetPlatform.macOS ||
                     //     defaultTargetPlatform == TargetPlatform.windows) {
@@ -189,7 +206,8 @@ class _EditProductState extends State<EditProduct> {
                   height: 45,
                   child: ElevatedButton(
                     onPressed: () {
-                      editProduct(widget.uid);
+                      editProduct(
+                          widget.uid, widget.avilability, widget.company);
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).primaryColor,
@@ -212,12 +230,15 @@ class _EditProductState extends State<EditProduct> {
     );
   }
 
-  editProduct(id) async {
+  editProduct(id, avlty, cpny) async {
     if (formKey.currentState!.validate()) {
       setState(() {
-        _isLoading = true;
+        // _isLoading = true;
         timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
       });
+      if (avilability == "") avilability = avlty;
+      if (company == "") company = cpny;
+
       await DatabaseService()
           .editProduct(id, producName, stocks, company, avilability, timeEdited)
           .then((value) async {
