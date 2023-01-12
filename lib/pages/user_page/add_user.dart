@@ -34,7 +34,7 @@ class _AddUserState extends State<AddUser> {
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
-          'Add User',
+          'Add Product',
           style: TextStyle(
             color: Colors.white,
             fontSize: 27,

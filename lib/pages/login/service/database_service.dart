@@ -78,6 +78,24 @@ class DatabaseService {
     return snapshot;
   }
 
+// soft edit user
+  Future editProduct(String uid, String producName, String stocks,
+      String company, String avilability, String timeEdited) async {
+    DocumentReference userDocumentReference = productCollection.doc(uid);
+    var edit = await userDocumentReference
+        .update({
+          "productName": producName,
+          "stocks": stocks,
+          "avilability": avilability,
+          "companyName": company,
+          "timeEdited": timeEdited,
+        })
+        .then((value) => true)
+        .catchError((error) => print("Failed to add Edit User: $error"));
+
+    return edit;
+  }
+
   // soft delete product
   Future deleteProduct(String uid, String timeDeleted) async {
     DocumentReference userDocumentReference = productCollection.doc(uid);
