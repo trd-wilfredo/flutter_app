@@ -33,15 +33,35 @@ class DatabaseService {
     return userCollection.doc(uid).snapshots();
   }
 
-//get all user
+  //get all user
   Future getAllUser() async {
-    QuerySnapshot snapshot = await userCollection.get();
+    QuerySnapshot snapshot =
+        await userCollection.where('timeDeleted', isEqualTo: 'false').get();
     return snapshot;
   }
 
-//get all producy
+  // soft delete user
+  Future deleteUser(String uid, String timeDeleted) async {
+    DocumentReference userDocumentReference = userCollection.doc(uid);
+    var delete = await userDocumentReference
+        .update({
+          "timeDeleted": timeDeleted,
+        })
+        .then((value) => true)
+        .catchError((error) => print("Failed to add Delete User: $error"));
+
+    return delete;
+  }
+
+  //get all producy
   Future getAllProduct() async {
     QuerySnapshot snapshot = await productCollection.get();
+    return snapshot;
+  }
+
+  //get all company
+  Future getAllCompany() async {
+    QuerySnapshot snapshot = await companyCollection.get();
     return snapshot;
   }
 
@@ -153,6 +173,7 @@ class DatabaseService {
       "level": level,
       "company": company,
       "profilePic": "",
+      "timeDeleted": "false",
       "uid": uid,
     });
   }
@@ -163,6 +184,7 @@ class DatabaseService {
     var company = await companyCollection
         .doc(uid)
         .set({
+          "id": uid,
           "avilability": avilability,
           "companyName": companyName,
           "timeCreated": timeCreated,
@@ -185,6 +207,7 @@ class DatabaseService {
     var product = await productCollection
         .doc(uid)
         .set({
+          "id": uid,
           "productName": productName,
           "stocks": stocks,
           "avilability": avilability,

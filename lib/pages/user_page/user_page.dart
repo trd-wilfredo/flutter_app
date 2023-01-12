@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/user_page/add_user.dart';
+import 'package:flutter_features/pages/user_page/edit_user.dart';
 import 'package:flutter_features/widgets/widget.dart';
 
 class UserPage extends StatefulWidget {
@@ -20,7 +21,6 @@ class _UserPageState extends State<UserPage> {
   String fullname = '';
   String company = '';
   List users = [];
-  List setUser = [];
   @override
   void initState() {
     super.initState();
@@ -29,14 +29,17 @@ class _UserPageState extends State<UserPage> {
 
   gettingAllUser() async {
     QuerySnapshot snapshot = await DatabaseService().getAllUser();
-    snapshot.docs.forEach(
-      (f) => {
-        setUser.add({'name': f['fullName'], 'company': f['company']}),
-      },
-    );
-    setState(() {
-      users = setUser;
-    });
+    for (var f in snapshot.docs) {
+      setState(() {
+        users.add({
+          'id': f['uid'],
+          'name': f['fullName'],
+          'company': f['company'],
+          'level': f['level'],
+          'email': f['email'],
+        });
+      });
+    }
   }
 
   @override
@@ -120,7 +123,6 @@ class _UserPageState extends State<UserPage> {
                         ),
                       ],
                       rows: users.map((val) {
-                        print(['sdfasf', val]);
                         return DataRow(cells: [
                           DataCell(Text(val['name'])),
                           DataCell(Text(val['company'])),
@@ -133,7 +135,15 @@ class _UserPageState extends State<UserPage> {
                                     primary: Colors.blue,
                                   ),
                                   onPressed: () {
-                                    // nextScreen(context, AddUser());
+                                    nextScreen(
+                                        context,
+                                        EditUser(
+                                          valName: val['name'],
+                                          valId: val['id'],
+                                          valCompany: val['company'],
+                                          valLevel: val['level'],
+                                          valEmail: val['email'],
+                                        ));
                                   },
                                 ),
                                 ElevatedButton(
@@ -142,7 +152,7 @@ class _UserPageState extends State<UserPage> {
                                     primary: Colors.red,
                                   ),
                                   onPressed: () {
-                                    // nextScreen(context, AddUser());
+                                    deleteUser(val['id'], val);
                                   },
                                 ),
                               ],
@@ -159,5 +169,15 @@ class _UserPageState extends State<UserPage> {
         ),
       ),
     );
+  }
+
+  deleteUser(id, i) async {
+    var timeDeleted = DateTime.now().millisecondsSinceEpoch.toString();
+    // var userDlt = await DatabaseService(uid: id).deleteUser(id, timeDeleted);
+    // if (userDlt == true) {
+    setState(() {
+      users.remove(i);
+    });
+    // }
   }
 }
