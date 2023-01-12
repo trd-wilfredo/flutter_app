@@ -36,6 +36,7 @@ class _ProductPageState extends State<ProductPage> {
         products.add({
           'name': f['productName'],
           'company': f['companyName'],
+          'companyId': f['companyId'],
           'stocks': f['stocks'],
           'avilability': f['avilability'],
           'id': f['uid'],
@@ -46,7 +47,6 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(products);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -116,7 +116,6 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                       ],
                       rows: products.map((val) {
-                        print(['sdfasf', val]);
                         return DataRow(cells: [
                           DataCell(Text(val['name'])),
                           DataCell(Text(val['company'])),

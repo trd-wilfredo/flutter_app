@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -25,7 +26,24 @@ class _AddProductState extends State<AddProduct> {
   String timeCreated = "";
   String currentSelectedValue = '';
   List avilabilities = ['yes', 'no'];
-  List companies = ['company1', 'company2'];
+  List companies = [];
+
+  void initState() {
+    super.initState();
+    gettingAllCompany();
+  }
+
+  gettingAllCompany() async {
+    QuerySnapshot snapshot = await DatabaseService().getAllCompany();
+
+    for (var f in snapshot.docs) {
+      setState(() {
+        companies.add(
+          f['companyName'],
+        );
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
