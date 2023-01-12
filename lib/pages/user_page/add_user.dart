@@ -59,6 +59,7 @@ class _AddUserState extends State<AddUser> {
                     children: <Widget>[
                       CheetahInput(
                         hideText: false,
+                        initVal: '',
                         labelText: 'Name',
                         onSaved: (String value) {
                           fullname = value;
@@ -67,6 +68,7 @@ class _AddUserState extends State<AddUser> {
                       SizedBox(height: 16),
                       CheetahInput(
                         hideText: false,
+                        initVal: '',
                         labelText: 'Email',
                         onSaved: (String value) {
                           email = value;
@@ -76,6 +78,7 @@ class _AddUserState extends State<AddUser> {
                       CheetahInput(
                         hideText: true,
                         labelText: 'Password',
+                        initVal: '',
                         onSaved: (String value) {
                           password = value;
                         },
