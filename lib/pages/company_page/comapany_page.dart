@@ -21,7 +21,7 @@ class _CompanyPageState extends State<CompanyPage> {
   String fullname = '';
   String company = '';
   List companies = [];
-  List setUser = [];
+  List setCompany = [];
   @override
   void initState() {
     super.initState();
@@ -32,13 +32,13 @@ class _CompanyPageState extends State<CompanyPage> {
     QuerySnapshot snapshot = await DatabaseService().getAllCompany();
     snapshot.docs.forEach(
       (f) => {
-        setUser.add({
+        setCompany.add({
           'name': f['companyName'],
         }),
       },
     );
     setState(() {
-      companies = setUser;
+      companies = setCompany;
     });
   }
 
