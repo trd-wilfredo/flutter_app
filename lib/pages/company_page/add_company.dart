@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_features/pages/company_page/comapany_page.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
@@ -167,7 +168,7 @@ class _AddCompanyState extends State<AddCompany> {
           .addSaveCompany(companyName, avilability, timeCreated)
           .then((value) async {
         if (value == true) {
-          nextScreenReplace(context, AddCompany());
+          nextScreenReplace(context, CompanyPage());
         } else {
           showSnackBr(context, Colors.red, value);
           _isLoading = false;

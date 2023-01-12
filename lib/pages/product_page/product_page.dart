@@ -21,7 +21,6 @@ class _ProductPageState extends State<ProductPage> {
   String fullname = '';
   String company = '';
   List products = [];
-  List setProduct = [];
   @override
   void initState() {
     super.initState();
@@ -30,19 +29,17 @@ class _ProductPageState extends State<ProductPage> {
 
   gettingAllProduct() async {
     QuerySnapshot snapshot = await DatabaseService().getAllProduct();
-    snapshot.docs.forEach(
-      (f) => {
-        setProduct.add({
+
+    for (var f in snapshot.docs) {
+      setState(() {
+        products.add({
           'name': f['productName'],
           'company': f['companyName'],
           'stocks': f['stocks'],
           'id': f['uid'],
-        }),
-      },
-    );
-    setState(() {
-      products = setProduct;
-    });
+        });
+      });
+    }
   }
 
   @override
