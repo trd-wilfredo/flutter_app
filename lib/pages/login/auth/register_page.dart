@@ -62,6 +62,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       // Image.asset("GSP-logo.png"),
                       SizedBox(height: 15),
                       TextFormField(
+                        onFieldSubmitted: (value) {
+                          register();
+                        },
                         decoration: textInputDocoration.copyWith(
                           labelText: "Full Name",
                           prefixIcon: Icon(
@@ -85,6 +88,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       SizedBox(height: 15),
                       TextFormField(
+                        onFieldSubmitted: (value) {
+                          register();
+                        },
                         decoration: textInputDocoration.copyWith(
                           labelText: "Email",
                           prefixIcon: Icon(
@@ -109,6 +115,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       SizedBox(height: 15),
                       TextFormField(
+                        onFieldSubmitted: (value) {
+                          register();
+                        },
                         obscureText: true,
                         decoration: textInputDocoration.copyWith(
                           labelText: "Password",
