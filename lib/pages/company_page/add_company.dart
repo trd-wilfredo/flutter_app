@@ -56,6 +56,7 @@ class _AddCompanyState extends State<AddCompany> {
                       CheetahInput(
                         hideText: false,
                         labelText: 'Product Name',
+                        initVal: '',
                         onSaved: (String value) {
                           companyName = value;
                         },
