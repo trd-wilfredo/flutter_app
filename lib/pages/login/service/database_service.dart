@@ -71,14 +71,14 @@ class DatabaseService {
     return delete;
   }
 
-  //get all producy
+  //get all product
   Future getAllProduct() async {
     QuerySnapshot snapshot =
         await productCollection.where('timeDeleted', isEqualTo: 'false').get();
     return snapshot;
   }
 
-// soft edit user
+// soft edit product
   Future editProduct(String uid, String producName, String stocks,
       String company, String avilability, String timeEdited) async {
     DocumentReference userDocumentReference = productCollection.doc(uid);
@@ -114,6 +114,22 @@ class DatabaseService {
     QuerySnapshot snapshot =
         await companyCollection.where('timeDeleted', isEqualTo: 'false').get();
     return snapshot;
+  }
+
+// soft edit Company
+  Future editCompany(String uid, String companyName, String avilability,
+      String timeEdited) async {
+    DocumentReference userDocumentReference = companyCollection.doc(uid);
+    var edit = await userDocumentReference
+        .update({
+          "avilability": avilability,
+          "companyName": companyName,
+          "timeEdited": timeEdited,
+        })
+        .then((value) => true)
+        .catchError((error) => print("Failed to add Edit User: $error"));
+
+    return edit;
   }
 
   // soft delete company
