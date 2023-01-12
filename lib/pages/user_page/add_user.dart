@@ -216,7 +216,6 @@ class _AddUserState extends State<AddUser> {
       setState(() {
         _isLoading = true;
       });
-      print([fullname, email, password, level, company]);
       await authService
           .registerUserWithEmailandPassword(
               fullname, email, password, level, company)

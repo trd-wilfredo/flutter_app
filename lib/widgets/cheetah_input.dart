@@ -35,6 +35,8 @@ class _CheetahInputState extends State<CheetahInput> {
         setState(() {
           textVal = '$value';
         });
+
+        var labelText = widget.labelText;
         if (value!.isNotEmpty) {
           widget.onSaved(value);
           if (widget.labelText == 'Email') {
@@ -47,10 +49,10 @@ class _CheetahInputState extends State<CheetahInput> {
           if (widget.labelText == 'Password' && value!.length < 6) {
             return 'Password must be at least 6 charaters';
           }
-          if (widget.labelText == 'Name' || widget.labelText == 'Product Name')
+          if (widget.labelText == 'Name' || labelText == 'Product Name')
             return null;
         } else {
-          return '$widget.labelText is required';
+          return '$labelText is required';
         }
       },
       onSaved: widget.onSaved(textVal),

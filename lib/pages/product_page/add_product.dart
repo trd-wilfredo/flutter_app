@@ -2,8 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
+import 'package:flutter_features/widgets/widget.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key});
@@ -17,9 +19,12 @@ class _AddProductState extends State<AddProduct> {
   final formKey = GlobalKey<FormState>();
   String producName = "";
   String stocks = "";
+  String company = '';
+  String avilability = '';
+  String timeCreated = "";
   String currentSelectedValue = '';
-  List avilability = ['yes', 'no '];
-  List company = ['company1', 'company2'];
+  List avilabilities = ['yes', 'no '];
+  List companies = ['company1', 'company2'];
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +68,7 @@ class _AddProductState extends State<AddProduct> {
                 ),
                 SizedBox(height: 16),
                 DropdownButtonFormField(
-                  items: avilability.map((category) {
+                  items: avilabilities.map((category) {
                     return new DropdownMenuItem(
                         value: category,
                         child: Row(
@@ -73,9 +78,15 @@ class _AddProductState extends State<AddProduct> {
                         ));
                   }).toList(),
                   onChanged: (newValue) {
-                    print([newValue, 'asd']);
                     // do other stuff with _category
-                    // setState(() => level = newValue);
+                    setState(() => company = '$newValue');
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Select Avilability';
+                    } else {
+                      return null;
+                    }
                   },
                   // value: level,
                   decoration: InputDecoration(
@@ -91,7 +102,7 @@ class _AddProductState extends State<AddProduct> {
                 ),
                 SizedBox(height: 16),
                 DropdownButtonFormField(
-                  items: company.map((category) {
+                  items: companies.map((category) {
                     return new DropdownMenuItem(
                         value: category,
                         child: Row(
@@ -101,9 +112,15 @@ class _AddProductState extends State<AddProduct> {
                         ));
                   }).toList(),
                   onChanged: (newValue) {
-                    print([newValue, 'asd']);
                     // do other stuff with _category
-                    // setState(() => level = newValue);
+                    setState(() => company = '$newValue');
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Select Company';
+                    } else {
+                      return null;
+                    }
                   },
                   // value: level,
                   decoration: InputDecoration(
@@ -156,7 +173,7 @@ class _AddProductState extends State<AddProduct> {
                   height: 45,
                   child: ElevatedButton(
                     onPressed: () {
-                      // register();
+                      addProduct();
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).primaryColor,
@@ -177,5 +194,24 @@ class _AddProductState extends State<AddProduct> {
         ),
       ),
     );
+  }
+
+  addProduct() async {
+    if (formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+        timeCreated = DateTime.now().millisecondsSinceEpoch.toString();
+      });
+      await DatabaseService()
+          .addSaveProduct(producName, company, stocks, company, timeCreated)
+          .then((value) async {
+        if (value == true) {
+          nextScreenReplace(context, AddProduct());
+        } else {
+          showSnackBr(context, Colors.red, value);
+          _isLoading = false;
+        }
+      });
+    }
   }
 }

@@ -146,25 +146,9 @@ class DatabaseService {
   }
 
   // Save Company
-  Future<void> addSaveCompany(
+  Future addSaveCompany(
       String companyName, String avilability, String timeCreated) async {
-    return await companyCollection
-        .doc('company')
-        .set({
-          "avilability": avilability,
-          "companyName": companyName,
-          "timeCreated": timeCreated,
-          "timeEdited": '',
-          "timeDeleted": ''
-        })
-        .then((value) => print("Company Added"))
-        .catchError((error) => print("Failed to add Company: $error"));
-  }
-
-  // Save Product
-  Future<void> addSaveProduct(
-      String companyName, String avilability, String timeCreated) async {
-    return await companyCollection
+    var company = await companyCollection
         .doc(uid)
         .set({
           "avilability": avilability,
@@ -173,8 +157,35 @@ class DatabaseService {
           "timeEdited": '',
           "timeDeleted": ''
         })
-        .then((value) => print("Company Added"))
+        .then((value) => true)
         .catchError((error) => print("Failed to add Company: $error"));
+
+    if (company == true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // Save Product
+  Future addSaveProduct(String productName, String companyName, String stocks,
+      String avilability, String timeCreated) async {
+    var product = await productCollection
+        .doc(uid)
+        .set({
+          "avilability": avilability,
+          "companyName": companyName,
+          "timeCreated": timeCreated,
+          "timeEdited": '',
+          "timeDeleted": ''
+        })
+        .then((value) => true)
+        .catchError((error) => print("Failed to add Company: $error"));
+    if (product == true) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // send message
