@@ -45,15 +45,15 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(
+                      const Text(
                         "Study App",
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Text(
+                      const SizedBox(height: 10),
+                      const Text(
                         "Login here",
                         style: TextStyle(
                           fontSize: 15,
@@ -61,8 +61,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       // Image.asset("GSP-logo.png"),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       TextFormField(
+                        onFieldSubmitted: (value) {
+                          login();
+                        },
                         decoration: textInputDocoration.copyWith(
                           labelText: "Email",
                           prefixIcon: Icon(
@@ -85,9 +88,12 @@ class _LoginPageState extends State<LoginPage> {
                               : "Please enter a valid email";
                         },
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       TextFormField(
                         obscureText: true,
+                        onFieldSubmitted: (value) {
+                          login();
+                        },
                         decoration: textInputDocoration.copyWith(
                           labelText: "Password",
                           prefixIcon: Icon(
@@ -108,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                           });
                         },
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
@@ -122,20 +128,20 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(30),
                             ),
                           ),
-                          child: Text(
+                          child: const Text(
                             "Sign In",
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       Text.rich(
                         TextSpan(
                           text: "Don't have account? ",
                           children: <TextSpan>[
                             TextSpan(
                               text: "Register here",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                                 decoration: TextDecoration.underline,
                               ),
@@ -145,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                                 },
                             ),
                           ],
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 14,
                           ),
