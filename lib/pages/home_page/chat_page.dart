@@ -83,13 +83,12 @@ class _ChatPageState extends State<ChatPage> {
               child: Row(children: [
                 Expanded(
                   child: TextFormField(
-                    autofocus: true,
                     onFieldSubmitted: (value) {
                       sendMessage();
                     },
                     controller: messageController,
                     focusNode: myFocusNode,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white, height:2.0),
                     decoration: const InputDecoration(
                       hintText: "Send a message...",
                       hintStyle: TextStyle(color: Colors.white, fontSize: 16),
@@ -132,13 +131,17 @@ class _ChatPageState extends State<ChatPage> {
       builder: (context, AsyncSnapshot snapshot) {
         return snapshot.hasData
             ? ListView.builder(
+                reverse: true,
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(bottom: 100.0),
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
-                  return MessageTile(
-                      message: snapshot.data.docs[index]['message'],
-                      sender: snapshot.data.docs[index]['sender'],
+                  final reversedIndex = snapshot.data.docs.length - 1 - index;
+                  return MessageTile(                     
+                      message: snapshot.data.docs[reversedIndex]['message'],
+                      sender: snapshot.data.docs[reversedIndex]['sender'],
                       sentByMe: widget.userName ==
-                          snapshot.data.docs[index]['sender']);
+                          snapshot.data.docs[reversedIndex]['sender']);
                 },
               )
             : Container();
