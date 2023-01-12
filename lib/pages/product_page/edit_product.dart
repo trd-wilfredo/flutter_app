@@ -8,22 +8,33 @@ import 'package:flutter_features/widgets/cheetah_input.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_features/widgets/widget.dart';
 
-class AddProduct extends StatefulWidget {
-  const AddProduct({super.key});
-
+class EditProduct extends StatefulWidget {
+  String producName = "";
+  String stocks = "";
+  String company = "";
+  String avilability = "";
+  String timeEdited = "";
+  String uid = "";
+  EditProduct(
+      {Key? key,
+      required this.producName,
+      required this.stocks,
+      required this.company,
+      required this.avilability,
+      required this.uid})
+      : super(key: key);
   @override
-  State<AddProduct> createState() => _AddProductState();
+  State<EditProduct> createState() => _EditProductState();
 }
 
-class _AddProductState extends State<AddProduct> {
+class _EditProductState extends State<EditProduct> {
   bool _isLoading = false;
   final formKey = GlobalKey<FormState>();
   String producName = "";
   String stocks = "";
   String company = '';
   String avilability = '';
-  String timeCreated = "";
-  String currentSelectedValue = '';
+  String timeEdited = "";
   List avilabilities = ['yes', 'no'];
   List companies = ['company1', 'company2'];
 
@@ -35,7 +46,7 @@ class _AddProductState extends State<AddProduct> {
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
-          'Add Product',
+          'Edit Product',
           style: TextStyle(
             color: Colors.white,
             fontSize: 27,
@@ -55,7 +66,7 @@ class _AddProductState extends State<AddProduct> {
                 CheetahInput(
                   hideText: false,
                   labelText: 'Product Name',
-                  initVal: '',
+                  initVal: widget.producName,
                   onSaved: (String value) {
                     producName = value;
                   },
@@ -63,7 +74,7 @@ class _AddProductState extends State<AddProduct> {
                 SizedBox(height: 16),
                 CheetahInput(
                   hideText: false,
-                  initVal: '',
+                  initVal: widget.stocks,
                   labelText: 'Stocks',
                   onSaved: (String value) {
                     stocks = value;
@@ -71,6 +82,7 @@ class _AddProductState extends State<AddProduct> {
                 ),
                 SizedBox(height: 16),
                 DropdownButtonFormField(
+                  value: widget.avilability == "" ? null : widget.avilability,
                   items: avilabilities.map((category) {
                     return new DropdownMenuItem(
                         value: category,
@@ -105,6 +117,7 @@ class _AddProductState extends State<AddProduct> {
                 ),
                 SizedBox(height: 16),
                 DropdownButtonFormField(
+                  value: widget.company == "" ? null : widget.company,
                   items: companies.map((category) {
                     return new DropdownMenuItem(
                         value: category,
@@ -176,7 +189,7 @@ class _AddProductState extends State<AddProduct> {
                   height: 45,
                   child: ElevatedButton(
                     onPressed: () {
-                      addProduct();
+                      editProduct(widget.uid);
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).primaryColor,
@@ -199,14 +212,14 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
-  addProduct() async {
+  editProduct(id) async {
     if (formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
-        timeCreated = DateTime.now().millisecondsSinceEpoch.toString();
+        timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
       });
       await DatabaseService()
-          .addSaveProduct(producName, company, stocks, avilability, timeCreated)
+          .editProduct(id, producName, stocks, company, avilability, timeEdited)
           .then((value) async {
         if (value == true) {
           nextScreenReplace(context, ProductPage());

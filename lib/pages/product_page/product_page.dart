@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/product_page/add_product.dart';
+import 'package:flutter_features/pages/product_page/edit_product.dart';
 import 'package:flutter_features/pages/user_page/add_user.dart';
 import 'package:flutter_features/widgets/widget.dart';
 
@@ -36,6 +37,7 @@ class _ProductPageState extends State<ProductPage> {
           'name': f['productName'],
           'company': f['companyName'],
           'stocks': f['stocks'],
+          'avilability': f['avilability'],
           'id': f['uid'],
         });
       });
@@ -128,7 +130,15 @@ class _ProductPageState extends State<ProductPage> {
                                     primary: Colors.blue,
                                   ),
                                   onPressed: () {
-                                    // nextScreen(context, AddUser());
+                                    nextScreen(
+                                        context,
+                                        EditProduct(
+                                          producName: val['name'],
+                                          stocks: val['stocks'],
+                                          company: val['company'],
+                                          avilability: val['avilability'],
+                                          uid: val['id'],
+                                        ));
                                   },
                                 ),
                                 ElevatedButton(
