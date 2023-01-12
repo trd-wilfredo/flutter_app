@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_features/pages/login/service/database_service.dart';
+import 'package:flutter_features/pages/user_page/add_user.dart';
+import 'package:flutter_features/widgets/widget.dart';
 
 class UserPage extends StatefulWidget {
-  const UserPage({super.key});
+  const UserPage({Key? key}) : super(key: key);
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -17,6 +19,26 @@ class _UserPageState extends State<UserPage> {
   String level = '';
   String fullname = '';
   String company = '';
+  List users = [];
+  List setUser = [];
+  @override
+  void initState() {
+    super.initState();
+    gettingAllUser();
+  }
+
+  gettingAllUser() async {
+    QuerySnapshot snapshot = await DatabaseService().getAllUser();
+    snapshot.docs.forEach(
+      (f) => {
+        setUser.add({'name': f['fullName'], 'company': f['company']}),
+      },
+    );
+    setState(() {
+      users = setUser;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,24 +47,11 @@ class _UserPageState extends State<UserPage> {
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
-          'Add User',
+          'User Page',
           style: TextStyle(
             color: Colors.white,
             fontSize: 27,
             fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        // backgroundColor: Color.fromARGB(255, 53, 53, 53), // appBar:
-        child: Container(
-          margin: EdgeInsets.all(24),
-          child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[],
-            ),
           ),
         ),
       ),
@@ -59,13 +68,96 @@ class _UserPageState extends State<UserPage> {
       //     ),
       //   ),
       // ),
-      // body: ElevatedButton(
-      //   child: Text('Add User'),
-      //   style: ElevatedButton.styleFrom(
-      //     primary: Colors.green,
-      //   ),
-      //   onPressed: () {},
-      // ),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 10.0),
+              child: ElevatedButton(
+                child: Text('Add User'),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                ),
+                onPressed: () {
+                  nextScreen(context, AddUser());
+                },
+              ),
+            ),
+            Container(
+              height: 500,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 50.0),
+                    child: DataTable(
+                      decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                                color: Color.fromARGB(255, 104, 104, 104)),
+                            top: BorderSide(
+                                color: Color.fromARGB(255, 104, 104, 104)),
+                            left: BorderSide(
+                                color: Color.fromARGB(255, 104, 104, 104)),
+                            right: BorderSide(
+                                color: Color.fromARGB(255, 104, 104, 104))),
+                      ),
+                      columns: [
+                        DataColumn(
+                          label: Text("Name"),
+                        ),
+                        DataColumn(
+                          label: Text("Company"),
+                        ),
+                        DataColumn(
+                          label: Expanded(
+                            child: Text(
+                              'Action',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
+                      rows: users.map((val) {
+                        print(['sdfasf', val]);
+                        return DataRow(cells: [
+                          DataCell(Text(val['name'])),
+                          DataCell(Text(val['company'])),
+                          DataCell(
+                            Row(
+                              children: [
+                                ElevatedButton(
+                                  child: Text('Edit'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.blue,
+                                  ),
+                                  onPressed: () {
+                                    // nextScreen(context, AddUser());
+                                  },
+                                ),
+                                ElevatedButton(
+                                  child: Text('Delete'),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    // nextScreen(context, AddUser());
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ]);
+                      }).toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

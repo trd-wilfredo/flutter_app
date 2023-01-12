@@ -33,6 +33,18 @@ class DatabaseService {
     return userCollection.doc(uid).snapshots();
   }
 
+//get all user
+  Future getAllUser() async {
+    QuerySnapshot snapshot = await userCollection.get();
+    return snapshot;
+  }
+
+//get all producy
+  Future getAllProduct() async {
+    QuerySnapshot snapshot = await productCollection.get();
+    return snapshot;
+  }
+
   // getting user data
   Future gettingUserData(String email) async {
     QuerySnapshot snapshot =
@@ -173,6 +185,8 @@ class DatabaseService {
     var product = await productCollection
         .doc(uid)
         .set({
+          "productName": productName,
+          "stocks": stocks,
           "avilability": avilability,
           "companyName": companyName,
           "timeCreated": timeCreated,
