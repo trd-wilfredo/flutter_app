@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class CheetahInput extends StatefulWidget {
   final String labelText;
+  final String initVal;
   final bool hideText;
   final Function onSaved;
   const CheetahInput({
     Key? key,
     required this.hideText,
     required this.labelText,
+    required this.initVal,
     required this.onSaved,
   }) : super(key: key);
 
@@ -21,6 +23,7 @@ class _CheetahInputState extends State<CheetahInput> {
   Widget build(BuildContext context) {
     return TextFormField(
       obscureText: widget.hideText,
+      initialValue: widget.initVal,
       decoration: InputDecoration(
         fillColor: Colors.white,
         filled: true,
@@ -30,7 +33,6 @@ class _CheetahInputState extends State<CheetahInput> {
         ),
         floatingLabelBehavior: FloatingLabelBehavior.never,
       ),
-      initialValue: '',
       validator: (value) {
         setState(() {
           textVal = '$value';

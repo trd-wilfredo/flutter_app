@@ -45,7 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "Chat App",
+                        "Study App",
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
