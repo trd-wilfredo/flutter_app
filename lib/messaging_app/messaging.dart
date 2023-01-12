@@ -43,17 +43,17 @@ class _MessagingAppState extends State<MessagingApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Message'),
+        title: const Text('Message'),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 53, 135, 229),
+        backgroundColor: const Color.fromARGB(255, 53, 135, 229),
       ),
       body: Stack(
         children: <Widget>[
           chatMessages(),
           Container(
             alignment: Alignment.bottomCenter,
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30.0),
@@ -70,19 +70,19 @@ class _MessagingAppState extends State<MessagingApp> {
                     controller: _textController,
                     textCapitalization: TextCapitalization.sentences,
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(10.0),
-                      border: OutlineInputBorder(
+                      contentPadding: const EdgeInsets.all(10.0),
+                      border: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(10.0),
                         ),
                       ),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.grey,
                           width: 1.0,
                         ),
                       ),
-                      focusedBorder: OutlineInputBorder(
+                      focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.blue,
                           width: 1.0,
@@ -95,7 +95,7 @@ class _MessagingAppState extends State<MessagingApp> {
                       hintText: 'Type a message...',
                     ),
                     maxLines: 4,
-                    style: TextStyle(
+                    style: const TextStyle(
                       height: 1.1,
                       fontSize: 20.0,
                       color: Colors.black,
@@ -103,7 +103,7 @@ class _MessagingAppState extends State<MessagingApp> {
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: () {
                     sendMessage();
                   },
