@@ -25,6 +25,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   Stream<QuerySnapshot>? chats;
   TextEditingController messageController = TextEditingController();
+  FocusNode myFocusNode = FocusNode();
   String admin = "";
 
   @override
@@ -82,7 +83,12 @@ class _ChatPageState extends State<ChatPage> {
               child: Row(children: [
                 Expanded(
                   child: TextFormField(
+                    autofocus: true,
+                    onFieldSubmitted: (value) {
+                      sendMessage();
+                    },
                     controller: messageController,
+                    focusNode: myFocusNode,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
                       hintText: "Send a message...",
@@ -151,6 +157,7 @@ class _ChatPageState extends State<ChatPage> {
       DatabaseService().sendMessage(widget.groupId, chatMessageMap);
       setState(() {
         messageController.clear();
+        myFocusNode.requestFocus();
       });
     }
   }
