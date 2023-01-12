@@ -21,7 +21,6 @@ class _CompanyPageState extends State<CompanyPage> {
   String fullname = '';
   String company = '';
   List companies = [];
-  List setCompany = [];
   @override
   void initState() {
     super.initState();
@@ -30,16 +29,15 @@ class _CompanyPageState extends State<CompanyPage> {
 
   gettingAllCompany() async {
     QuerySnapshot snapshot = await DatabaseService().getAllCompany();
-    snapshot.docs.forEach(
-      (f) => {
-        setCompany.add({
+
+    for (var f in snapshot.docs) {
+      setState(() {
+        companies.add({
           'name': f['companyName'],
-        }),
-      },
-    );
-    setState(() {
-      companies = setCompany;
-    });
+          'id': f['uid'],
+        });
+      });
+    }
   }
 
   @override
@@ -107,7 +105,6 @@ class _CompanyPageState extends State<CompanyPage> {
                         ),
                       ],
                       rows: companies.map((val) {
-                        print(['sdfasf', val]);
                         return DataRow(cells: [
                           DataCell(Text(val['name'])),
                           DataCell(
@@ -129,6 +126,7 @@ class _CompanyPageState extends State<CompanyPage> {
                                   ),
                                   onPressed: () {
                                     // nextScreen(context, AddUser());
+                                    deleteCompany(val['id'], val);
                                   },
                                 ),
                               ],
@@ -145,5 +143,15 @@ class _CompanyPageState extends State<CompanyPage> {
         ),
       ),
     );
+  }
+
+  deleteCompany(id, i) async {
+    var timeDeleted = DateTime.now().millisecondsSinceEpoch.toString();
+    var userDlt = await DatabaseService(uid: id).deleteCompany(id, timeDeleted);
+    if (userDlt == true) {
+      setState(() {
+        companies.remove(i);
+      });
+    }
   }
 }

@@ -100,7 +100,7 @@ class DatabaseService {
 
   // soft delete company
   Future deleteCompany(String uid, String timeDeleted) async {
-    DocumentReference userDocumentReference = productCollection.doc(uid);
+    DocumentReference userDocumentReference = companyCollection.doc(uid);
     var delete = await userDocumentReference
         .update({
           "timeDeleted": timeDeleted,
