@@ -26,8 +26,8 @@ const RESOURCES = {
 "assets/assets/GSP-logo.png": "1374c4d147b27fe461635c2296572d21",
 "assets/fonts/Bello-Script.ttf": "d5bfd2106ebb712542d805ed474a3863",
 "assets/fonts/MaterialIcons-Regular.otf": "95db9098c58fd6db106f1116bae85a0b",
-"index.html": "616058551a8aed4ea0c79cc39fc152a4",
-"/": "616058551a8aed4ea0c79cc39fc152a4"
+"index.html": "62c4c626c31da79dc589f21f523bf5fe",
+"/": "62c4c626c31da79dc589f21f523bf5fe"
 };
 
 // The application shell files that are downloaded before a service worker can
