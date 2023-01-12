@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/company_page/add_company.dart';
+import 'package:flutter_features/pages/company_page/edit_company.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/product_page/add_product.dart';
 import 'package:flutter_features/widgets/widget.dart';
@@ -34,6 +35,7 @@ class _CompanyPageState extends State<CompanyPage> {
       setState(() {
         companies.add({
           'name': f['companyName'],
+          'avilability': f['avilability'],
           'id': f['uid'],
         });
       });
@@ -116,7 +118,13 @@ class _CompanyPageState extends State<CompanyPage> {
                                     primary: Colors.blue,
                                   ),
                                   onPressed: () {
-                                    // nextScreen(context, AddUser());
+                                    nextScreen(
+                                        context,
+                                        EditCompany(
+                                          company: val['name'],
+                                          avilability: val['avilability'],
+                                          uid: val['id'],
+                                        ));
                                   },
                                 ),
                                 ElevatedButton(
