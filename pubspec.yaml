@@ -39,7 +39,12 @@ dependencies:
   shared_preferences: ^2.0.15
   shared_preferences_android: ^2.0.14
   shared_preferences_ios: ^2.1.1
-
+  path_provider: ^2.0.8
+  dio: ^4.0.4
+  permission_handler: ^8.3.0
+  open_file: ^3.2.1
+  universal_html: ^2.0.8
+  
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
