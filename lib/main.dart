@@ -30,11 +30,11 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
-  var email = await HelperFunction.getUserEmailFromSF().then((value) {
-    return value!;
+  var email = await HelperFunction.getUserEmailFromSF().then((val) {
+    return '$val!';
   });
   var userName = await HelperFunction.getUserNameFromSF().then((val) {
-    return val!;
+    return '$val!';
   });
   runApp(
     MaterialApp(
