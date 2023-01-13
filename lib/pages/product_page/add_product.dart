@@ -7,6 +7,7 @@ import 'package:flutter_features/pages/product_page/product_page.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_features/widgets/widget.dart';
+import 'package:flutter/services.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key});
@@ -53,6 +54,8 @@ class _AddProductState extends State<AddProduct> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 CheetahInput(
+                  inputFormatters:[],
+                  keyboardType: TextInputType.text,
                   hideText: false,
                   labelText: 'Product Name',
                   initVal: '',
@@ -62,6 +65,11 @@ class _AddProductState extends State<AddProduct> {
                 ),
                 SizedBox(height: 16),
                 CheetahInput(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), 
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
                   hideText: false,
                   initVal: '',
                   labelText: 'Stocks',
