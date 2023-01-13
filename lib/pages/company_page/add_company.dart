@@ -55,6 +55,8 @@ class _AddCompanyState extends State<AddCompany> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CheetahInput(
+                        inputFormatters:[],
+                        keyboardType: TextInputType.text,
                         hideText: false,
                         labelText: 'Product Name',
                         initVal: '',

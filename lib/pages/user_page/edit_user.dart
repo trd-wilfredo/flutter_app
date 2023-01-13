@@ -88,6 +88,8 @@ class _EditUserState extends State<EditUser> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CheetahInput(
+                        inputFormatters:[],
+                        keyboardType: TextInputType.text,
                         hideText: false,
                         labelText: 'Name',
                         initVal: widget.valName,
@@ -97,6 +99,8 @@ class _EditUserState extends State<EditUser> {
                       ),
                       SizedBox(height: 16),
                       CheetahInput(
+                        inputFormatters:[],
+                        keyboardType: TextInputType.text,
                         hideText: false,
                         labelText: 'Email',
                         initVal: widget.valEmail,
@@ -106,6 +110,8 @@ class _EditUserState extends State<EditUser> {
                       ),
                       SizedBox(height: 16),
                       CheetahInput(
+                        inputFormatters:[],
+                        keyboardType: TextInputType.text,
                         hideText: true,
                         labelText: 'Password',
                         initVal: '********',
