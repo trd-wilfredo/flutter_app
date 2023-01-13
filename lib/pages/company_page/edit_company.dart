@@ -63,7 +63,7 @@ class _EditCompanyState extends State<EditCompany> {
                         inputFormatters: [],
                         keyboardType: TextInputType.text,
                         hideText: false,
-                        labelText: 'Product Name',
+                        labelText: 'Company Name',
                         initVal: widget.company,
                         onSaved: (String value) {
                           companyName = value;
