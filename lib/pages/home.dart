@@ -13,16 +13,6 @@ class _HomeState extends State<Home> {
   List<PageList> pages = [
     PageList(
       part: 'null',
-      page: 'skill_i',
-      title: 'Buttons',
-    ),
-    PageList(
-      part: 'bottom',
-      page: 'skill_ii',
-      title: 'Layouts',
-    ),
-    PageList(
-      part: 'null',
       page: 'login',
       title: 'Login To App',
     ),
@@ -33,18 +23,8 @@ class _HomeState extends State<Home> {
     ),
     PageList(
       part: 'null',
-      page: 'file_upload',
-      title: 'File Upload',
-    ),
-    PageList(
-      part: 'null',
       page: 'information_registration',
       title: 'Information Registration',
-    ),
-    PageList(
-      part: 'null',
-      page: 'company_search',
-      title: 'Company Search',
     ),
     PageList(
       part: 'null',
@@ -52,20 +32,45 @@ class _HomeState extends State<Home> {
       title: 'Company List',
     ),
     PageList(
-      part: 'null',
-      page: 'fall_queen',
-      title: 'Fall Queen',
+      part: 'bottom',
+      page: 'profile_page',
+      title: 'Profile Page',
     ),
     PageList(
       part: 'null',
-      page: 'github_monitoring',
-      title: 'Github Monitoring',
+      page: 'andriod_phone',
+      title: 'Download For Andiod App',
     ),
     PageList(
       part: 'null',
-      page: 'cv',
-      title: 'Sample CV',
+      page: 'ios_App',
+      title: 'Download For IOS App',
     ),
+    PageList(
+      part: 'null',
+      page: 'file_upload',
+      title: 'File Upload',
+    ),
+    PageList(
+      part: 'bottom',
+      page: 'company_search',
+      title: 'Company Search',
+    ),
+    PageList(
+      part: 'null',
+      page: 'skill_i',
+      title: 'Buttons',
+    ),
+    PageList(
+      part: 'bottom',
+      page: 'skill_ii',
+      title: 'Layouts',
+    ),
+    // PageList(
+    //   part: 'null',
+    //   page: 'Linux',
+    //   title: 'Download for Linux App',
+    // ),
   ];
 
   @override
