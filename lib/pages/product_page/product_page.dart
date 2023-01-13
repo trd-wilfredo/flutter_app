@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/product_page/add_product.dart';
 import 'package:flutter_features/pages/product_page/edit_product.dart';
-import 'package:flutter_features/pages/user_page/add_user.dart';
 import 'package:flutter_features/widgets/widget.dart';
 
 class ProductPage extends StatefulWidget {
@@ -72,7 +71,7 @@ class _ProductPageState extends State<ProductPage> {
                   primary: Colors.green,
                 ),
                 onPressed: () {
-                  nextScreen(context, AddProduct());
+                  nextScreenReplace(context, AddProduct());
                 },
               ),
             ),
@@ -129,7 +128,7 @@ class _ProductPageState extends State<ProductPage> {
                                     primary: Colors.blue,
                                   ),
                                   onPressed: () {
-                                    nextScreen(
+                                    nextScreenReplace(
                                         context,
                                         EditProduct(
                                           producName: val['name'],

@@ -1,7 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_features/pages/company_page/comapany_page.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
@@ -63,6 +60,8 @@ class _EditCompanyState extends State<EditCompany> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CheetahInput(
+                        inputFormatters: [],
+                        keyboardType: TextInputType.text,
                         hideText: false,
                         labelText: 'Product Name',
                         initVal: widget.company,
@@ -146,7 +145,7 @@ class _EditCompanyState extends State<EditCompany> {
                         height: 45,
                         child: ElevatedButton(
                           onPressed: () {
-                            editCompany(widget.uid);
+                            editCompany(widget.uid, widget.avilability);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Theme.of(context).primaryColor,
@@ -169,12 +168,14 @@ class _EditCompanyState extends State<EditCompany> {
     );
   }
 
-  editCompany(id) async {
+  editCompany(id, avlty) async {
     if (formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
         timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
       });
+
+      if (avilability == "") avilability = avlty;
       await DatabaseService()
           .editCompany(id, companyName, avilability, timeEdited)
           .then((value) async {

@@ -54,7 +54,7 @@ class _AddUserState extends State<AddUser> {
         elevation: 0,
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
+        title: const Text(
           'Add Product',
           style: TextStyle(
             color: Colors.white,
@@ -79,6 +79,8 @@ class _AddUserState extends State<AddUser> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CheetahInput(
+                        inputFormatters:[],
+                        keyboardType: TextInputType.text,
                         hideText: false,
                         initVal: '',
                         labelText: 'Name',
@@ -86,8 +88,10 @@ class _AddUserState extends State<AddUser> {
                           fullname = value;
                         },
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       CheetahInput(
+                        inputFormatters:[],
+                        keyboardType: TextInputType.text,
                         hideText: false,
                         initVal: '',
                         labelText: 'Email',
@@ -95,8 +99,10 @@ class _AddUserState extends State<AddUser> {
                           email = value;
                         },
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       CheetahInput(
+                        inputFormatters:[],
+                        keyboardType: TextInputType.text,
                         hideText: true,
                         labelText: 'Password',
                         initVal: '',
@@ -104,7 +110,7 @@ class _AddUserState extends State<AddUser> {
                           password = value;
                         },
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       DropdownButtonFormField(
                         items: companies.map((category) {
                           return new DropdownMenuItem(
