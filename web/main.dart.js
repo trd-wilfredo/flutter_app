@@ -76118,7 +76118,7 @@ W(){return new A.P0(new A.ba(null,t.am),["yes","no"],B.j)}}
 A.P0.prototype={
 H(a){var s,r,q,p,o,n,m,l=this,k=null,j=A.eO(k,A.P(a).fy,!0,0,A.ag("Add Company",k,k,k,A.c1(k,k,B.k,k,k,k,k,k,k,k,k,27,k,k,B.a6,k,k,!0,k,k,k,k,k,k,k,k),k,k))
 if(l.d)s=A.d3(A.kE(A.P(a).fy),k,k)
-else{s=A.iw(!1,"",A.a([],t.VS),B.bb,"Product Name",new A.agE(l))
+else{s=A.iw(!1,"",A.a([],t.VS),B.bb,"Company Name",new A.agE(l))
 r=A.b2(k,16,k)
 q=l.x
 p=A.a4(q).i("a9<1,e5<G>>")
@@ -76241,7 +76241,7 @@ H(a){var s,r,q,p,o,n,m,l=this,k=null,j=A.eO(k,A.P(a).fy,!0,0,A.ag("Edit Company"
 if(l.d)s=A.d3(A.kE(A.P(a).fy),k,k)
 else{s=A.a([],t.VS)
 r=l.a
-s=A.iw(!1,r.c,s,B.bb,"Product Name",new A.ajv(l))
+s=A.iw(!1,r.c,s,B.bb,"Company Name",new A.ajv(l))
 q=A.b2(k,16,k)
 r=r.d
 if(r==="")r=k
@@ -76322,7 +76322,7 @@ H(a){var s=null
 return A.dd(s,A.hc(!0,A.b8(s,A.d3(A.ag("We're Woking on this page",s,s,s,s,s,s),s,s),B.h,s,s,s,s,s,s,s,s,s,s),B.H,!0),s,s)}}
 A.p9.prototype={
 W(){var s="null",r="bottom"
-return new A.Rt(A.a([new A.eB("login",s,"Login To App"),new A.eB("messaging_app",s,"Messaging App"),new A.eB("information_registration",s,"Information Registration"),new A.eB("company_list",s,"Company List"),new A.eB("profile_page",r,"Profile Page"),new A.eB("andriod_phone",s,"Download For Andiod App"),new A.eB("ios_App",s,"Download For IOS App"),new A.eB("file_upload",s,"File Upload"),new A.eB("company_search",r,"Company Search"),new A.eB("skill_i",s,"Buttons"),new A.eB("skill_ii",r,"Layouts"),new A.eB("vrs",r,"AppVersion 1.0.1")],t.nh),B.j)}}
+return new A.Rt(A.a([new A.eB("login",s,"Login To App"),new A.eB("messaging_app",s,"Messaging App"),new A.eB("information_registration",s,"Information Registration"),new A.eB("company_list",s,"Company List"),new A.eB("profile_page",r,"Profile Page"),new A.eB("andriod_phone",s,"Download For Andiod App"),new A.eB("ios_App",s,"Download For IOS App"),new A.eB("file_upload",s,"File Upload"),new A.eB("company_search",r,"Company Search"),new A.eB("skill_i",s,"Buttons"),new A.eB("skill_ii",r,"Layouts"),new A.eB("vrs",r,"AppVersion 1.0.2")],t.nh),B.j)}}
 A.Rt.prototype={
 H(a){var s=null,r=A.b8(s,A.d3(new A.cf(new A.aa(0,10,0,10),A.ag("Flutter Features",s,s,s,A.c1(s,s,s,s,s,s,s,s,s,s,s,30,s,s,s,s,s,!0,s,s,s,s,s,s,s,s),s,s),s),s,s),B.h,s,s,s,s,s,s,s,s,s,s),q=A.b2(s,10,s),p=A.ap(255,10,0,0),o=this.d,n=A.a4(o).i("a9<1,pD>")
 return A.dd(s,A.hc(!0,A.hf(new A.dQ(B.df,s,s,new A.cf(new A.aa(0,0,0,50),A.dg(A.a([r,q,A.b8(s,A.dg(A.ad(new A.a9(o,new A.alv(),n),!0,n.i("aJ.E")),B.dp,B.y,B.t),B.h,s,new A.aG(0,400,0,1/0),new A.ci(s,s,new A.cB(B.m,B.m,new A.bc(p,1,B.w,B.u),B.m),s,s,s,B.W),s,s,s,s,s,s,s)],t.p),B.r,B.y,B.t),s),s),B.K),B.H,!0),s,s)}}
