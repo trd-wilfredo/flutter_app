@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_features/widgets/widget.dart';
+import 'package:flutter/services.dart';
 
 class CheetahInput extends StatefulWidget {
   final String labelText;
   final String initVal;
   final bool hideText;
+  final TextInputType keyboardType;
   final Function onSaved;
+  final List<TextInputFormatter>? inputFormatters;
   const CheetahInput({
     Key? key,
     required this.hideText,
     required this.labelText,
     required this.initVal,
+    required this.keyboardType,
+    required this.inputFormatters,
     required this.onSaved,
   }) : super(key: key);
 
@@ -25,15 +30,17 @@ class _CheetahInputState extends State<CheetahInput> {
     return TextFormField(
       obscureText: widget.hideText,
       initialValue: widget.initVal,
-      decoration: textInputDocoration.copyWith(
-          // fillColor: Colors.white,
-          // filled: true,
-          // labelText: widget.labelText,
-          // border: OutlineInputBorder(
-          //   borderRadius: BorderRadius.circular(16),
-          // ),
-          // floatingLabelBehavior: FloatingLabelBehavior.never,
-          ),
+      keyboardType: widget.keyboardType,
+      inputFormatters: widget.inputFormatters,
+      decoration: InputDecoration(
+        fillColor: Colors.white,
+        filled: true,
+        labelText: widget.labelText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+      ),
       validator: (value) {
         setState(() {
           textVal = '$value';
