@@ -66,6 +66,11 @@ class _HomeState extends State<Home> {
       page: 'skill_ii',
       title: 'Layouts',
     ),
+    PageList(
+      part: 'bottom',
+      page: 'vrs',
+      title: 'AppVersion 1.0.1',
+    ),
     // PageList(
     //   part: 'null',
     //   page: 'Linux',
