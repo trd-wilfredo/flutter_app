@@ -47,7 +47,7 @@ void main() async {
         '/skill_ii': (context) => SkillII(),
         '/information_registration': (context) => InfoRegister(),
         '/company_list': (context) => CompanyPage(),
-        '/messaging_app': (context) => MessagingApp(),
+        '/messaging_app': (context) => FileUpload(),
         '/profile_page': (context) =>
             ProfilePage(email: email, userName: userName),
         '/company_search': (context) => CompanySearch(),

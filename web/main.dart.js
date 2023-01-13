@@ -77797,7 +77797,7 @@ A.P7.prototype={
 uc(){var s=0,r=A.z(t.H)
 var $async$uc=A.A(function(a,b){if(a===1)return A.w(b,r)
 while(true)switch(s){case 0:s=2
-return A.v(new A.agu().DG(0,"assets/app/app-release.apk"),$async$uc)
+return A.v(new A.agu().DG(0,"assets/assets/app/app-release.apk"),$async$uc)
 case 2:return A.x(null,r)}})
 return A.y($async$uc,r)},
 H(a){var s=null,r=A.eN(s,s,s,s,B.QI),q=A.iK(B.Ef,s,24),p=A.ag("Download",s,s,s,s,s,s)
