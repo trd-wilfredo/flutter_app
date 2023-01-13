@@ -53,7 +53,7 @@ class _AddProductState extends State<AddProduct> {
         elevation: 0,
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
+        title: const Text(
           'Add Product',
           style: TextStyle(
             color: Colors.white,
@@ -65,7 +65,7 @@ class _AddProductState extends State<AddProduct> {
       body: SingleChildScrollView(
         // backgroundColor: Color.fromARGB(255, 53, 53, 53), // appBar:
         child: Container(
-          margin: EdgeInsets.all(24),
+          margin: const EdgeInsets.all(24),
           child: Form(
             key: formKey,
             child: Column(
@@ -81,7 +81,7 @@ class _AddProductState extends State<AddProduct> {
                     producName = value;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 CheetahInput(
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
@@ -95,10 +95,10 @@ class _AddProductState extends State<AddProduct> {
                     stocks = value;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 DropdownButtonFormField(
                   items: avilabilities.map((category) {
-                    return new DropdownMenuItem(
+                    return DropdownMenuItem(
                         value: category,
                         child: Row(
                           children: <Widget>[
@@ -119,7 +119,7 @@ class _AddProductState extends State<AddProduct> {
                   },
                   // value: level,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                    contentPadding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -129,10 +129,10 @@ class _AddProductState extends State<AddProduct> {
                     //  errorText: errorSnapshot.data == 0 ? Localization.of(context).categoryEmpty : null),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 DropdownButtonFormField(
                   items: companies.map((category) {
-                    return new DropdownMenuItem(
+                    return DropdownMenuItem(
                         value: category,
                         child: Row(
                           children: <Widget>[
@@ -153,7 +153,7 @@ class _AddProductState extends State<AddProduct> {
                   },
                   // value: level,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                    contentPadding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),
@@ -163,7 +163,7 @@ class _AddProductState extends State<AddProduct> {
                     //  errorText: errorSnapshot.data == 0 ? Localization.of(context).categoryEmpty : null),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   child: Text('Select Image'),
                   style: ElevatedButton.styleFrom(
@@ -196,7 +196,7 @@ class _AddProductState extends State<AddProduct> {
                     // }
                   },
                 ),
-                SizedBox(height: 25),
+                const SizedBox(height: 25),
                 SizedBox(
                   width: double.infinity,
                   height: 45,
@@ -211,7 +211,7 @@ class _AddProductState extends State<AddProduct> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       "Submit",
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
