@@ -38,6 +38,7 @@ class _EditUserState extends State<EditUser> {
   List levels = ['admin', 'normal'];
   List companies = [];
   AuthService authService = AuthService();
+  _getRequests() async {}
   @override
   void initState() {
     super.initState();
@@ -221,7 +222,8 @@ class _EditUserState extends State<EditUser> {
                         height: 45,
                         child: ElevatedButton(
                           onPressed: () {
-                            editUser(widget.valId);
+                            editUser(widget.valId, widget.valLevel,
+                                widget.valCompany);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Theme.of(context).primaryColor,
@@ -244,17 +246,19 @@ class _EditUserState extends State<EditUser> {
     );
   }
 
-  editUser(id) async {
+  editUser(id, lvl, cpny) async {
     if (formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
-      print([fullname, email, password, company, level]);
+      if (level == "") level = lvl;
+      if (company == "") company = cpny;
       var timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
       var userDlt = await DatabaseService(uid: id)
           .editUser(id, fullname, email, company, level, timeEdited);
       if (userDlt == true) {
         setState(() {
+          // backReloadScreen(context, )
           nextScreenReplace(context, UserPage());
           _isLoading = false;
         });

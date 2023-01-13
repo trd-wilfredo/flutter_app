@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_features/widgets/widget.dart';
 
 class CheetahInput extends StatefulWidget {
   final String labelText;
@@ -24,15 +25,15 @@ class _CheetahInputState extends State<CheetahInput> {
     return TextFormField(
       obscureText: widget.hideText,
       initialValue: widget.initVal,
-      decoration: InputDecoration(
-        fillColor: Colors.white,
-        filled: true,
-        labelText: widget.labelText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        floatingLabelBehavior: FloatingLabelBehavior.never,
-      ),
+      decoration: textInputDocoration.copyWith(
+          // fillColor: Colors.white,
+          // filled: true,
+          // labelText: widget.labelText,
+          // border: OutlineInputBorder(
+          //   borderRadius: BorderRadius.circular(16),
+          // ),
+          // floatingLabelBehavior: FloatingLabelBehavior.never,
+          ),
       validator: (value) {
         setState(() {
           textVal = '$value';

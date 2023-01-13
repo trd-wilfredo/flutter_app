@@ -72,7 +72,7 @@ class _ProductPageState extends State<ProductPage> {
                   primary: Colors.green,
                 ),
                 onPressed: () {
-                  nextScreen(context, AddProduct());
+                  nextScreenReplace(context, AddProduct());
                 },
               ),
             ),
@@ -129,7 +129,7 @@ class _ProductPageState extends State<ProductPage> {
                                     primary: Colors.blue,
                                   ),
                                   onPressed: () {
-                                    nextScreen(
+                                    nextScreenReplace(
                                         context,
                                         EditProduct(
                                           producName: val['name'],
