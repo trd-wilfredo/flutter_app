@@ -69,7 +69,7 @@ class _CompanyPageState extends State<CompanyPage> {
                   primary: Colors.green,
                 ),
                 onPressed: () {
-                  nextScreen(context, AddCompany());
+                  nextScreenReplace(context, AddCompany());
                 },
               ),
             ),
@@ -118,7 +118,7 @@ class _CompanyPageState extends State<CompanyPage> {
                                     primary: Colors.blue,
                                   ),
                                   onPressed: () {
-                                    nextScreen(
+                                    nextScreenReplace(
                                         context,
                                         EditCompany(
                                           company: val['name'],

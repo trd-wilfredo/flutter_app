@@ -82,7 +82,7 @@ class _UserPageState extends State<UserPage> {
                   primary: Colors.green,
                 ),
                 onPressed: () {
-                  nextScreen(context, AddUser());
+                  nextScreenReplace(context, AddUser());
                 },
               ),
             ),
@@ -135,7 +135,7 @@ class _UserPageState extends State<UserPage> {
                                     primary: Colors.blue,
                                   ),
                                   onPressed: () {
-                                    nextScreen(
+                                    nextScreenReplace(
                                         context,
                                         EditUser(
                                           valName: val['name'],
