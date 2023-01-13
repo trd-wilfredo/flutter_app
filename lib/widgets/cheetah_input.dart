@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter/services.dart';
 
 class CheetahInput extends StatefulWidget {
