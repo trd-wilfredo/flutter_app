@@ -282,6 +282,11 @@ class DatabaseService {
     }
   }
 
+
+   // search
+  searchByCompany(String companyName) {
+    return companyCollection.where("company", isEqualTo: companyName).get();
+  }
   // Save Product
   Future addSaveProduct(String productName, String companyName, String stocks,
       String avilability, String timeCreated) async {
@@ -326,4 +331,5 @@ class DatabaseService {
   csSendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
     csCollection.doc(groupId).collection("messages").add(chatMessageData);
   }
+
 }
