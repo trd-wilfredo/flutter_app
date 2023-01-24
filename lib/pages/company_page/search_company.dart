@@ -99,9 +99,10 @@ class _CompanySearchState extends State<CompanySearch> {
             shrinkWrap: true,
             itemCount: searchSnapshot!.docs.length,
             itemBuilder: (context, index) {
+              print(searchSnapshot!.docs[index]['uid']);
               return companyTile(     
-                searchSnapshot!.docs[index]['companyId'],
-                searchSnapshot!.docs[index]['company'],
+                searchSnapshot!.docs[index]['uid'],
+                searchSnapshot!.docs[index]['companyName'],
               );
             },
           )
@@ -109,19 +110,13 @@ class _CompanySearchState extends State<CompanySearch> {
   }
 
   Widget companyTile(
-      String companyId, String companyName) {
+      String uid, String companyName) {
         
     return ListTile(
       
-      contentPadding: const EdgeInsets.symmetric(horizontal: 100, vertical: 100),
-      leading: CircleAvatar(
-        radius: 30,
-        backgroundColor: Theme.of(context).primaryColor,
-        child: Text(
-          companyName.substring(0, 1).toUpperCase(),
-          style: const TextStyle(color: Colors.black),
-        ),
-      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      title:
+          Text(companyName, style: const TextStyle(fontWeight: FontWeight.w600)),
     );
   }
 }

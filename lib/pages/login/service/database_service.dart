@@ -285,7 +285,7 @@ class DatabaseService {
 
    // search
   searchByCompany(String companyName) {
-    return companyCollection.where("company", isEqualTo: companyName).get();
+    return companyCollection.where("companyName", isEqualTo: companyName).get();
   }
   // Save Product
   Future addSaveProduct(String productName, String companyName, String stocks,
