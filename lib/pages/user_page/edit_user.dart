@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
+import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
 import 'package:flutter_features/pages/user_page/user_page.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_features/widgets/widget.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class EditUser extends StatefulWidget {
   String valName = '';
@@ -89,7 +93,7 @@ class _EditUserState extends State<EditUser> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CheetahInput(
-                        inputFormatters:[],
+                        inputFormatters: [],
                         keyboardType: TextInputType.text,
                         hideText: false,
                         labelText: 'Name',
@@ -100,7 +104,7 @@ class _EditUserState extends State<EditUser> {
                       ),
                       SizedBox(height: 16),
                       CheetahInput(
-                        inputFormatters:[],
+                        inputFormatters: [],
                         keyboardType: TextInputType.text,
                         hideText: false,
                         labelText: 'Email',
@@ -111,7 +115,7 @@ class _EditUserState extends State<EditUser> {
                       ),
                       SizedBox(height: 16),
                       CheetahInput(
-                        inputFormatters:[],
+                        inputFormatters: [],
                         keyboardType: TextInputType.text,
                         hideText: true,
                         labelText: 'Password',
@@ -200,26 +204,7 @@ class _EditUserState extends State<EditUser> {
                           ),
                         ),
                         onPressed: () async {
-                          // if (defaultTargetPlatform == TargetPlatform.iOS ||
-                          //     defaultTargetPlatform == TargetPlatform.android) {
-                          // Some android/ios specific code
-                          var picked = await FilePickerCross.importFromStorage(
-                              type: FileTypeCross
-                                  .any, // Available: `any`, `audio`, `image`, `video`, `custom`. Note: not available using FDE
-                              fileExtension:
-                                  'png, jpeg, ' // Only if FileTypeCross.custom . May be any file extension like `dot`, `ppt,pptx,odp`
-                              );
-
-                          if (picked != null) {
-                            print(picked.fileName);
-                          }
-                          // } else if (defaultTargetPlatform == TargetPlatform.linux ||
-                          //     defaultTargetPlatform == TargetPlatform.macOS ||
-                          //     defaultTargetPlatform == TargetPlatform.windows) {
-                          //   // Some desktop specific code there
-                          // } else {
-                          //   // Some web specific code there
-                          // }
+                          imgUpload();
                         },
                       ),
                       SizedBox(height: 25),
@@ -250,6 +235,27 @@ class _EditUserState extends State<EditUser> {
               ),
             ),
     );
+  }
+
+  imgUpload() async {
+    if (kIsWeb) {
+      // running on android or ios device
+      final file = await ImagePicker().pickImage(source: ImageSource.gallery);
+      await FireStoreService(context: context, folder: 'profile')
+          .uploadFile(file);
+      var name = file!.name;
+      var minetype = file.mimeType;
+    } else {
+      await Permission.photos.request();
+      var permissionStatus = await Permission.photos.status;
+      if (permissionStatus.isGranted) {
+        final file = await ImagePicker().pickImage(source: ImageSource.gallery);
+        await FireStoreService(context: context, folder: 'profile')
+            .uploadFile(file);
+      } else {
+        print('Permission not granted. Try Again with permission access');
+      }
+    }
   }
 
   editUser(id, lvl, cpny) async {
