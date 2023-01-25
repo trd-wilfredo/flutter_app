@@ -1,12 +1,17 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
+import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
+import 'package:flutter_features/pages/tool_page/user_tools.dart';
 import 'package:flutter_features/pages/user_page/user_page.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
 import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_features/widgets/widget.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../login/service/database_service.dart';
 
@@ -28,7 +33,9 @@ class _AddUserState extends State<AddUser> {
   String company = '';
   List levels = ['admin', 'normal'];
   List companies = [];
+  XFile? xfile;
   AuthService authService = AuthService();
+  UserTool userTool = UserTool();
 
   void initState() {
     super.initState();
@@ -79,7 +86,7 @@ class _AddUserState extends State<AddUser> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CheetahInput(
-                        inputFormatters:[],
+                        inputFormatters: [],
                         keyboardType: TextInputType.text,
                         hideText: false,
                         initVal: '',
@@ -90,7 +97,7 @@ class _AddUserState extends State<AddUser> {
                       ),
                       const SizedBox(height: 16),
                       CheetahInput(
-                        inputFormatters:[],
+                        inputFormatters: [],
                         keyboardType: TextInputType.text,
                         hideText: false,
                         initVal: '',
@@ -101,7 +108,7 @@ class _AddUserState extends State<AddUser> {
                       ),
                       const SizedBox(height: 16),
                       CheetahInput(
-                        inputFormatters:[],
+                        inputFormatters: [],
                         keyboardType: TextInputType.text,
                         hideText: true,
                         labelText: 'Password',
@@ -190,26 +197,28 @@ class _AddUserState extends State<AddUser> {
                           ),
                         ),
                         onPressed: () async {
-                          // if (defaultTargetPlatform == TargetPlatform.iOS ||
-                          //     defaultTargetPlatform == TargetPlatform.android) {
-                          // Some android/ios specific code
-                          var picked = await FilePickerCross.importFromStorage(
-                              type: FileTypeCross
-                                  .any, // Available: `any`, `audio`, `image`, `video`, `custom`. Note: not available using FDE
-                              fileExtension:
-                                  'png, jpeg, ' // Only if FileTypeCross.custom . May be any file extension like `dot`, `ppt,pptx,odp`
-                              );
-
-                          if (picked != null) {
-                            print(picked.fileName);
+                          if (kIsWeb) {
+                            // running on android or ios device
+                            var file = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+                            setState(() {
+                              xfile = file;
+                            });
+                          } else {
+                            await Permission.photos.request();
+                            var permissionStatus =
+                                await Permission.photos.status;
+                            if (permissionStatus.isGranted) {
+                              final file = await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery);
+                              setState(() {
+                                xfile = file;
+                              });
+                            } else {
+                              print(
+                                  'Permission not granted. Try Again with permission access');
+                            }
                           }
-                          // } else if (defaultTargetPlatform == TargetPlatform.linux ||
-                          //     defaultTargetPlatform == TargetPlatform.macOS ||
-                          //     defaultTargetPlatform == TargetPlatform.windows) {
-                          //   // Some desktop specific code there
-                          // } else {
-                          //   // Some web specific code there
-                          // }
                         },
                       ),
                       SizedBox(height: 25),
@@ -246,11 +255,12 @@ class _AddUserState extends State<AddUser> {
       setState(() {
         _isLoading = true;
       });
-      await authService
-          .registerUserWithEmailandPassword(
-              fullname, email, password, level, company)
+      await userTool
+          .createUser(fullname, email, password, level, company)
           .then((value) async {
         if (value == true) {
+          await FireStoreService(context: context, folder: 'profile')
+              .uploadFile(xfile);
           nextScreenReplace(context, UserPage());
         } else {
           showSnackBr(context, Colors.red, value);
