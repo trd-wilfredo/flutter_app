@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/helper/helper_function.dart';
+import 'package:flutter_features/pages/app_version.dart';
 import 'package:flutter_features/pages/company_page/comapany_page.dart';
 import 'package:flutter_features/pages/company_page/search_company.dart';
 import 'package:flutter_features/pages/home.dart';
@@ -25,6 +26,7 @@ void main() async {
         appId: Constants.appId,
         messagingSenderId: Constants.messagingSenderId,
         projectId: Constants.projectId,
+        storageBucket: Constants.storageBucket,
       ),
     );
   } else {
@@ -54,6 +56,7 @@ void main() async {
         '/file_upload': (context) => FileUpload(),
         '/andriod_phone': (context) => AndiodPage(),
         '/ios_App': (context) => IosPage(),
+        '/app_version': (context) => AppVersion(),
       },
     ),
   );

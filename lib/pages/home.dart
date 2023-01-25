@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
     ),
     PageList(
       part: 'bottom',
-      page: 'vrs',
+      page: 'app_version',
       title: 'AppVersion 1.0.2',
     ),
     // PageList(
