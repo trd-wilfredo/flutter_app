@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
@@ -6,7 +7,6 @@ import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
 import 'package:flutter_features/pages/user_page/user_page.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
-import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_features/widgets/widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -39,9 +39,11 @@ class _EditUserState extends State<EditUser> {
   String level = '';
   String fullname = '';
   String company = '';
+  XFile? xfile;
   List levels = ['admin', 'normal'];
   List companies = [];
   AuthService authService = AuthService();
+  final storage = FirebaseStorage.instance;
   _getRequests() async {}
   @override
   void initState() {
@@ -204,9 +206,32 @@ class _EditUserState extends State<EditUser> {
                           ),
                         ),
                         onPressed: () async {
-                          imgUpload();
+                          if (kIsWeb) {
+                            // running on android or ios device
+                            var file = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+                            setState(() {
+                              xfile = file;
+                            });
+                            print(file!.path);
+                          } else {
+                            await Permission.photos.request();
+                            var permissionStatus =
+                                await Permission.photos.status;
+                            if (permissionStatus.isGranted) {
+                              final file = await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery);
+                              setState(() {
+                                xfile = file;
+                              });
+                            } else {
+                              print(
+                                  'Permission not granted. Try Again with permission access');
+                            }
+                          }
                         },
                       ),
+                      xfile == null ? Text('data') : Image.network(xfile!.path),
                       SizedBox(height: 25),
                       SizedBox(
                         width: double.infinity,
@@ -237,27 +262,6 @@ class _EditUserState extends State<EditUser> {
     );
   }
 
-  imgUpload() async {
-    if (kIsWeb) {
-      // running on android or ios device
-      final file = await ImagePicker().pickImage(source: ImageSource.gallery);
-      await FireStoreService(context: context, folder: 'profile')
-          .uploadFile(file);
-      var name = file!.name;
-      var minetype = file.mimeType;
-    } else {
-      await Permission.photos.request();
-      var permissionStatus = await Permission.photos.status;
-      if (permissionStatus.isGranted) {
-        final file = await ImagePicker().pickImage(source: ImageSource.gallery);
-        await FireStoreService(context: context, folder: 'profile')
-            .uploadFile(file);
-      } else {
-        print('Permission not granted. Try Again with permission access');
-      }
-    }
-  }
-
   editUser(id, lvl, cpny) async {
     if (formKey.currentState!.validate()) {
       setState(() {
@@ -266,8 +270,10 @@ class _EditUserState extends State<EditUser> {
       if (level == "") level = lvl;
       if (company == "") company = cpny;
       var timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
+      var imgPath = await FireStoreService(context: context, folder: 'profile')
+          .uploadFile(xfile);
       var userDlt = await DatabaseService(uid: id)
-          .editUser(id, fullname, email, company, level, timeEdited);
+          .editUser(id, fullname, email, company, level, timeEdited, imgPath);
       if (userDlt == true) {
         setState(() {
           // backReloadScreen(context, )

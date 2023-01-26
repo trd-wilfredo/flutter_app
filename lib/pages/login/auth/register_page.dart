@@ -196,8 +196,7 @@ class _RegisterPageState extends State<RegisterPage> {
         _isLoading = true;
       });
       await authService
-          .registerUserWithEmailandPassword(
-              fullname, email, password, level, '')
+          .registerUserWithEmailandPassword(fullname, email, password, level)
           .then((value) async {
         if (value == true || Platform.isAndroid || Platform.isIOS) {
           await HelperFunction.saveUserLoggedInStatus(true);

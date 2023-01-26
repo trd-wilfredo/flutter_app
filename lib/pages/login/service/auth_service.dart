@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/helper/helper_function.dart';
 
@@ -23,8 +22,8 @@ class AuthService {
   }
 
   // register
-  Future registerUserWithEmailandPassword(String fullname, String email,
-      String password, String level, String company) async {
+  Future registerUserWithEmailandPassword(
+      String fullname, String email, String password, String level) async {
     try {
       User user = (await firebaseAuth.createUserWithEmailAndPassword(
               email: email, password: password))
@@ -32,7 +31,7 @@ class AuthService {
       if (user != null) {
         // database call
         await DatabaseService(uid: user.uid)
-            .savingUserData(fullname, email, level, company);
+            .savingUserData(fullname, email, level, '', '');
 
         return true;
       }

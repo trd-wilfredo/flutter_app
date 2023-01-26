@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
   Stream? groups;
   bool _isLoading = false;
   String groupName = "";
+  List docs = [];
 
   @override
   void initState() {
@@ -61,6 +62,14 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         groups = snapshot;
       });
+    });
+
+    var user =
+        await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+            .getUserById();
+
+    setState(() {
+      docs = user.docs;
     });
   }
 
@@ -100,8 +109,7 @@ class _HomePageState extends State<HomePage> {
                   nextScreenReplace(
                     context,
                     ProfilePage(
-                      email: email,
-                      userName: userName,
+                      docs: docs,
                     ),
                   );
                 },
@@ -149,13 +157,6 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               onTap: () {
                 nextScreen(context, CompanyPage());
-
-                // nextScreenReplace(
-                //     context,
-                //     ProfilePage(
-                //       email: email,
-                //       userName: userName,
-                //     ));
               },
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
