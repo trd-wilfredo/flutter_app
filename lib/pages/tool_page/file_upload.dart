@@ -150,8 +150,15 @@ class _FileUploadState extends State<FileUpload> {
                               primary: Colors.red,
                             ),
                             onPressed: () async {
-                              // nextScreen(context, AddUser());
-                              // deleteCompany(val['id'], val);
+                              final desertRef = storage
+                                  .ref()
+                                  .child('/file_upload/' + val.name);
+                              // Delete the file
+                              await desertRef.delete();
+                              // REMOVE ROW
+                              setState(() {
+                                images.remove(val);
+                              });
                             },
                           ),
                         ],
@@ -173,7 +180,10 @@ class _FileUploadState extends State<FileUpload> {
       final file = await ImagePicker().pickImage(source: ImageSource.gallery);
       await FireStoreService(context: context, folder: 'file_upload')
           .uploadFile(file);
-      gettingAllImages();
+      final listResult = await storage.ref().child('/file_upload').listAll();
+      setState(() {
+        images = listResult.items;
+      });
     } else {
       await Permission.photos.request();
       var permissionStatus = await Permission.photos.status;
@@ -181,7 +191,10 @@ class _FileUploadState extends State<FileUpload> {
         final file = await ImagePicker().pickImage(source: ImageSource.gallery);
         await FireStoreService(context: context, folder: 'file_upload')
             .uploadFile(file);
-        gettingAllImages();
+        final listResult = await storage.ref().child('/file_upload').listAll();
+        setState(() {
+          images = listResult.items;
+        });
       } else {
         print('Permission not granted. Try Again with permission access');
       }
