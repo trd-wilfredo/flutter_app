@@ -34,6 +34,13 @@ class DatabaseService {
   }
 
   //get all user
+  Future getUserById() async {
+    QuerySnapshot snapshot =
+        await userCollection.where('uid', isEqualTo: uid).get();
+    return snapshot;
+  }
+
+  //get all user
   Future getAllUser() async {
     QuerySnapshot snapshot =
         await userCollection.where('timeDeleted', isEqualTo: 'false').get();
@@ -42,7 +49,7 @@ class DatabaseService {
 
 // soft edit user
   Future editUser(String uid, String fullName, String email, String company,
-      String level, String timeEdited) async {
+      String level, String timeEdited, String imgPath) async {
     DocumentReference userDocumentReference = userCollection.doc(uid);
     var edit = await userDocumentReference
         .update({
@@ -50,6 +57,7 @@ class DatabaseService {
           "email": email,
           "level": level,
           "company": company,
+          "profilePic": imgPath,
           "timeEdited": timeEdited,
         })
         .then((value) => true)
@@ -118,11 +126,12 @@ class DatabaseService {
 
 // soft edit Company
   Future editCompany(String uid, String companyName, String avilability,
-      String timeEdited) async {
+      String timeEdited, String companyFiles) async {
     DocumentReference userDocumentReference = companyCollection.doc(uid);
     var edit = await userDocumentReference
         .update({
           "avilability": avilability,
+          "companyFiles": companyFiles,
           "companyName": companyName,
           "timeEdited": timeEdited,
         })
@@ -244,25 +253,26 @@ class DatabaseService {
   }
 
   // saving the userdata
-  Future savingUserData(
-      String fullName, String email, String level, String company) async {
+  Future savingUserData(String fullName, String email, String level,
+      String company, String imgPath) async {
     return await userCollection.doc(uid).set({
       "fullName": fullName,
       "email": email,
       "groups": [],
       "level": level,
       "company": company,
-      "profilePic": "",
+      "profilePic": imgPath,
       "timeDeleted": "false",
       "uid": uid,
     });
   }
 
   // Save Company
-  Future addSaveCompany(
-      String companyName, String avilability, String timeCreated) async {
+  Future addSaveCompany(String companyName, String avilability,
+      String timeCreated, String companyFiles) async {
     DocumentReference groupDocumentReference = await companyCollection.add({
       "avilability": avilability,
+      "companyFiles": companyFiles,
       "companyName": companyName,
       "timeCreated": timeCreated,
       "timeEdited": '',

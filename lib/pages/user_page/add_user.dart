@@ -221,6 +221,7 @@ class _AddUserState extends State<AddUser> {
                           }
                         },
                       ),
+                      xfile == null ? Text('data') : Image.network(xfile!.path),
                       SizedBox(height: 25),
                       SizedBox(
                         width: double.infinity,
@@ -255,12 +256,12 @@ class _AddUserState extends State<AddUser> {
       setState(() {
         _isLoading = true;
       });
+      var imgPath = await FireStoreService(context: context, folder: 'profile')
+          .uploadFile(xfile);
       await userTool
-          .createUser(fullname, email, password, level, company)
+          .createUser(fullname, email, password, level, company, imgPath)
           .then((value) async {
         if (value == true) {
-          await FireStoreService(context: context, folder: 'profile')
-              .uploadFile(xfile);
           nextScreenReplace(context, UserPage());
         } else {
           showSnackBr(context, Colors.red, value);

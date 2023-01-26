@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/company_page/comapany_page.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
+import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
-import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_features/widgets/widget.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class EditCompany extends StatefulWidget {
   String company = "";
@@ -26,6 +29,7 @@ class _EditCompanyState extends State<EditCompany> {
   String companyName = "";
   String avilability = "";
   String timeEdited = "";
+  XFile? xfile;
 
   List avilabilities = ['yes', 'no'];
   @override
@@ -117,28 +121,31 @@ class _EditCompanyState extends State<EditCompany> {
                           ),
                         ),
                         onPressed: () async {
-                          // if (defaultTargetPlatform == TargetPlatform.iOS ||
-                          //     defaultTargetPlatform == TargetPlatform.android) {
-                          // Some android/ios specific code
-                          var picked = await FilePickerCross.importFromStorage(
-                              type: FileTypeCross
-                                  .any, // Available: `any`, `audio`, `image`, `video`, `custom`. Note: not available using FDE
-                              fileExtension:
-                                  'png, jpeg, ' // Only if FileTypeCross.custom . May be any file extension like `dot`, `ppt,pptx,odp`
-                              );
-
-                          if (picked != null) {
-                            print(picked.fileName);
+                          if (kIsWeb) {
+                            // running on android or ios device
+                            var file = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+                            setState(() {
+                              xfile = file;
+                            });
+                          } else {
+                            await Permission.photos.request();
+                            var permissionStatus =
+                                await Permission.photos.status;
+                            if (permissionStatus.isGranted) {
+                              final file = await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery);
+                              setState(() {
+                                xfile = file;
+                              });
+                            } else {
+                              print(
+                                  'Permission not granted. Try Again with permission access');
+                            }
                           }
-                          // } else if (defaultTargetPlatform == TargetPlatform.linux ||
-                          //     defaultTargetPlatform == TargetPlatform.macOS ||
-                          //     defaultTargetPlatform == TargetPlatform.windows) {
-                          //   // Some desktop specific code there
-                          // } else {
-                          //   // Some web specific code there
-                          // }
                         },
                       ),
+                      xfile == null ? Text('data') : Image.network(xfile!.path),
                       SizedBox(height: 25),
                       SizedBox(
                         width: double.infinity,
@@ -175,9 +182,11 @@ class _EditCompanyState extends State<EditCompany> {
         timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
       });
 
+      var imgPath = await FireStoreService(context: context, folder: 'company')
+          .uploadFile(xfile);
       if (avilability == "") avilability = avlty;
       await DatabaseService()
-          .editCompany(id, companyName, avilability, timeEdited)
+          .editCompany(id, companyName, avilability, timeEdited, imgPath)
           .then((value) async {
         if (value == true) {
           nextScreenReplace(context, CompanyPage());
