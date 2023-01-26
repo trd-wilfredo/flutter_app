@@ -8,14 +8,14 @@ class FireStoreService {
   final BuildContext context;
   final String folder;
   FireStoreService({required this.context, required this.folder});
-  Future<UploadTask?> uploadFile(XFile? file) async {
+  Future<String> uploadFile(XFile? file) async {
     if (file == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('No file was selected'),
         ),
       );
-      return null;
+      return '';
     }
     UploadTask uploadTask;
     // Create a Reference to the fileZxcvbnm,.
@@ -27,9 +27,12 @@ class FireStoreService {
     );
     if (kIsWeb) {
       uploadTask = ref.putData(await file.readAsBytes(), metadata);
+      // print(uploadTask.whenComplete((ytry) => tet));
     } else {
       uploadTask = ref.putFile(f.File(file.path), metadata);
     }
-    return Future.value(uploadTask);
+    var dowurl = await ref.getDownloadURL();
+
+    return dowurl;
   }
 }

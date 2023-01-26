@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_features/main.dart';
 import 'package:flutter_features/pages/home_page/home_page.dart';
 import 'package:flutter_features/pages/login/auth/login_page.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
 import 'package:flutter_features/widgets/widget.dart';
 
 class ProfilePage extends StatefulWidget {
-  String userName;
-  String email;
-  ProfilePage({Key? key, required this.email, required this.userName})
-      : super(key: key);
+  List docs;
+  ProfilePage({
+    Key? key,
+    required this.docs,
+  }) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -20,20 +20,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(['profile widget here', widget]);
     return Scaffold(
-      // backgroundColor: Colors.grey,
       appBar: AppBar(
-        // actions: [
-        //   IconButton(
-        //     onPressed: () {
-        //       nextScreen(context, SearchPage());
-        //     },
-        //     icon: Icon(
-        //       Icons.search,
-        //     ),
-        //   )
-        // ],
         elevation: 0,
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
@@ -50,16 +38,28 @@ class _ProfilePageState extends State<ProfilePage> {
         child: ListView(
           padding: const EdgeInsets.symmetric(vertical: 50),
           children: <Widget>[
-            Icon(
-              Icons.account_circle,
-              size: 150,
-              color: Colors.grey[700],
-            ),
+            widget.docs.first['profilePic'] == ''
+                ? Icon(
+                    Icons.account_circle,
+                    size: 150,
+                    color: Colors.grey[700],
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(100.0),
+                    child: Image(
+                      image: NetworkImage(
+                          'https://firebasestorage.googleapis.com/v0/b/chatapp-3e035.appspot.com/o/profile%2Fian.jpeg?alt=media&token=dbf5f97c-3ddf-488e-8eeb-0b8ab3af2ca5'),
+                      alignment: Alignment.center,
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
             const SizedBox(
               height: 15,
             ),
             Text(
-              widget.email,
+              widget.docs.first['email'],
               textAlign: TextAlign.center,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
@@ -146,11 +146,23 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Icon(
-              Icons.account_circle,
-              size: 200,
-              color: Colors.grey[700],
-            ),
+            widget.docs.first['profilePic'] == ''
+                ? Icon(
+                    Icons.account_circle,
+                    size: 200,
+                    color: Colors.grey[700],
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(100.0),
+                    child: Image(
+                      image: NetworkImage(
+                          'https://firebasestorage.googleapis.com/v0/b/chatapp-3e035.appspot.com/o/profile%2Fian.jpeg?alt=media&token=dbf5f97c-3ddf-488e-8eeb-0b8ab3af2ca5'),
+                      alignment: Alignment.center,
+                      height: 200,
+                      width: 200,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
             const SizedBox(
               height: 15,
             ),
@@ -158,7 +170,8 @@ class _ProfilePageState extends State<ProfilePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Full Name", style: TextStyle(fontSize: 17)),
-                Text(widget.userName, style: const TextStyle(fontSize: 17)),
+                Text(widget.docs.first['fullName'],
+                    style: const TextStyle(fontSize: 17)),
               ],
             ),
             const Divider(
@@ -168,7 +181,8 @@ class _ProfilePageState extends State<ProfilePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Email", style: TextStyle(fontSize: 17)),
-                Text(widget.email, style: const TextStyle(fontSize: 17)),
+                Text(widget.docs.first['email'],
+                    style: const TextStyle(fontSize: 17)),
               ],
             ),
           ],

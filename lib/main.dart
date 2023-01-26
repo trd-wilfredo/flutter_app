@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,8 @@ import 'package:flutter_features/pages/home.dart';
 import 'package:flutter_features/pages/info_registeration/info_registeration.dart';
 import 'package:flutter_features/components/menu/skill_i.dart';
 import 'package:flutter_features/components/menu/skill_ii.dart';
-import 'package:flutter_features/messaging_app/messaging.dart';
 import 'package:flutter_features/pages/login/login.dart';
+import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/profile_page.dart/profile_page.dart';
 import 'package:flutter_features/pages/tool_page/andiod_app.dart';
 import 'package:flutter_features/pages/tool_page/file_upload.dart';
@@ -32,12 +34,9 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
-  var email = await HelperFunction.getUserEmailFromSF().then((val) {
-    return '$val!';
-  });
-  var userName = await HelperFunction.getUserNameFromSF().then((val) {
-    return '$val!';
-  });
+
+  var user = await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+      .getUserById();
   runApp(
     MaterialApp(
       initialRoute: '/home',
@@ -50,8 +49,7 @@ void main() async {
         '/information_registration': (context) => InfoRegister(),
         '/company_list': (context) => CompanyPage(),
         '/messaging_app': (context) => FileUpload(),
-        '/profile_page': (context) =>
-            ProfilePage(email: email, userName: userName),
+        '/profile_page': (context) => ProfilePage(docs: user.docs),
         '/company_search': (context) => CompanySearch(),
         '/file_upload': (context) => FileUpload(),
         '/andriod_phone': (context) => AndiodPage(),
