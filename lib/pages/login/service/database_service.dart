@@ -126,11 +126,12 @@ class DatabaseService {
 
 // soft edit Company
   Future editCompany(String uid, String companyName, String avilability,
-      String timeEdited) async {
+      String timeEdited, String companyFiles) async {
     DocumentReference userDocumentReference = companyCollection.doc(uid);
     var edit = await userDocumentReference
         .update({
           "avilability": avilability,
+          "companyFiles": companyFiles,
           "companyName": companyName,
           "timeEdited": timeEdited,
         })
@@ -267,10 +268,11 @@ class DatabaseService {
   }
 
   // Save Company
-  Future addSaveCompany(
-      String companyName, String avilability, String timeCreated) async {
+  Future addSaveCompany(String companyName, String avilability,
+      String timeCreated, String companyFiles) async {
     DocumentReference groupDocumentReference = await companyCollection.add({
       "avilability": avilability,
+      "companyFiles": companyFiles,
       "companyName": companyName,
       "timeCreated": timeCreated,
       "timeEdited": '',

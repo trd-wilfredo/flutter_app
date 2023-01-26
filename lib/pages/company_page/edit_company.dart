@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/company_page/comapany_page.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
+import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
-import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_features/widgets/widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -182,9 +182,11 @@ class _EditCompanyState extends State<EditCompany> {
         timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
       });
 
+      var imgPath = await FireStoreService(context: context, folder: 'company')
+          .uploadFile(xfile);
       if (avilability == "") avilability = avlty;
       await DatabaseService()
-          .editCompany(id, companyName, avilability, timeEdited)
+          .editCompany(id, companyName, avilability, timeEdited, imgPath)
           .then((value) async {
         if (value == true) {
           nextScreenReplace(context, CompanyPage());
