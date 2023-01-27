@@ -34,9 +34,15 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
+  var getUser = FirebaseAuth.instance.currentUser;
+  StatefulWidget profilePage;
+  if (getUser == null) {
+    profilePage = LoginApp();
+  } else {
+    var user = await DatabaseService(uid: getUser.uid).getUserById();
+    profilePage = ProfilePage(docs: user.docs);
+  }
 
-  var user = await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-      .getUserById();
   runApp(
     MaterialApp(
       initialRoute: '/home',
@@ -49,7 +55,7 @@ void main() async {
         '/information_registration': (context) => InfoRegister(),
         '/company_list': (context) => CompanyPage(),
         '/messaging_app': (context) => FileUpload(),
-        '/profile_page': (context) => ProfilePage(docs: user.docs),
+        '/profile_page': (context) => profilePage,
         '/company_search': (context) => CompanySearch(),
         '/file_upload': (context) => FileUpload(),
         '/andriod_phone': (context) => AndiodPage(),
