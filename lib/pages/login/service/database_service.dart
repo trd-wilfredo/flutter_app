@@ -342,4 +342,10 @@ class DatabaseService {
     csCollection.doc(groupId).collection("messages").add(chatMessageData);
   }
 
+   Future gettingCompanyInfo(String uid) async {
+    QuerySnapshot snapshot =
+        await companyCollection.where("uid", isEqualTo: uid).get();
+    return snapshot;
+  }
+
 }

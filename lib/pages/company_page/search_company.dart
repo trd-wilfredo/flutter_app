@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
+import 'package:flutter_features/pages/company_page/company_info_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_features/widgets/widget.dart';
 
 class CompanySearch extends StatefulWidget {
  const CompanySearch({super.key});
@@ -115,8 +117,20 @@ class _CompanySearchState extends State<CompanySearch> {
     return ListTile(
       
       contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      title:
-          Text(companyName, style: const TextStyle(fontWeight: FontWeight.w600)),
+      trailing: InkWell(
+        child: Text(companyName, style: const TextStyle(fontWeight: FontWeight.w600)),
+        onTap: () async {
+          await DatabaseService()
+              .gettingCompanyInfo(uid);
+          Future.delayed(const Duration(seconds: 0), () {
+              nextScreen(
+                  context,
+                  CompanyInfoPage(
+                      uid: uid,
+                      companyName: companyName));
+            });
+        },
+      ),
     );
   }
 }
