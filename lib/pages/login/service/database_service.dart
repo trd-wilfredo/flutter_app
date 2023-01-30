@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_dart/database.dart';
 
 class DatabaseService {
   final String? uid;
@@ -294,9 +295,15 @@ class DatabaseService {
 
 
    // search
-  searchByCompany(String companyName) {
-    return companyCollection.where("companyName", isEqualTo: companyName).get();
-  }
+  Future searchByCompany(String companyName) async {
+    QuerySnapshot snapshot = await companyCollection.where("companyName", isEqualTo: companyName).get();
+    if(snapshot.docs.isEmpty) {
+      return companyCollection.where(companyName.contains(companyName)).get();
+    } 
+    else {
+      return companyCollection.where("companyName", isEqualTo: companyName).get();
+    }
+}
   // Save Product
   Future addSaveProduct(String productName, String companyName, String stocks,
       String avilability, String timeCreated) async {

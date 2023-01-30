@@ -16,6 +16,7 @@ class _CompanySearchState extends State<CompanySearch> {
   bool isLoading = false;
   QuerySnapshot? searchSnapshot;
   bool hasUserSearched = false;
+  FocusNode focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,9 @@ class _CompanySearchState extends State<CompanySearch> {
                       initiateSearchMethod();
                     },
                     controller: searchController,
+                    focusNode: focusNode,
+                    autofocus: true,
+                    enabled: true,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
                         border: InputBorder.none,
