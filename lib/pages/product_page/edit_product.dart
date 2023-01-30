@@ -199,6 +199,7 @@ class _EditProductState extends State<EditProduct> {
                         });
                       }
                     }),
+                for (var image in images!) Image.network(image.path),
                 SizedBox(height: 25),
                 SizedBox(
                   width: double.infinity,
@@ -227,6 +228,13 @@ class _EditProductState extends State<EditProduct> {
         ),
       ),
     );
+  }
+
+  getImgList(images) {
+    var test = images!.map((val) {
+      Image.network(val.path);
+    });
+    return test;
   }
 
   editProduct(id, avlty, cpny) async {
