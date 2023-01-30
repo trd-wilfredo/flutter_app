@@ -61,7 +61,6 @@ class FireStoreService {
             FirebaseStorage.instance.ref().child('/$folder/${files[i].name}');
         if (kIsWeb) {
           uploadTask = ref.putData(await files[i].readAsBytes(), metadata);
-          // print(uploadTask.whenComplete((ytry) => tet));
         } else {
           uploadTask = ref.putFile(f.File(files[i].path), metadata);
         }

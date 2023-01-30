@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_features/pages/login/service/database_service.dart';
+import 'package:flutter_features/widgets/widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_features/pages/product_page/add_product.dart';
 import 'package:flutter_features/pages/product_page/edit_product.dart';
-import 'package:flutter_features/widgets/widget.dart';
+import 'package:flutter_features/pages/login/service/database_service.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
