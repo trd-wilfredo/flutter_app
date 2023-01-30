@@ -37,7 +37,10 @@ class _CompanySearchState extends State<CompanySearch> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
+                  child: TextFormField(
+                    onFieldSubmitted: (value) {
+                      initiateSearchMethod();
+                    },
                     controller: searchController,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
@@ -49,7 +52,6 @@ class _CompanySearchState extends State<CompanySearch> {
                 ),
                 GestureDetector(
                   onTap: () {
-                   
                     initiateSearchMethod();
                   },
                   child: Container(
@@ -96,19 +98,18 @@ class _CompanySearchState extends State<CompanySearch> {
   }
 
   companyList() {  
-        return hasUserSearched
-        ? ListView.builder(
-            shrinkWrap: true,
-            itemCount: searchSnapshot!.docs.length,
-            itemBuilder: (context, index) {
-              print(searchSnapshot!.docs[index]['uid']);
-              return companyTile(     
-                searchSnapshot!.docs[index]['uid'],
-                searchSnapshot!.docs[index]['companyName'],
-              );
-            },
-          )
-        : Container();
+    return hasUserSearched
+    ? ListView.builder(
+        shrinkWrap: true,
+        itemCount: searchSnapshot!.docs.length,
+        itemBuilder: (context, index) {
+          return companyTile(     
+            searchSnapshot!.docs[index]['uid'],
+            searchSnapshot!.docs[index]['companyName'],
+          );
+        },
+      )
+    : Container();
   }
 
   Widget companyTile(
