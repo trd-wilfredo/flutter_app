@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_features/pages/product_page/product_page.dart';
@@ -37,6 +38,7 @@ class _EditProductState extends State<EditProduct> {
   String timeEdited = "";
   List avilabilities = ['yes', 'no'];
   List companies = [];
+  List? urlImge = [];
   List<XFile>? images = [];
   @override
   void initState() {
@@ -46,6 +48,19 @@ class _EditProductState extends State<EditProduct> {
 
   gettingAllCompany() async {
     QuerySnapshot snapshot = await DatabaseService().getAllCompany();
+    QuerySnapshot company = await DatabaseService().getProductById(widget.uid);
+    for (var f in company.docs) {
+      for (var t in f['productImages']) {
+        var test = await FirebaseStorage.instance
+            .ref()
+            .child(t)
+            .getDownloadURL() as String;
+        print(test);
+        setState(() {
+          urlImge?.add(test);
+        });
+      }
+    }
 
     for (var f in snapshot.docs) {
       setState(() {
@@ -196,6 +211,7 @@ class _EditProductState extends State<EditProduct> {
                         });
                       }
                     }),
+                for (var image in urlImge!) Image.network(image),
                 for (var image in images!) Image.network(image.path),
                 SizedBox(height: 25),
                 SizedBox(

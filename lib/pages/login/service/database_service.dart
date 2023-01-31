@@ -86,6 +86,13 @@ class DatabaseService {
     return snapshot;
   }
 
+  //get all user
+  Future getProductById(String uid) async {
+    QuerySnapshot snapshot =
+        await productCollection.where('uid', isEqualTo: uid).get();
+    return snapshot;
+  }
+
 // soft edit product
   Future editProduct(
       String uid,
