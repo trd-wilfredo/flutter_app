@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/product_page/product_page.dart';
+import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
 import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter/services.dart';
@@ -28,8 +29,7 @@ class _AddProductState extends State<AddProduct> {
   String currentSelectedValue = '';
   List avilabilities = ['yes', 'no'];
   List companies = [];
-  XFile? xfile;
-
+  List<XFile>? images = [];
   void initState() {
     super.initState();
     gettingAllCompany();
@@ -175,23 +175,16 @@ class _AddProductState extends State<AddProduct> {
                     ),
                   ),
                   onPressed: () async {
-                    FilePickerResult? result =
-                        await FilePicker.platform.pickFiles(
-                      type: FileType.custom,
-                      allowedExtensions: ['gif', 'jpeg', 'jpg', 'png'],
-                      allowMultiple: true,
-                    );
-                    print(result!.files);
+                    var files = await ImagePicker().pickMultiImage();
 
-                    // if (result != null) {
-                    //   List<File> files =
-                    //       result.paths.map((path) => File(path!)).toList();
-                    //   print(files);
-                    // } else {
-                    //   // User canceled the picker
-                    // }
+                    if (files != null && files.length <= 7) {
+                      setState(() {
+                        images = files;
+                      });
+                    }
                   },
                 ),
+                for (var image in images!) Image.network(image.path),
                 SizedBox(height: 25),
                 SizedBox(
                   width: double.infinity,
@@ -227,8 +220,12 @@ class _AddProductState extends State<AddProduct> {
         _isLoading = true;
         timeCreated = DateTime.now().millisecondsSinceEpoch.toString();
       });
+      var imgPaths =
+          await FireStoreService(context: context, folder: 'products')
+              .multipleUploadFile(images!);
       await DatabaseService()
-          .addSaveProduct(producName, company, stocks, avilability, timeCreated)
+          .addSaveProduct(
+              producName, company, stocks, avilability, timeCreated, imgPaths)
           .then((value) async {
         if (value == true) {
           nextScreenReplace(context, ProductPage());

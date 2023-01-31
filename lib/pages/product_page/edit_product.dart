@@ -1,15 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_features/pages/login/service/database_service.dart';
-import 'package:flutter_features/pages/product_page/product_page.dart';
-import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
-import 'package:flutter_features/widgets/cheetah_input.dart';
-import 'package:file_picker_cross/file_picker_cross.dart';
-import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_features/pages/product_page/product_page.dart';
+import 'package:flutter_features/widgets/widget.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mime/mime.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_features/widgets/cheetah_input.dart';
+import 'package:flutter_features/pages/login/service/database_service.dart';
+import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
 
 class EditProduct extends StatefulWidget {
   String producName = "";
@@ -199,6 +196,7 @@ class _EditProductState extends State<EditProduct> {
                         });
                       }
                     }),
+                for (var image in images!) Image.network(image.path),
                 SizedBox(height: 25),
                 SizedBox(
                   width: double.infinity,
@@ -237,19 +235,22 @@ class _EditProductState extends State<EditProduct> {
       });
       if (avilability == "") avilability = avlty;
       if (company == "") company = cpny;
-      var imgPath = await FireStoreService(context: context, folder: 'products')
-          .multipleUploadFile(images!);
+      var imgPaths =
+          await FireStoreService(context: context, folder: 'products')
+              .multipleUploadFile(images!);
+      print([imgPaths, 'edit']);
 
-      // await DatabaseService()
-      //     .editProduct(id, producName, stocks, company, avilability, timeEdited)
-      //     .then((value) async {
-      //   if (value == true) {
-      //     nextScreenReplace(context, ProductPage());
-      //   } else {
-      //     showSnackBr(context, Colors.red, value);
-      //     _isLoading = false;
-      //   }
-      // });
+      await DatabaseService()
+          .editProduct(id, producName, stocks, company, avilability, timeEdited,
+              imgPaths)
+          .then((value) async {
+        if (value == true) {
+          nextScreenReplace(context, ProductPage());
+        } else {
+          showSnackBr(context, Colors.red, value);
+          _isLoading = false;
+        }
+      });
     }
   }
 }
