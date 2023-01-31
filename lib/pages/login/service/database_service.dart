@@ -298,7 +298,11 @@ class DatabaseService {
   Future searchByCompany(String companyName) async {
     QuerySnapshot snapshot = await companyCollection.where("companyName", isEqualTo: companyName).get();
     if(snapshot.docs.isEmpty) {
-      return companyCollection.where(companyName.contains(companyName)).get();
+      return companyCollection
+      .where("companyName",isGreaterThanOrEqualTo: companyName)
+      .where("companyName",isLessThan: companyName + 'z')
+      .where("companyName",isGreaterThan: companyName)
+      .get();
     } 
     else {
       return companyCollection.where("companyName", isEqualTo: companyName).get();
