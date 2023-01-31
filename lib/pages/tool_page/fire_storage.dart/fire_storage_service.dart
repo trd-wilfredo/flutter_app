@@ -8,6 +8,7 @@ class FireStoreService {
   final BuildContext context;
   final String folder;
   FireStoreService({required this.context, required this.folder});
+
   Future<String> uploadFile(XFile? file) async {
     if (file == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -34,5 +35,37 @@ class FireStoreService {
     var dowurl = await ref.getDownloadURL();
 
     return dowurl;
+  }
+
+  Future<List> multipleUploadFile(List<XFile> files) async {
+    var url = [];
+    if (files == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No file was selected'),
+        ),
+      );
+      return [];
+    }
+    UploadTask uploadTask;
+
+    for (var i = 0; i < files.length; i++) {
+      // Create a Reference to the fileZxcvbnm,.
+      final metadata = SettableMetadata(
+        contentType: 'image/${files[i].mimeType}',
+        customMetadata: {'picked-file-path': files[i].path},
+      );
+      Reference ref =
+          FirebaseStorage.instance.ref().child('/$folder/${files[i].name}');
+      if (kIsWeb) {
+        uploadTask = ref.putData(await files[i].readAsBytes(), metadata);
+        // print(uploadTask.whenComplete((ytry) => tet));
+      } else {
+        uploadTask = ref.putFile(f.File(files[i].path), metadata);
+      }
+      var dowurl = await ref.getDownloadURL();
+      url.add(dowurl);
+    }
+    return url;
   }
 }
