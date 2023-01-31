@@ -14,8 +14,26 @@ class CompanySearch extends StatefulWidget {
 class _CompanySearchState extends State<CompanySearch> {
   TextEditingController searchController = TextEditingController();
   bool isLoading = false;
+  bool hintText = true;
   QuerySnapshot? searchSnapshot;
   bool hasUserSearched = false;
+  FocusNode focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        setState(() {
+          hintText = false;
+        });
+      } else {
+        setState(() {
+          hintText = true;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +42,7 @@ class _CompanySearchState extends State<CompanySearch> {
         elevation: 0,
         backgroundColor: Theme.of(context).primaryColor,
         title: const Text(
-          "Search",
+          "Search Company",
           style: TextStyle(
               fontSize: 27, fontWeight: FontWeight.bold, color: Colors.white),
         ),
@@ -37,19 +55,23 @@ class _CompanySearchState extends State<CompanySearch> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
+                  child: TextFormField(
+                    focusNode: focusNode,
+                    cursorColor: Colors.white,
                     controller: searchController,
                     style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "Search Company....",
+                        hintText: hintText ? "Search Company..." : null,
                         hintStyle:
-                            TextStyle(color: Colors.white, fontSize: 16)),
+                            const TextStyle(color: Colors.white, fontSize: 16)),
+                    onFieldSubmitted: (value) {
+                      initiateSearchMethod();
+                    },
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                   
                     initiateSearchMethod();
                   },
                   child: Container(
@@ -96,19 +118,18 @@ class _CompanySearchState extends State<CompanySearch> {
   }
 
   companyList() {  
-        return hasUserSearched
-        ? ListView.builder(
-            shrinkWrap: true,
-            itemCount: searchSnapshot!.docs.length,
-            itemBuilder: (context, index) {
-              print(searchSnapshot!.docs[index]['uid']);
-              return companyTile(     
-                searchSnapshot!.docs[index]['uid'],
-                searchSnapshot!.docs[index]['companyName'],
-              );
-            },
-          )
-        : Container();
+    return hasUserSearched
+    ? ListView.builder(
+        shrinkWrap: true,
+        itemCount: searchSnapshot!.docs.length,
+        itemBuilder: (context, index) {
+          return companyTile(     
+            searchSnapshot!.docs[index]['uid'],
+            searchSnapshot!.docs[index]['companyName'],
+          );
+        },
+      )
+    : Container();
   }
 
   Widget companyTile(
