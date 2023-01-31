@@ -139,7 +139,16 @@ class _CompanySearchState extends State<CompanySearch> {
       
       contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       trailing: InkWell(
-        child: Text(companyName, style: const TextStyle(fontWeight: FontWeight.w600)),
+        child: Align(
+          alignment: Alignment.center,
+          child: Text(
+                  companyName, 
+                  style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.blueAccent,
+                            fontSize: 16,
+                            decoration: TextDecoration.underline )),
+        ),
         onTap: () async {
           await DatabaseService()
               .gettingCompanyInfo(uid);
