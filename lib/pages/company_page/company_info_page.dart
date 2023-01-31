@@ -43,8 +43,8 @@ class _CompanyInfoPageState extends State<CompanyInfoPage> {
         title: Text(widget.companyName),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: const Center(
-        child: Text("Company Information here"),
+      body: Center(
+        child: Text(widget.companyName + " Information here"),
       ),
     );
   }
