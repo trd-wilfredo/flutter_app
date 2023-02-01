@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/messaging_app/messaging.dart';
 import 'package:flutter_features/pages/company_page/comapany_page.dart';
+import 'package:flutter_features/pages/company_page/search_company.dart';
 import 'package:flutter_features/pages/home_page/group_title.dart';
 import 'package:flutter_features/pages/home_page/search_page.dart';
 import 'package:flutter_features/pages/login/auth/login_page.dart';
@@ -163,6 +164,18 @@ class _HomePageState extends State<HomePage> {
               leading: const Icon(Icons.group),
               title: const Text(
                 "Companies",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                nextScreen(context, CompanySearch());
+              },
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              leading: const Icon(Icons.group),
+              title: const Text(
+                "Search Company",
                 style: TextStyle(color: Colors.black),
               ),
             ),
