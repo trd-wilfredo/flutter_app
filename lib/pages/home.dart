@@ -51,11 +51,11 @@ class _HomeState extends State<Home> {
       page: 'file_upload',
       title: 'File Upload',
     ),
-    PageList(
-      part: 'bottom',
-      page: 'company_search',
-      title: 'Company Search',
-    ),
+    // PageList(
+    //   part: 'bottom',
+    //   page: 'company_search',
+    //   title: 'Company Search',
+    // ),
     PageList(
       part: 'null',
       page: 'skill_i',
