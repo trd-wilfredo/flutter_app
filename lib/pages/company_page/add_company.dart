@@ -170,7 +170,7 @@ class _AddCompanyState extends State<AddCompany> {
         timeCreated = DateTime.now().millisecondsSinceEpoch.toString();
       });
       var imgPath = await FireStoreService(context: context, folder: 'company')
-          .uploadFile(xfile);
+          .uploadFile(xfile, 'NA');
       await DatabaseService()
           .addSaveCompany(companyName, avilability, timeCreated, imgPath)
           .then((value) async {

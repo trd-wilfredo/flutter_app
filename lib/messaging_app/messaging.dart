@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
@@ -13,6 +14,7 @@ class MessagingApp extends StatefulWidget {
 class _MessagingAppState extends State<MessagingApp> {
   Stream<QuerySnapshot>? chats;
   String email = "";
+  String uid = "";
 
   final TextEditingController _textController = TextEditingController();
 
@@ -36,6 +38,10 @@ class _MessagingAppState extends State<MessagingApp> {
       setState(() {
         email = value!;
       });
+    });
+    var getUser = FirebaseAuth.instance.currentUser;
+    setState(() {
+      uid = getUser!.uid;
     });
   }
 
@@ -127,6 +133,7 @@ class _MessagingAppState extends State<MessagingApp> {
                   return MessageTile(
                       message: snapshot.data.docs[index]['message'],
                       sender: snapshot.data.docs[index]['sender'],
+                      senderUid: snapshot.data.docs[index]['sender'],
                       sentByMe: snapshot.data.docs[index]['sender']);
                 },
               )
@@ -138,8 +145,9 @@ class _MessagingAppState extends State<MessagingApp> {
   sendMessage() {
     if (_textController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageCS = {
-        "message": _textController.text,
+        "uid": uid,
         "sender": email,
+        "message": _textController.text,
         "time": DateTime.now().millisecondsSinceEpoch,
       };
 
