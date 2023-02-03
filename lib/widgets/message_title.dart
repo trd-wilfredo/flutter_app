@@ -100,7 +100,7 @@ class _MessageTileState extends State<MessageTile> {
                   )
                 : (url == "na"
                     ? CircleAvatar(
-                        backgroundImage: AssetImage('image_2.jpg'),
+                        backgroundImage: AssetImage('assets/image_2.jpg'),
                         radius: 20,
                       )
                     : CircleAvatar(
