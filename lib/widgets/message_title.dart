@@ -20,18 +20,21 @@ class MessageTile extends StatefulWidget {
 
 class _MessageTileState extends State<MessageTile> {
   final storage = FirebaseStorage.instance.ref();
-  String url = "";
+  String url = "na";
 
   @override
   Widget build(BuildContext context) {
-    storage
-        .child('profile/${widget.senderUid}')
-        .getDownloadURL()
-        .then((value) => {
-              setState(() {
-                url = value;
-              })
-            });
+    try {
+      storage
+          .child('profile/${widget.senderUid}')
+          .getDownloadURL()
+          .then((value) => {
+                setState(() {
+                  url = value;
+                })
+              });
+    } catch (err) {}
+
     return Stack(
       children: [
         Container(
@@ -87,19 +90,25 @@ class _MessageTileState extends State<MessageTile> {
           ),
         ),
         Container(
-            alignment: Alignment.centerLeft,
-            child: ConstrainedBox(
-              constraints: BoxConstraints(minHeight: 20),
-              child: widget.sentByMe
-                  ? CircleAvatar(
-                      radius: 0,
-                      backgroundImage: NetworkImage(url),
-                    )
-                  : CircleAvatar(
-                      backgroundImage: NetworkImage(url),
-                      radius: 20,
-                    ),
-            )),
+          alignment: Alignment.centerLeft,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: 20),
+            child: widget.sentByMe
+                ? CircleAvatar(
+                    radius: 0,
+                    backgroundImage: NetworkImage(url),
+                  )
+                : (url == "na"
+                    ? CircleAvatar(
+                        backgroundImage: AssetImage('image_2.jpg'),
+                        radius: 20,
+                      )
+                    : CircleAvatar(
+                        radius: 20,
+                        backgroundImage: NetworkImage(url),
+                      )),
+          ),
+        ),
       ],
     );
   }
