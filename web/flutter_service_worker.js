@@ -4,13 +4,7 @@ const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
   "flutter.js": "eb2682e33f25cd8f1fc59011497c35f8",
-"version.json": "b53bd3b5e73a2bed948014c6381c4214",
-"main.dart.js": "6617d28e7d524af347bf708c640e9d3e",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
-"canvaskit/profiling/canvaskit.js": "38164e5a72bdad0faa4ce740c9b8e564",
-"canvaskit/profiling/canvaskit.wasm": "95a45378b69e77af5ed2bc72b2209b94",
-"canvaskit/canvaskit.js": "2bc454a691c631b07a9307ac4ca47797",
-"canvaskit/canvaskit.wasm": "bf50631470eb967688cca13ee181af62",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
@@ -30,8 +24,8 @@ const RESOURCES = {
 "assets/assets/GSP-logo.png": "1374c4d147b27fe461635c2296572d21",
 "assets/fonts/Bello-Script.ttf": "d5bfd2106ebb712542d805ed474a3863",
 "assets/fonts/MaterialIcons-Regular.otf": "95db9098c58fd6db106f1116bae85a0b",
-"index.html": "c37f7ed4ffb2a2a826b11d26ebc2d764",
-"/": "c37f7ed4ffb2a2a826b11d26ebc2d764"
+"index.html": "7b1b4ef01142644642d5ea5108cd59a7",
+"/": "7b1b4ef01142644642d5ea5108cd59a7"
 };
 
 // The application shell files that are downloaded before a service worker can
