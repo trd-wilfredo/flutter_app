@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
+import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
 import 'package:flutter_features/pages/user_page/user_page.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
-import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_features/widgets/widget.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class EditUser extends StatefulWidget {
   String valName = '';
@@ -34,11 +38,12 @@ class _EditUserState extends State<EditUser> {
   String password = '';
   String level = '';
   String fullname = '';
+  String uid = '';
   String company = '';
+  XFile? xfile;
   List levels = ['admin', 'normal'];
   List companies = [];
   AuthService authService = AuthService();
-  _getRequests() async {}
   @override
   void initState() {
     super.initState();
@@ -47,7 +52,7 @@ class _EditUserState extends State<EditUser> {
 
   gettingAllCompany() async {
     QuerySnapshot snapshot = await DatabaseService().getAllCompany();
-
+    uid = widget.valId;
     for (var f in snapshot.docs) {
       setState(() {
         companies.add(
@@ -89,7 +94,7 @@ class _EditUserState extends State<EditUser> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CheetahInput(
-                        inputFormatters:[],
+                        inputFormatters: [],
                         keyboardType: TextInputType.text,
                         hideText: false,
                         labelText: 'Name',
@@ -100,7 +105,7 @@ class _EditUserState extends State<EditUser> {
                       ),
                       SizedBox(height: 16),
                       CheetahInput(
-                        inputFormatters:[],
+                        inputFormatters: [],
                         keyboardType: TextInputType.text,
                         hideText: false,
                         labelText: 'Email',
@@ -111,7 +116,7 @@ class _EditUserState extends State<EditUser> {
                       ),
                       SizedBox(height: 16),
                       CheetahInput(
-                        inputFormatters:[],
+                        inputFormatters: [],
                         keyboardType: TextInputType.text,
                         hideText: true,
                         labelText: 'Password',
@@ -200,28 +205,30 @@ class _EditUserState extends State<EditUser> {
                           ),
                         ),
                         onPressed: () async {
-                          // if (defaultTargetPlatform == TargetPlatform.iOS ||
-                          //     defaultTargetPlatform == TargetPlatform.android) {
-                          // Some android/ios specific code
-                          var picked = await FilePickerCross.importFromStorage(
-                              type: FileTypeCross
-                                  .any, // Available: `any`, `audio`, `image`, `video`, `custom`. Note: not available using FDE
-                              fileExtension:
-                                  'png, jpeg, ' // Only if FileTypeCross.custom . May be any file extension like `dot`, `ppt,pptx,odp`
-                              );
-
-                          if (picked != null) {
-                            print(picked.fileName);
+                          if (kIsWeb) {
+                            var file = await ImagePicker()
+                                .pickImage(source: ImageSource.gallery);
+                            setState(() {
+                              xfile = file;
+                            });
+                          } else {
+                            await Permission.photos.request();
+                            var permissionStatus =
+                                await Permission.photos.status;
+                            if (permissionStatus.isGranted) {
+                              final file = await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery);
+                              setState(() {
+                                xfile = file;
+                              });
+                            } else {
+                              print(
+                                  'Permission not granted. Try Again with permission access');
+                            }
                           }
-                          // } else if (defaultTargetPlatform == TargetPlatform.linux ||
-                          //     defaultTargetPlatform == TargetPlatform.macOS ||
-                          //     defaultTargetPlatform == TargetPlatform.windows) {
-                          //   // Some desktop specific code there
-                          // } else {
-                          //   // Some web specific code there
-                          // }
                         },
                       ),
+                      xfile == null ? Text('') : Image.network(xfile!.path),
                       SizedBox(height: 25),
                       SizedBox(
                         width: double.infinity,
@@ -260,8 +267,10 @@ class _EditUserState extends State<EditUser> {
       if (level == "") level = lvl;
       if (company == "") company = cpny;
       var timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
+      var imgPath = await FireStoreService(context: context, folder: 'profile')
+          .uploadFile(xfile, uid);
       var userDlt = await DatabaseService(uid: id)
-          .editUser(id, fullname, email, company, level, timeEdited);
+          .editUser(id, fullname, email, company, level, timeEdited, imgPath);
       if (userDlt == true) {
         setState(() {
           // backReloadScreen(context, )

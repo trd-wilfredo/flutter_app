@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/messaging_app/messaging.dart';
 import 'package:flutter_features/pages/company_page/comapany_page.dart';
+import 'package:flutter_features/pages/company_page/search_company.dart';
 import 'package:flutter_features/pages/home_page/group_title.dart';
 import 'package:flutter_features/pages/home_page/search_page.dart';
 import 'package:flutter_features/pages/login/auth/login_page.dart';
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   Stream? groups;
   bool _isLoading = false;
   String groupName = "";
+  List docs = [];
 
   @override
   void initState() {
@@ -61,6 +63,14 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         groups = snapshot;
       });
+    });
+
+    var user =
+        await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+            .getUserById();
+
+    setState(() {
+      docs = user.docs;
     });
   }
 
@@ -100,8 +110,7 @@ class _HomePageState extends State<HomePage> {
                   nextScreenReplace(
                     context,
                     ProfilePage(
-                      email: email,
-                      userName: userName,
+                      docs: docs,
                     ),
                   );
                 },
@@ -149,19 +158,24 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               onTap: () {
                 nextScreen(context, CompanyPage());
-
-                // nextScreenReplace(
-                //     context,
-                //     ProfilePage(
-                //       email: email,
-                //       userName: userName,
-                //     ));
               },
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.group),
               title: const Text(
                 "Companies",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                nextScreen(context, CompanySearch());
+              },
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              leading: const Icon(Icons.group),
+              title: const Text(
+                "Search Company",
                 style: TextStyle(color: Colors.black),
               ),
             ),

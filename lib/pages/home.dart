@@ -16,11 +16,11 @@ class _HomeState extends State<Home> {
       page: 'login',
       title: 'Login To App',
     ),
-    PageList(
-      part: 'null',
-      page: 'messaging_app',
-      title: 'Messaging App',
-    ),
+    // PageList(
+    //   part: 'null',
+    //   page: 'messaging_app',
+    //   title: 'Messaging App',
+    // ),
     PageList(
       part: 'null',
       page: 'information_registration',
@@ -51,11 +51,11 @@ class _HomeState extends State<Home> {
       page: 'file_upload',
       title: 'File Upload',
     ),
-    PageList(
-      part: 'bottom',
-      page: 'company_search',
-      title: 'Company Search',
-    ),
+    // PageList(
+    //   part: 'bottom',
+    //   page: 'company_search',
+    //   title: 'Company Search',
+    // ),
     PageList(
       part: 'null',
       page: 'skill_i',
@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
     ),
     PageList(
       part: 'bottom',
-      page: 'vrs',
+      page: 'app_version',
       title: 'AppVersion 1.0.2',
     ),
     // PageList(

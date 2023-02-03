@@ -1,8 +1,9 @@
 // import 'package:flutter_features/pages/group_info.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_features/pages/home_page/group_info.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/widgets/message_title.dart';
-// import 'package:flutter_features/widgets/message_tile.dart';
 import 'package:flutter_features/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,9 @@ class _ChatPageState extends State<ChatPage> {
   TextEditingController messageController = TextEditingController();
   FocusNode myFocusNode = FocusNode();
   String admin = "";
-
+  String uid = "";
+  String url = "";
+  final storage = FirebaseStorage.instance.ref();
   @override
   void initState() {
     getChatandAdmin();
@@ -35,9 +38,11 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   getChatandAdmin() {
+    var getUser = FirebaseAuth.instance.currentUser;
     DatabaseService().getChats(widget.groupId).then((val) {
       setState(() {
         chats = val;
+        uid = getUser!.uid;
       });
     });
     DatabaseService().getGroupAdmin(widget.groupId).then((val) {
@@ -88,7 +93,7 @@ class _ChatPageState extends State<ChatPage> {
                     },
                     controller: messageController,
                     focusNode: myFocusNode,
-                    style: const TextStyle(color: Colors.white, height:2.0),
+                    style: const TextStyle(color: Colors.white, height: 2.0),
                     decoration: const InputDecoration(
                       hintText: "Send a message...",
                       hintStyle: TextStyle(color: Colors.white, fontSize: 16),
@@ -137,11 +142,17 @@ class _ChatPageState extends State<ChatPage> {
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   final reversedIndex = snapshot.data.docs.length - 1 - index;
-                  return MessageTile(                     
-                      message: snapshot.data.docs[reversedIndex]['message'],
-                      sender: snapshot.data.docs[reversedIndex]['sender'],
-                      sentByMe: widget.userName ==
-                          snapshot.data.docs[reversedIndex]['sender']);
+                  return Column(
+                    children: [
+                      MessageTile(
+                        message: snapshot.data.docs[reversedIndex]['message'],
+                        sender: snapshot.data.docs[reversedIndex]['sender'],
+                        sentByMe: widget.userName ==
+                            snapshot.data.docs[reversedIndex]['sender'],
+                        senderUid: snapshot.data.docs[reversedIndex]['uid'],
+                      )
+                    ],
+                  );
                 },
               )
             : Container();
@@ -152,8 +163,9 @@ class _ChatPageState extends State<ChatPage> {
   sendMessage() {
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
-        "message": messageController.text,
+        "uid": uid,
         "sender": widget.userName,
+        "message": messageController.text,
         "time": DateTime.now().millisecondsSinceEpoch,
       };
 

@@ -1,14 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/product_page/product_page.dart';
+import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
-import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key});
@@ -28,7 +29,7 @@ class _AddProductState extends State<AddProduct> {
   String currentSelectedValue = '';
   List avilabilities = ['yes', 'no'];
   List companies = [];
-
+  List<XFile>? images = [];
   void initState() {
     super.initState();
     gettingAllCompany();
@@ -72,7 +73,7 @@ class _AddProductState extends State<AddProduct> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 CheetahInput(
-                  inputFormatters:[],
+                  inputFormatters: [],
                   keyboardType: TextInputType.text,
                   hideText: false,
                   labelText: 'Product Name',
@@ -85,7 +86,7 @@ class _AddProductState extends State<AddProduct> {
                 CheetahInput(
                   keyboardType: TextInputType.number,
                   inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), 
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                     FilteringTextInputFormatter.digitsOnly
                   ],
                   hideText: false,
@@ -174,28 +175,16 @@ class _AddProductState extends State<AddProduct> {
                     ),
                   ),
                   onPressed: () async {
-                    // if (defaultTargetPlatform == TargetPlatform.iOS ||
-                    //     defaultTargetPlatform == TargetPlatform.android) {
-                    // Some android/ios specific code
-                    var picked = await FilePickerCross.importFromStorage(
-                        type: FileTypeCross
-                            .any, // Available: `any`, `audio`, `image`, `video`, `custom`. Note: not available using FDE
-                        fileExtension:
-                            'png, jpeg, ' // Only if FileTypeCross.custom . May be any file extension like `dot`, `ppt,pptx,odp`
-                        );
+                    var files = await ImagePicker().pickMultiImage();
 
-                    if (picked != null) {
-                      print(picked.fileName);
+                    if (files != null && files.length <= 7) {
+                      setState(() {
+                        images = files;
+                      });
                     }
-                    // } else if (defaultTargetPlatform == TargetPlatform.linux ||
-                    //     defaultTargetPlatform == TargetPlatform.macOS ||
-                    //     defaultTargetPlatform == TargetPlatform.windows) {
-                    //   // Some desktop specific code there
-                    // } else {
-                    //   // Some web specific code there
-                    // }
                   },
                 ),
+                for (var image in images!) Image.network(image.path),
                 SizedBox(height: 25),
                 SizedBox(
                   width: double.infinity,
@@ -231,8 +220,12 @@ class _AddProductState extends State<AddProduct> {
         _isLoading = true;
         timeCreated = DateTime.now().millisecondsSinceEpoch.toString();
       });
+      var imgPaths =
+          await FireStoreService(context: context, folder: 'products')
+              .multipleUploadFile(images!);
       await DatabaseService()
-          .addSaveProduct(producName, company, stocks, avilability, timeCreated)
+          .addSaveProduct(
+              producName, company, stocks, avilability, timeCreated, imgPaths)
           .then((value) async {
         if (value == true) {
           nextScreenReplace(context, ProductPage());

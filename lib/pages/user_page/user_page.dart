@@ -58,19 +58,6 @@ class _UserPageState extends State<UserPage> {
           ),
         ),
       ),
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   centerTitle: true,
-      //   backgroundColor: Theme.of(context).primaryColor,
-      //   title: Text(
-      //     'User Page',
-      //     style: TextStyle(
-      //       color: Colors.white,
-      //       fontSize: 27,
-      //       fontWeight: FontWeight.bold,
-      //     ),
-      //   ),
-      // ),
       body: SafeArea(
         child: Column(
           children: <Widget>[

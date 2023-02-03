@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_dart/database.dart';
 
 class DatabaseService {
   final String? uid;
@@ -33,6 +34,21 @@ class DatabaseService {
     return userCollection.doc(uid).snapshots();
   }
 
+  //get user
+  Future getUserById() async {
+    QuerySnapshot snapshot =
+        await userCollection.where('uid', isEqualTo: uid).get();
+    return snapshot;
+  }
+
+  //get user
+  Future getByIdUser(String sid) async {
+    QuerySnapshot snapshot =
+        await userCollection.where('uid', isEqualTo: sid).get();
+    var tes = snapshot.docs.isNotEmpty ? snapshot.docs : [];
+    return tes;
+  }
+
   //get all user
   Future getAllUser() async {
     QuerySnapshot snapshot =
@@ -42,7 +58,7 @@ class DatabaseService {
 
 // soft edit user
   Future editUser(String uid, String fullName, String email, String company,
-      String level, String timeEdited) async {
+      String level, String timeEdited, String imgPath) async {
     DocumentReference userDocumentReference = userCollection.doc(uid);
     var edit = await userDocumentReference
         .update({
@@ -50,6 +66,7 @@ class DatabaseService {
           "email": email,
           "level": level,
           "company": company,
+          "profilePic": imgPath,
           "timeEdited": timeEdited,
         })
         .then((value) => true)
@@ -78,15 +95,30 @@ class DatabaseService {
     return snapshot;
   }
 
+  //get all user
+  Future getProductById(String uid) async {
+    QuerySnapshot snapshot =
+        await productCollection.where('uid', isEqualTo: uid).get();
+    return snapshot;
+  }
+
 // soft edit product
-  Future editProduct(String uid, String producName, String stocks,
-      String company, String avilability, String timeEdited) async {
-    DocumentReference userDocumentReference = productCollection.doc(uid);
-    var edit = await userDocumentReference
+  Future editProduct(
+      String uid,
+      String producName,
+      String stocks,
+      String company,
+      String avilability,
+      String timeEdited,
+      List imgePaths) async {
+    DocumentReference productDocumentReference = productCollection.doc(uid);
+    print(imgePaths);
+    var edit = await productDocumentReference
         .update({
           "productName": producName,
           "stocks": stocks,
           "avilability": avilability,
+          "productImages": imgePaths.map((e) => e.toString()).toList(),
           "companyName": company,
           "timeEdited": timeEdited,
         })
@@ -98,8 +130,8 @@ class DatabaseService {
 
   // soft delete product
   Future deleteProduct(String uid, String timeDeleted) async {
-    DocumentReference userDocumentReference = productCollection.doc(uid);
-    var delete = await userDocumentReference
+    DocumentReference productDocumentReference = productCollection.doc(uid);
+    var delete = await productDocumentReference
         .update({
           "timeDeleted": timeDeleted,
         })
@@ -118,11 +150,12 @@ class DatabaseService {
 
 // soft edit Company
   Future editCompany(String uid, String companyName, String avilability,
-      String timeEdited) async {
-    DocumentReference userDocumentReference = companyCollection.doc(uid);
-    var edit = await userDocumentReference
+      String timeEdited, String companyFiles) async {
+    DocumentReference companyDocumentReference = companyCollection.doc(uid);
+    var edit = await companyDocumentReference
         .update({
           "avilability": avilability,
+          "companyFiles": companyFiles,
           "companyName": companyName,
           "timeEdited": timeEdited,
         })
@@ -134,8 +167,8 @@ class DatabaseService {
 
   // soft delete company
   Future deleteCompany(String uid, String timeDeleted) async {
-    DocumentReference userDocumentReference = companyCollection.doc(uid);
-    var delete = await userDocumentReference
+    DocumentReference companyDocumentReference = companyCollection.doc(uid);
+    var delete = await companyDocumentReference
         .update({
           "timeDeleted": timeDeleted,
         })
@@ -244,33 +277,34 @@ class DatabaseService {
   }
 
   // saving the userdata
-  Future savingUserData(
-      String fullName, String email, String level, String company) async {
+  Future savingUserData(String fullName, String email, String level,
+      String company, String imgPath) async {
     return await userCollection.doc(uid).set({
       "fullName": fullName,
       "email": email,
       "groups": [],
       "level": level,
       "company": company,
-      "profilePic": "",
+      "profilePic": imgPath,
       "timeDeleted": "false",
       "uid": uid,
     });
   }
 
   // Save Company
-  Future addSaveCompany(
-      String companyName, String avilability, String timeCreated) async {
-    DocumentReference groupDocumentReference = await companyCollection.add({
+  Future addSaveCompany(String companyName, String avilability,
+      String timeCreated, String companyFiles) async {
+    DocumentReference companyDocumentReference = await companyCollection.add({
       "avilability": avilability,
+      "companyFiles": companyFiles,
       "companyName": companyName,
       "timeCreated": timeCreated,
       "timeEdited": '',
       "timeDeleted": "false",
     });
-    var company = await groupDocumentReference
+    var company = await companyDocumentReference
         .update({
-          "uid": groupDocumentReference.id,
+          "uid": companyDocumentReference.id,
         })
         .then((value) => true)
         .catchError((error) => print("Failed to add Company: $error"));
@@ -282,25 +316,39 @@ class DatabaseService {
     }
   }
 
+   // search
+  Future searchByCompany(String companyName) async {
+    QuerySnapshot snapshot = await companyCollection.where("companyName", isEqualTo: companyName).get();
+    if(snapshot.docs.isEmpty) {
+      return companyCollection
+      .where("companyName",isGreaterThanOrEqualTo: companyName)
+      .where("companyName",isLessThan: companyName + 'z')
+      .where("companyName",isGreaterThan: companyName)
+      .get();
+    } 
+    else {
+      return companyCollection.where("companyName", isEqualTo: companyName).get();
+    }
+}
   // Save Product
   Future addSaveProduct(String productName, String companyName, String stocks,
-      String avilability, String timeCreated) async {
+      String avilability, String timeCreated, List imgePaths) async {
     // var product = await
 
-    DocumentReference groupDocumentReference = await productCollection.add({
+    DocumentReference productDocumentReference = await productCollection.add({
       "productName": productName,
       "stocks": stocks,
       "avilability": avilability,
       "companyName": companyName,
       "timeCreated": timeCreated,
+      "productImages": imgePaths.map((e) => e.toString()).toList(),
       "timeEdited": '',
       "timeDeleted": "false",
       "companyId": ''
     });
-
-    var product = await groupDocumentReference
+    var product = await productDocumentReference
         .update({
-          "uid": groupDocumentReference.id,
+          "uid": productDocumentReference.id,
         })
         .then((value) => true)
         .catchError((error) => print("Failed to add Company: $error"));
@@ -325,5 +373,11 @@ class DatabaseService {
   // send message
   csSendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
     csCollection.doc(groupId).collection("messages").add(chatMessageData);
+  }
+
+  Future gettingCompanyInfo(String uid) async {
+    QuerySnapshot snapshot =
+        await companyCollection.where("uid", isEqualTo: uid).get();
+    return snapshot;
   }
 }

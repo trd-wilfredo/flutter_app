@@ -6,7 +6,6 @@ class AuthService {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   // login
-
   Future loginInWithEmailandPassword(String email, String password) async {
     try {
       User user = (await firebaseAuth.signInWithEmailAndPassword(
@@ -21,25 +20,10 @@ class AuthService {
       return e.message;
     }
   }
-  // // login
-  // Future loginWithUserNameandPassword(String email, String password) async {
-  //   try {
-  //     User user = (await firebaseAuth.signInWithEmailAndPassword(
-  //             email: email, password: password))
-  //         .user!;
-
-  //     if (user != null) {
-  //       return true;
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     return e.message;
-  //   }
-  // }
 
   // register
-
-  Future registerUserWithEmailandPassword(String fullname, String email,
-      String password, String level, String company) async {
+  Future registerUserWithEmailandPassword(
+      String fullname, String email, String password, String level) async {
     try {
       User user = (await firebaseAuth.createUserWithEmailAndPassword(
               email: email, password: password))
@@ -47,7 +31,7 @@ class AuthService {
       if (user != null) {
         // database call
         await DatabaseService(uid: user.uid)
-            .savingUserData(fullname, email, level, company);
+            .savingUserData(fullname, email, level, '', '');
 
         return true;
       }
