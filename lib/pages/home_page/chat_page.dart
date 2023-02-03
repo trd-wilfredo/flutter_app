@@ -142,16 +142,6 @@ class _ChatPageState extends State<ChatPage> {
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   final reversedIndex = snapshot.data.docs.length - 1 - index;
-                  // var avarat = storage
-                  //     .child(
-                  //         '/profile/${snapshot.data.docs[reversedIndex]['uid']}')
-                  //     .getDownloadURL()
-                  //     .then((value) => {
-                  //           setState(() {
-                  //             url = value;
-                  //           })
-                  //         });
-                  // print(avarat);
                   return Column(
                     children: [
                       MessageTile(
