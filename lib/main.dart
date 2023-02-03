@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_features/messaging_app/messaging.dart';
 import 'package:flutter_features/pages/app_version.dart';
 import 'package:flutter_features/pages/company_page/comapany_page.dart';
 import 'package:flutter_features/pages/company_page/search_company.dart';
@@ -52,7 +53,7 @@ void main() async {
         '/skill_ii': (context) => SkillII(),
         '/information_registration': (context) => InfoRegister(),
         '/company_list': (context) => CompanyPage(),
-        '/messaging_app': (context) => FileUpload(),
+        '/messaging_app': (context) => MessagingApp(),
         '/profile_page': (context) => profilePage,
         '/company_search': (context) => CompanySearch(),
         '/file_upload': (context) => FileUpload(),

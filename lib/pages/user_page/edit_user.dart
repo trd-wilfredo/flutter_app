@@ -228,7 +228,7 @@ class _EditUserState extends State<EditUser> {
                           }
                         },
                       ),
-                      xfile == null ? Text('data') : Image.network(xfile!.path),
+                      xfile == null ? Text('') : Image.network(xfile!.path),
                       SizedBox(height: 25),
                       SizedBox(
                         width: double.infinity,
