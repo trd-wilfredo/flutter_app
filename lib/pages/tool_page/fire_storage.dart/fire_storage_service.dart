@@ -11,7 +11,15 @@ class FireStoreService {
 
   Future<String> uploadFile(XFile? file, String id) async {
     if (file == null) {
-      return '/$folder/hYEjVm9iqxaF6m8oj6YgEiChZG42';
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No file was selected'),
+        ),
+      );
+      if (folder == 'profile') {
+        return '/$folder/hYEjVm9iqxaF6m8oj6YgEiChZG42';
+      }
+      return '';
     }
     UploadTask uploadTask;
     var filename = id == 'NA' ? file.name : id;
