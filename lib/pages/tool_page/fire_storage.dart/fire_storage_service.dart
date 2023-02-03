@@ -11,17 +11,10 @@ class FireStoreService {
 
   Future<String> uploadFile(XFile? file, String id) async {
     if (file == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No file was selected'),
-        ),
-      );
-      return '';
+      return '/$folder/hYEjVm9iqxaF6m8oj6YgEiChZG42';
     }
     UploadTask uploadTask;
-    // Create a Reference to the fileZxcvbnm,.
     var filename = id == 'NA' ? file.name : id;
-    print(filename);
     Reference ref = FirebaseStorage.instance.ref().child('/$folder/$filename');
     final metadata = SettableMetadata(
       contentType: file.mimeType,
@@ -29,12 +22,9 @@ class FireStoreService {
     );
     if (kIsWeb) {
       uploadTask = ref.putData(await file.readAsBytes(), metadata);
-
-      // print(uploadTask.whenComplete((ytry) => tet));
     } else {
       uploadTask = ref.putFile(f.File(file.path), metadata);
     }
-    // var dowurl = await ref.getDownloadURL();
 
     return '/$folder/$filename';
   }
