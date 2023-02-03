@@ -179,7 +179,7 @@ class _FileUploadState extends State<FileUpload> {
       // running on android or ios device
       final file = await ImagePicker().pickImage(source: ImageSource.gallery);
       await FireStoreService(context: context, folder: 'file_upload')
-          .uploadFile(file)
+          .uploadFile(file, 'NA')
           .whenComplete(() async => {gettingAllImages()});
     } else {
       await Permission.photos.request();
@@ -187,7 +187,7 @@ class _FileUploadState extends State<FileUpload> {
       if (permissionStatus.isGranted) {
         final file = await ImagePicker().pickImage(source: ImageSource.gallery);
         await FireStoreService(context: context, folder: 'file_upload')
-            .uploadFile(file)
+            .uploadFile(file, 'NA')
             .whenComplete(() async => {gettingAllImages()});
       } else {
         print('Permission not granted. Try Again with permission access');

@@ -50,6 +50,7 @@ dependencies:
   firebase_dart: ^1.0.11
   file_picker: ^4.6.1
   html: ^0.15.1
+  flutter_image_compress: ^1.1.3
   
 dev_dependencies:
   flutter_lints: ^2.0.0

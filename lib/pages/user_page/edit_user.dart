@@ -38,13 +38,12 @@ class _EditUserState extends State<EditUser> {
   String password = '';
   String level = '';
   String fullname = '';
+  String uid = '';
   String company = '';
   XFile? xfile;
   List levels = ['admin', 'normal'];
   List companies = [];
   AuthService authService = AuthService();
-  final storage = FirebaseStorage.instance;
-  _getRequests() async {}
   @override
   void initState() {
     super.initState();
@@ -53,7 +52,7 @@ class _EditUserState extends State<EditUser> {
 
   gettingAllCompany() async {
     QuerySnapshot snapshot = await DatabaseService().getAllCompany();
-
+    uid = widget.valId;
     for (var f in snapshot.docs) {
       setState(() {
         companies.add(
@@ -207,13 +206,11 @@ class _EditUserState extends State<EditUser> {
                         ),
                         onPressed: () async {
                           if (kIsWeb) {
-                            // running on android or ios device
                             var file = await ImagePicker()
                                 .pickImage(source: ImageSource.gallery);
                             setState(() {
                               xfile = file;
                             });
-                            print(file!.path);
                           } else {
                             await Permission.photos.request();
                             var permissionStatus =
@@ -271,7 +268,7 @@ class _EditUserState extends State<EditUser> {
       if (company == "") company = cpny;
       var timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
       var imgPath = await FireStoreService(context: context, folder: 'profile')
-          .uploadFile(xfile);
+          .uploadFile(xfile, uid);
       var userDlt = await DatabaseService(uid: id)
           .editUser(id, fullname, email, company, level, timeEdited, imgPath);
       if (userDlt == true) {

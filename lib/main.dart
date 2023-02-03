@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/pages/app_version.dart';
 import 'package:flutter_features/pages/company_page/comapany_page.dart';
 import 'package:flutter_features/pages/company_page/search_company.dart';

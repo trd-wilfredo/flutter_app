@@ -183,7 +183,7 @@ class _EditCompanyState extends State<EditCompany> {
       });
 
       var imgPath = await FireStoreService(context: context, folder: 'company')
-          .uploadFile(xfile);
+          .uploadFile(xfile, 'NA');
       if (avilability == "") avilability = avlty;
       await DatabaseService()
           .editCompany(id, companyName, avilability, timeEdited, imgPath)

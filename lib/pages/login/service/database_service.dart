@@ -34,11 +34,19 @@ class DatabaseService {
     return userCollection.doc(uid).snapshots();
   }
 
-  //get all user
+  //get user
   Future getUserById() async {
     QuerySnapshot snapshot =
         await userCollection.where('uid', isEqualTo: uid).get();
     return snapshot;
+  }
+
+  //get user
+  Future getByIdUser(String sid) async {
+    QuerySnapshot snapshot =
+        await userCollection.where('uid', isEqualTo: sid).get();
+    var tes = snapshot.docs.isNotEmpty ? snapshot.docs : [];
+    return tes;
   }
 
   //get all user

@@ -1,14 +1,13 @@
-import 'dart:io';
+import 'dart:io' as f;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
 import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
 import 'package:flutter_features/pages/tool_page/user_tools.dart';
 import 'package:flutter_features/pages/user_page/user_page.dart';
 import 'package:flutter_features/widgets/cheetah_input.dart';
-import 'package:file_picker_cross/file_picker_cross.dart';
 import 'package:flutter_features/widgets/widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -31,12 +30,15 @@ class _AddUserState extends State<AddUser> {
   String level = '';
   String fullname = '';
   String company = '';
+  String uid = '';
   List levels = ['admin', 'normal'];
   List companies = [];
   XFile? xfile;
   AuthService authService = AuthService();
   UserTool userTool = UserTool();
+  f.File? xfile2;
 
+  @override
   void initState() {
     super.initState();
     gettingAllCompany();
@@ -45,8 +47,10 @@ class _AddUserState extends State<AddUser> {
   gettingAllCompany() async {
     QuerySnapshot snapshot = await DatabaseService().getAllCompany();
 
+    var getUser = FirebaseAuth.instance.currentUser;
     for (var f in snapshot.docs) {
       setState(() {
+        uid = getUser!.uid;
         companies.add(
           f['companyName'],
         );
@@ -163,7 +167,6 @@ class _AddUserState extends State<AddUser> {
                               ));
                         }).toList(),
                         onChanged: (newValue) {
-                          print([newValue, 'asd']);
                           // do other stuff with _category
                           setState(() => level = '$newValue');
                         },
@@ -257,7 +260,7 @@ class _AddUserState extends State<AddUser> {
         _isLoading = true;
       });
       var imgPath = await FireStoreService(context: context, folder: 'profile')
-          .uploadFile(xfile);
+          .uploadFile(xfile, uid);
       await userTool
           .createUser(fullname, email, password, level, company, imgPath)
           .then((value) async {
