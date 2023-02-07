@@ -30,14 +30,20 @@ class _ChatPageState extends State<ChatPage> {
   String admin = "";
   String uid = "";
   String url = "";
+  List imgurl = [];
   final storage = FirebaseStorage.instance.ref();
+
   @override
   void initState() {
     getChatandAdmin();
     super.initState();
   }
 
-  getChatandAdmin() {
+  getChatandAdmin() async {
+    var members = await DatabaseService().getMembers(widget.groupId);
+    setState(() {
+      imgurl = members;
+    });
     var getUser = FirebaseAuth.instance.currentUser;
     DatabaseService().getChats(widget.groupId).then((val) {
       setState(() {
@@ -142,15 +148,23 @@ class _ChatPageState extends State<ChatPage> {
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   final reversedIndex = snapshot.data.docs.length - 1 - index;
+                  // var tes = imgUrl.where((o) =>
+                  //     o.contains(snapshot.data.docs[reversedIndex]['uid']));
+                  for (var image in imgurl) {
+                    if (image
+                        .contains(snapshot.data.docs[reversedIndex]['uid'])) {
+                      url = image;
+                    }
+                  }
                   return Column(
                     children: [
                       MessageTile(
-                        message: snapshot.data.docs[reversedIndex]['message'],
-                        sender: snapshot.data.docs[reversedIndex]['sender'],
-                        sentByMe: widget.userName ==
-                            snapshot.data.docs[reversedIndex]['sender'],
-                        senderUid: snapshot.data.docs[reversedIndex]['uid'],
-                      )
+                          message: snapshot.data.docs[reversedIndex]['message'],
+                          sender: snapshot.data.docs[reversedIndex]['sender'],
+                          sentByMe: widget.userName ==
+                              snapshot.data.docs[reversedIndex]['sender'],
+                          senderUid: snapshot.data.docs[reversedIndex]['uid'],
+                          url: url)
                     ],
                   );
                 },

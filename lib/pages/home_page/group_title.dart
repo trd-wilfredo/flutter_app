@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_features/pages/home_page/chat_page.dart';
+import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
@@ -6,10 +9,12 @@ class GroupTile extends StatefulWidget {
   final String userName;
   final String groupId;
   final String groupName;
+  final List url;
   const GroupTile(
       {Key? key,
       required this.groupId,
       required this.groupName,
+      required this.url,
       required this.userName})
       : super(key: key);
 
@@ -18,8 +23,20 @@ class GroupTile extends StatefulWidget {
 }
 
 class _GroupTileState extends State<GroupTile> {
+  final storage = FirebaseStorage.instance.ref();
+  members() async {
+    var arry = [];
+    var members = await DatabaseService().getMembers(widget.groupId);
+    for (var uid in members) {
+      var membersUrl = await storage.child('profile/$uid').getDownloadURL();
+      arry.add({'$uid': membersUrl});
+      if (arry.length == members.length) return arry;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    print([widget.url, 'asasdf']);
     return GestureDetector(
       onTap: () {
         nextScreen(

@@ -134,7 +134,8 @@ class _MessagingAppState extends State<MessagingApp> {
                       message: snapshot.data.docs[index]['message'],
                       sender: snapshot.data.docs[index]['sender'],
                       senderUid: snapshot.data.docs[index]['sender'],
-                      sentByMe: snapshot.data.docs[index]['sender']);
+                      sentByMe: snapshot.data.docs[index]['sender'],
+                      url: '');
                 },
               )
             : Container();
