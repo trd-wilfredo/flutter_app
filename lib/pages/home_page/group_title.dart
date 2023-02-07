@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_features/widgets/widget.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_features/pages/home_page/chat_page.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
-import 'package:flutter_features/widgets/widget.dart';
-import 'package:flutter/material.dart';
 
 class GroupTile extends StatefulWidget {
   final String userName;

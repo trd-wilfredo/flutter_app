@@ -1,18 +1,17 @@
 import 'dart:io' as f;
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_features/pages/login/service/auth_service.dart';
-import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
-import 'package:flutter_features/pages/tool_page/user_tools.dart';
-import 'package:flutter_features/pages/user_page/user_page.dart';
-import 'package:flutter_features/widgets/cheetah_input.dart';
-import 'package:flutter_features/widgets/widget.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
-
+import 'package:flutter/foundation.dart';
 import '../login/service/database_service.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_features/widgets/widget.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_features/widgets/cheetah_input.dart';
+import 'package:flutter_features/pages/user_page/user_page.dart';
+import 'package:flutter_features/pages/tool_page/user_tools.dart';
+import '../tool_page/fire_storage.dart/fire_storage_service.dart';
+import 'package:flutter_features/pages/login/service/auth_service.dart';
 
 class AddUser extends StatefulWidget {
   const AddUser({super.key});

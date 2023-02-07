@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_features/shared/constants.dart';
 import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/pages/home_page/home_page.dart';
 import 'package:flutter_features/pages/login/auth/login_page.dart';
-import 'package:flutter_features/shared/constants.dart';
 
 class LoginApp extends StatefulWidget {
   const LoginApp({Key? key}) : super(key: key);

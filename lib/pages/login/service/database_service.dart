@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_dart/database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class DatabaseService {
@@ -255,11 +254,6 @@ class DatabaseService {
         arr.add(link);
       }
     }
-//  for (var uid in members) {
-//       print(uid);
-//       var membersUrl = await ;
-//       arry.add({'$uid': membersUrl});
-//     }
     return arr;
   }
 

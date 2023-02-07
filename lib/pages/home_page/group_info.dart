@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter_features/pages/home_page/home_page.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
-import 'package:flutter_features/widgets/widget.dart';
 
 class GroupInfo extends StatefulWidget {
   final String groupId;

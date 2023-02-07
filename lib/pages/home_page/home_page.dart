@@ -1,18 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/messaging_app/messaging.dart';
-import 'package:flutter_features/pages/company_page/comapany_page.dart';
-import 'package:flutter_features/pages/company_page/search_company.dart';
+import 'package:flutter_features/pages/user_page/user_page.dart';
 import 'package:flutter_features/pages/home_page/group_title.dart';
 import 'package:flutter_features/pages/home_page/search_page.dart';
 import 'package:flutter_features/pages/login/auth/login_page.dart';
+import 'package:flutter_features/pages/product_page/product_page.dart';
+import 'package:flutter_features/pages/company_page/comapany_page.dart';
+import 'package:flutter_features/pages/company_page/search_company.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
-import 'package:flutter_features/pages/product_page/product_page.dart';
 import 'package:flutter_features/pages/profile_page.dart/profile_page.dart';
-import 'package:flutter_features/pages/user_page/user_page.dart';
-import 'package:flutter_features/widgets/widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

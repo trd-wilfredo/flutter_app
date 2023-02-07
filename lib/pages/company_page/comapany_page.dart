@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter_features/pages/company_page/add_company.dart';
 import 'package:flutter_features/pages/company_page/edit_company.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
-import 'package:flutter_features/pages/product_page/add_product.dart';
-import 'package:flutter_features/widgets/widget.dart';
 
 class CompanyPage extends StatefulWidget {
   const CompanyPage({Key? key}) : super(key: key);
