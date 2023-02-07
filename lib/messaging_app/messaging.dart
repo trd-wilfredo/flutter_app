@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_features/widgets/message_title.dart';
 import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
-import 'package:flutter_features/widgets/message_title.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MessagingApp extends StatefulWidget {
   const MessagingApp({super.key});
@@ -134,7 +134,8 @@ class _MessagingAppState extends State<MessagingApp> {
                       message: snapshot.data.docs[index]['message'],
                       sender: snapshot.data.docs[index]['sender'],
                       senderUid: snapshot.data.docs[index]['sender'],
-                      sentByMe: snapshot.data.docs[index]['sender']);
+                      sentByMe: snapshot.data.docs[index]['sender'],
+                      url: '');
                 },
               )
             : Container();

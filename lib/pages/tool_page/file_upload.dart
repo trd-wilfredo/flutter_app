@@ -1,12 +1,9 @@
-import 'dart:convert';
-import 'dart:io' as f;
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
-import 'package:flutter_features/widgets/widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'fire_storage.dart/fire_storage_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class FileUpload extends StatefulWidget {

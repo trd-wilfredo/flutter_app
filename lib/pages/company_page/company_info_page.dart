@@ -1,15 +1,12 @@
-
-import 'package:flutter_features/pages/login/service/database_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_features/pages/login/service/database_service.dart';
 
 class CompanyInfoPage extends StatefulWidget {
   final String uid;
   final String companyName;
   const CompanyInfoPage(
-      {Key? key,
-      required this.uid,
-      required this.companyName})
+      {Key? key, required this.uid, required this.companyName})
       : super(key: key);
 
   @override
@@ -31,7 +28,6 @@ class _CompanyInfoPageState extends State<CompanyInfoPage> {
         companyName = val;
       });
     });
-
   }
 
   @override

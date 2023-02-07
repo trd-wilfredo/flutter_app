@@ -1,10 +1,12 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_features/pages/tool_page/custom.dart';
 
 class MessageTile extends StatefulWidget {
   final String message;
   final String sender;
   final String senderUid;
+  final String url;
   final bool sentByMe;
   const MessageTile({
     Key? key,
@@ -12,6 +14,7 @@ class MessageTile extends StatefulWidget {
     required this.sender,
     required this.sentByMe,
     required this.senderUid,
+    required this.url,
   }) : super(key: key);
 
   @override
@@ -20,21 +23,8 @@ class MessageTile extends StatefulWidget {
 
 class _MessageTileState extends State<MessageTile> {
   final storage = FirebaseStorage.instance.ref();
-  String url = "na";
-
   @override
   Widget build(BuildContext context) {
-    try {
-      storage
-          .child('profile/${widget.senderUid}')
-          .getDownloadURL()
-          .then((value) => {
-                setState(() {
-                  url = value;
-                })
-              });
-    } catch (err) {}
-
     return Stack(
       children: [
         Container(
@@ -96,16 +86,17 @@ class _MessageTileState extends State<MessageTile> {
             child: widget.sentByMe
                 ? CircleAvatar(
                     radius: 0,
-                    backgroundImage: NetworkImage(url),
+                    backgroundImage: NetworkImage('na'),
                   )
-                : (url == "na"
+                : (widget.url == "na"
                     ? CircleAvatar(
-                        backgroundImage: AssetImage('assets/image_2.jpg'),
+                        backgroundImage: AssetImage(
+                            Costum.web ? 'assets/image_2.jpg' : 'image_2.jpg'),
                         radius: 20,
                       )
                     : CircleAvatar(
                         radius: 20,
-                        backgroundImage: NetworkImage(url),
+                        backgroundImage: NetworkImage(widget.url),
                       )),
           ),
         ),

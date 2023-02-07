@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_features/widgets/widget.dart';
+import 'package:flutter_features/pages/user_page/add_user.dart';
 import 'package:flutter_features/pages/company_page/add_company.dart';
 import 'package:flutter_features/pages/product_page/add_product.dart';
-import 'package:flutter_features/pages/user_page/add_user.dart';
-import 'package:flutter_features/widgets/widget.dart';
 
 class InfoRegister extends StatefulWidget {
   const InfoRegister({super.key});

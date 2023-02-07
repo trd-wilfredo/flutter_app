@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_features/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/company_page/company_info_page.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_features/widgets/widget.dart';
 
 class CompanySearch extends StatefulWidget {
- const CompanySearch({super.key});
+  const CompanySearch({super.key});
 
   @override
   State<CompanySearch> createState() => _CompanySearchState();
@@ -117,51 +117,42 @@ class _CompanySearchState extends State<CompanySearch> {
     }
   }
 
-  companyList() {  
+  companyList() {
     return hasUserSearched
-    ? ListView.builder(
-        shrinkWrap: true,
-        itemCount: searchSnapshot!.docs.length,
-        itemBuilder: (context, index) {
-          return companyTile(     
-            searchSnapshot!.docs[index]['uid'],
-            searchSnapshot!.docs[index]['companyName'],
-          );
-        },
-      )
-    : Container();
+        ? ListView.builder(
+            shrinkWrap: true,
+            itemCount: searchSnapshot!.docs.length,
+            itemBuilder: (context, index) {
+              return companyTile(
+                searchSnapshot!.docs[index]['uid'],
+                searchSnapshot!.docs[index]['companyName'],
+              );
+            },
+          )
+        : Container();
   }
 
-  Widget companyTile(
-      String uid, String companyName) {
-        
+  Widget companyTile(String uid, String companyName) {
     return ListTile(
-      
       contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       trailing: InkWell(
         child: Align(
           alignment: Alignment.center,
-          child: Text(
-                  companyName, 
-                  style: const TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.blueAccent,
-                            fontSize: 16,
-                            decoration: TextDecoration.underline )),
+          child: Text(companyName,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.blueAccent,
+                  fontSize: 16,
+                  decoration: TextDecoration.underline)),
         ),
         onTap: () async {
-          await DatabaseService()
-              .gettingCompanyInfo(uid);
+          await DatabaseService().gettingCompanyInfo(uid);
           Future.delayed(const Duration(seconds: 0), () {
-              nextScreen(
-                  context,
-                  CompanyInfoPage(
-                      uid: uid,
-                      companyName: companyName));
-            });
+            nextScreen(
+                context, CompanyInfoPage(uid: uid, companyName: companyName));
+          });
         },
       ),
     );
   }
 }
-
