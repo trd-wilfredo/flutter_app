@@ -242,6 +242,14 @@ class DatabaseService {
     }
   }
 
+  onResolve(foundURL) {
+    return foundURL;
+  }
+
+  onReject(error) {
+    return 'na';
+  }
+
   Future getMembers(String groupId) async {
     final storage = FirebaseStorage.instance.ref();
     var arr = [];
@@ -250,7 +258,10 @@ class DatabaseService {
     for (var group in snapshot.docs) {
       for (var user in group['members']) {
         var id = user.split('_');
-        var link = await storage.child('profile/${id[0]}').getDownloadURL();
+        var link = await storage
+            .child('profile/${id[0]}')
+            .getDownloadURL()
+            .then(onResolve, onError: onReject);
         arr.add(link);
       }
     }

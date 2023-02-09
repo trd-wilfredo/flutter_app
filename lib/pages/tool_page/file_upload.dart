@@ -1,7 +1,11 @@
+import 'dart:io' as f;
+import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dowload/download_service.dart';
 import 'fire_storage.dart/fire_storage_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -15,7 +19,6 @@ class FileUpload extends StatefulWidget {
 
 class _FileUploadState extends State<FileUpload> {
   String imageUrl = "";
-
   final storage = FirebaseStorage.instance;
   List images = [];
 
@@ -119,6 +122,7 @@ class _FileUploadState extends State<FileUpload> {
                 ],
                 rows: images.map((val) {
                   TextStyle linkStyle = TextStyle(color: Colors.blue);
+                  print([val.fullPath]);
 
                   return DataRow(cells: [
                     DataCell(
@@ -130,10 +134,19 @@ class _FileUploadState extends State<FileUpload> {
                             ..onTap = () async {
                               var imgUlr =
                                   (await val.getDownloadURL() as String);
-                              await showDialog(
-                                  context: context,
-                                  builder: (_) => ImageDialog(
-                                      path: val.fullPath, data: imgUlr));
+                              if (val.fullPath.contains('.pdf')) {
+                                var imgUlr =
+                                    (await val.getDownloadURL() as String);
+                                DownloadService downloadService = kIsWeb
+                                    ? WebDownloadService()
+                                    : MobileDownloadService();
+                                await downloadService.download(url: imgUlr);
+                              } else {
+                                await showDialog(
+                                    context: context,
+                                    builder: (_) => ImageDialog(
+                                        path: val.fullPath, data: imgUlr));
+                              }
                             },
                         ),
                       ),
@@ -141,6 +154,20 @@ class _FileUploadState extends State<FileUpload> {
                     DataCell(
                       Row(
                         children: [
+                          ElevatedButton(
+                            child: Text('Download'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blue,
+                            ),
+                            onPressed: () async {
+                              var imgUlr =
+                                  (await val.getDownloadURL() as String);
+                              DownloadService downloadService = kIsWeb
+                                  ? WebDownloadService()
+                                  : MobileDownloadService();
+                              await downloadService.download(url: imgUlr);
+                            },
+                          ),
                           ElevatedButton(
                             child: Text('Delete'),
                             style: ElevatedButton.styleFrom(
@@ -174,10 +201,23 @@ class _FileUploadState extends State<FileUpload> {
   imgUpload() async {
     if (kIsWeb) {
       // running on android or ios device
-      final file = await ImagePicker().pickImage(source: ImageSource.gallery);
-      await FireStoreService(context: context, folder: 'file_upload')
-          .uploadFile(file, 'NA')
-          .whenComplete(() async => {gettingAllImages()});
+      // final file = await ImagePicker().pickImage(source: ImageSource.gallery);
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+      var test = result!.files.first.bytes as Uint8List;
+      Reference ref = FirebaseStorage.instance
+          .ref()
+          .child('/file_upload/${result.files.first.name}');
+      ref.putData(test);
+
+      // FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+      // if (result != null) {
+      //   List<f.File> files = result.paths.map((path) => f.File(path)).toList();
+      // } else {
+      //   // User canceled the picker
+      // }
+      // await FireStoreService(context: context, folder: 'file_pload')
+      //     .uploadFile(file, 'NA')
+      //     .whenComplete(() async => {gettingAllImages()});
     } else {
       await Permission.photos.request();
       var permissionStatus = await Permission.photos.status;
@@ -192,6 +232,19 @@ class _FileUploadState extends State<FileUpload> {
     }
   }
 }
+// FilePickerResult? result = await FilePicker.platform
+//     .pickFiles(
+//         type: FileType.custom,
+//         allowedExtensions: ['jpg', 'pdf', 'doc']);
+
+// if (result != null) {
+//   List<XFile>? files = result.paths
+//       .map((path) => XFile(path as String))
+//       .toList();
+//   setState(() {
+//     images = files;
+//   });
+// }
 
 class ImageDialog extends StatelessWidget {
   final String path;
@@ -216,7 +269,6 @@ class ImageDialog extends StatelessWidget {
 //   uploadSrorage() {
 //     // .future
 //   }
-
 //   uploadImage(file) async {
 //     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 //     // print(pickedFile!.path);
