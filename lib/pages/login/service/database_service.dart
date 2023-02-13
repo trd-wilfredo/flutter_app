@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_dart/database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class DatabaseService {
   final String? uid;
@@ -41,13 +41,13 @@ class DatabaseService {
     return snapshot;
   }
 
-  //get user
-  Future getByIdUser(String sid) async {
-    QuerySnapshot snapshot =
-        await userCollection.where('uid', isEqualTo: sid).get();
-    var tes = snapshot.docs.isNotEmpty ? snapshot.docs : [];
-    return tes;
-  }
+  // //get user
+  // Future getByIdUser(String sid) async {
+  //   QuerySnapshot snapshot =
+  //       await userCollection.where('uid', isEqualTo: sid).get();
+  //   var tes = snapshot.docs.isNotEmpty ? snapshot.docs : [];
+  //   return tes;
+  // }
 
   //get all user
   Future getAllUser() async {
@@ -242,6 +242,32 @@ class DatabaseService {
     }
   }
 
+  onResolve(foundURL) {
+    return foundURL;
+  }
+
+  onReject(error) {
+    return 'na';
+  }
+
+  Future getMembers(String groupId) async {
+    final storage = FirebaseStorage.instance.ref();
+    var arr = [];
+    QuerySnapshot snapshot =
+        await groupCollection.where('groupId', isEqualTo: groupId).get();
+    for (var group in snapshot.docs) {
+      for (var user in group['members']) {
+        var id = user.split('_');
+        var link = await storage
+            .child('profile/${id[0]}')
+            .getDownloadURL()
+            .then(onResolve, onError: onReject);
+        arr.add(link);
+      }
+    }
+    return arr;
+  }
+
   // get group members
   getGroupMembers(groupId) async {
     return groupCollection.doc(groupId).snapshots();
@@ -316,20 +342,24 @@ class DatabaseService {
     }
   }
 
-   // search
+  // search
   Future searchByCompany(String companyName) async {
-    QuerySnapshot snapshot = await companyCollection.where("companyName", isEqualTo: companyName).get();
-    if(snapshot.docs.isEmpty) {
+    QuerySnapshot snapshot = await companyCollection
+        .where("companyName", isEqualTo: companyName)
+        .get();
+    if (snapshot.docs.isEmpty) {
       return companyCollection
-      .where("companyName",isGreaterThanOrEqualTo: companyName)
-      .where("companyName",isLessThan: companyName + 'z')
-      .where("companyName",isGreaterThan: companyName)
-      .get();
-    } 
-    else {
-      return companyCollection.where("companyName", isEqualTo: companyName).get();
+          .where("companyName", isGreaterThanOrEqualTo: companyName)
+          .where("companyName", isLessThan: companyName + 'z')
+          .where("companyName", isGreaterThan: companyName)
+          .get();
+    } else {
+      return companyCollection
+          .where("companyName", isEqualTo: companyName)
+          .get();
     }
-}
+  }
+
   // Save Product
   Future addSaveProduct(String productName, String companyName, String stocks,
       String avilability, String timeCreated, List imgePaths) async {

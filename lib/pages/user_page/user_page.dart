@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_features/pages/login/service/database_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter_features/pages/user_page/add_user.dart';
 import 'package:flutter_features/pages/user_page/edit_user.dart';
-import 'package:flutter_features/widgets/widget.dart';
+import 'package:flutter_features/pages/login/service/database_service.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);

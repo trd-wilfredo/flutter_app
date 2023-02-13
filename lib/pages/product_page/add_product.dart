@@ -1,15 +1,13 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_features/pages/login/service/database_service.dart';
-import 'package:flutter_features/pages/product_page/product_page.dart';
-import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
-import 'package:flutter_features/widgets/cheetah_input.dart';
-import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_features/widgets/widget.dart';
+import 'package:flutter_features/widgets/cheetah_input.dart';
+import '../tool_page/fire_storage.dart/fire_storage_service.dart';
+import 'package:flutter_features/pages/product_page/product_page.dart';
+import 'package:flutter_features/pages/login/service/database_service.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key});

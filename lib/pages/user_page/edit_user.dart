@@ -1,15 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_features/widgets/widget.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_features/widgets/cheetah_input.dart';
+import 'package:flutter_features/pages/user_page/user_page.dart';
+import '../tool_page/fire_storage.dart/fire_storage_service.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
-import 'package:flutter_features/pages/tool_page/fire_storage.dart/fire_storage_service.dart';
-import 'package:flutter_features/pages/user_page/user_page.dart';
-import 'package:flutter_features/widgets/cheetah_input.dart';
-import 'package:flutter_features/widgets/widget.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class EditUser extends StatefulWidget {
   String valName = '';

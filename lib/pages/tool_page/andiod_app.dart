@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_features/pages/tool_page/dowload/download_service.dart';
 
 class AndiodPage extends StatefulWidget {
@@ -13,7 +13,10 @@ class _AndiodPageState extends State<AndiodPage> {
   Future<void> _downloadFile() async {
     DownloadService downloadService =
         kIsWeb ? WebDownloadService() : MobileDownloadService();
-    await downloadService.download(url: 'assets/assets/app/app-release.apk');
+    await downloadService.download(
+        url: kIsWeb
+            ? 'assets/assets/app/app-release.apk'
+            : 'assets/app/app-release.apk');
   }
 
   @override
