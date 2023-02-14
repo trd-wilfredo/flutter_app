@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                         // check value
                         validator: (value) {
                           return RegExp(
-                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-zA-Z]+")
                                   .hasMatch(value!)
                               ? null
                               : "Please enter a valid email";
