@@ -31,7 +31,7 @@ class AuthService {
       if (user != null) {
         // database call
         await DatabaseService(uid: user.uid)
-            .savingUserData(fullname, email, level, '', '');
+            .savingUserData(fullname, email, level, '', '/profile/${user.uid}');
 
         return true;
       }
