@@ -7,11 +7,15 @@ class MessageTile extends StatefulWidget {
   final String sender;
   final String senderUid;
   final String url;
+  final String attachment;
+  final String date;
   final bool sentByMe;
   const MessageTile({
     Key? key,
     required this.message,
     required this.sender,
+    required this.attachment,
+    required this.date,
     required this.sentByMe,
     required this.senderUid,
     required this.url,
