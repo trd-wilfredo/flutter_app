@@ -4,6 +4,8 @@ const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
   "flutter.js": "eb2682e33f25cd8f1fc59011497c35f8",
+"version.json": "5c2a3874c179ed5339309862efb02542",
+"main.dart.js": "39ba6ff1f3f80a705c6721c5e4bc6f46",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons%20copy/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "icons%20copy/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
@@ -27,16 +29,29 @@ const RESOURCES = {
 "assets/AssetManifest.json": "7f54fae80f3363b922337d304baab45b",
 "assets/assets/image_1.jpg": "e69de6c13cec5a08683559672dc1d1a2",
 "assets/assets/app/app-release.apk": "890efdfa534ad7e958e904802eb89cc4",
+"assets/assets/monster-10.png": "7587f96c36a0a8e37675cdebf12f4575",
+"assets/assets/monster-6.png": "281f6db4ec2f54b1a595e4e55b61e1c6",
 "assets/assets/image_6.jpg": "1d8162c14d871303420c903281e6f072",
 "assets/assets/image_5.jpg": "d9ce37a06aae1ba124def6fa361a6193",
+"assets/assets/monster-7.png": "3a2fa9e3c32a1fdd45b662077e93bb9a",
 "assets/assets/image_2.jpg": "47d678dd0288bb49a1c80c500203b630",
+"assets/assets/monster-4.png": "ee46394cf9d06075a39f4428a94e2c64",
+"assets/assets/monster-8.png": "8820ba371957aaf5a963ccd9a8a2376a",
 "assets/assets/image_3.jpg": "f65171ec1bd56a6769e12cc953f613dc",
 "assets/assets/image_4.jpg": "b5ad9a220cfc588c3665cb77c47133ea",
 "assets/assets/GSP-logo.png": "1374c4d147b27fe461635c2296572d21",
+"assets/assets/monster-19.png": "e30ea5b63258273753ae18f7e8cfb0a4",
+"assets/fonts/RockoFLF.ttf": "072bff49d3ebbc7543f3796ca611a34f",
 "assets/fonts/Bello-Script.ttf": "d5bfd2106ebb712542d805ed474a3863",
+"assets/fonts/Feather-Bold.ttf": "14936bb7a4b6575fd2eee80a3ab52cc2",
+"assets/fonts/Feather-Write.ttf": "b86054b7c34906b8b1abbcb55f77928a",
 "assets/fonts/MaterialIcons-Regular.otf": "95db9098c58fd6db106f1116bae85a0b",
 "index.html": "f23810a52f5ab0cd06ae05a54564e609",
-"/": "f23810a52f5ab0cd06ae05a54564e609"
+"/": "f23810a52f5ab0cd06ae05a54564e609",
+"fonts/RockoFLF.ttf": "072bff49d3ebbc7543f3796ca611a34f",
+"fonts/Bello-Script.ttf": "d5bfd2106ebb712542d805ed474a3863",
+"fonts/Feather-Bold.ttf": "14936bb7a4b6575fd2eee80a3ab52cc2",
+"fonts/Feather-Write.ttf": "b86054b7c34906b8b1abbcb55f77928a"
 };
 
 // The application shell files that are downloaded before a service worker can
