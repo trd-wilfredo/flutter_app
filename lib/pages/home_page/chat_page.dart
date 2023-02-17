@@ -193,6 +193,7 @@ class _ChatPageState extends State<ChatPage> {
                       url = image;
                     }
                   }
+                  print(snapshot.data.docs[reversedIndex]['attach']);
                   return Column(
                     children: [
                       MessageTile(

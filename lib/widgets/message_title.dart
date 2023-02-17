@@ -1,4 +1,3 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/tool_page/custom.dart';
 
@@ -26,7 +25,6 @@ class MessageTile extends StatefulWidget {
 }
 
 class _MessageTileState extends State<MessageTile> {
-  final storage = FirebaseStorage.instance.ref();
   @override
   Widget build(BuildContext context) {
     return Stack(
