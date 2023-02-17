@@ -18,6 +18,8 @@ import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/profile_page.dart/profile_page.dart';
 import 'package:flutter_features/pages/info_registeration/info_registeration.dart';
 
+import 'pages/about_us.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
@@ -51,15 +53,16 @@ void main() async {
         '/login': (context) => LoginApp(),
         '/skill_i': (context) => SkillI(),
         '/skill_ii': (context) => SkillII(),
-        '/information_registration': (context) => InfoRegister(),
-        '/company_list': (context) => CompanyPage(),
-        '/messaging_app': (context) => MessagingApp(),
-        '/profile_page': (context) => profilePage,
-        '/company_search': (context) => CompanySearch(),
+        '/about_us': (context) => AboutUs(),
+        '/app_version': (context) => IosPage(),
+        '/work_progress': (context) => AboutUs(),
         '/file_upload': (context) => FileUpload(),
+        '/profile_page': (context) => profilePage,
+        '/company_list': (context) => CompanyPage(),
         '/andriod_phone': (context) => AndiodPage(),
-        '/ios_App': (context) => IosPage(),
-        '/app_version': (context) => AppVersion(),
+        '/messaging_app': (context) => MessagingApp(),
+        '/company_search': (context) => CompanySearch(),
+        '/information_registration': (context) => InfoRegister(),
       },
     ),
   );

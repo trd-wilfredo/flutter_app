@@ -1,4 +1,3 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/tool_page/custom.dart';
 
@@ -7,11 +6,15 @@ class MessageTile extends StatefulWidget {
   final String sender;
   final String senderUid;
   final String url;
+  final String attachment;
+  final String date;
   final bool sentByMe;
   const MessageTile({
     Key? key,
     required this.message,
     required this.sender,
+    required this.attachment,
+    required this.date,
     required this.sentByMe,
     required this.senderUid,
     required this.url,
@@ -22,7 +25,6 @@ class MessageTile extends StatefulWidget {
 }
 
 class _MessageTileState extends State<MessageTile> {
-  final storage = FirebaseStorage.instance.ref();
   @override
   Widget build(BuildContext context) {
     return Stack(

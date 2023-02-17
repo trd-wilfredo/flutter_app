@@ -67,6 +67,16 @@ class _HomeState extends State<Home> {
       title: 'Layouts',
     ),
     PageList(
+      part: 'null',
+      page: 'about_us',
+      title: 'About Us',
+    ),
+    PageList(
+      part: 'null',
+      page: 'work_progress',
+      title: 'Work Progress',
+    ),
+    PageList(
       part: 'bottom',
       page: 'app_version',
       title: 'AppVersion 1.0.4',

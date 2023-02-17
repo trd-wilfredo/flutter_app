@@ -23,7 +23,12 @@ class FireStoreService {
     }
     UploadTask uploadTask;
     var filename = id == 'NA' ? file.name : id;
-    Reference ref = FirebaseStorage.instance.ref().child('/$folder/$filename');
+    var date = DateTime.now().millisecondsSinceEpoch.toString();
+    var pathFile = folder == 'chat'
+        ? '/$folder/$date$id${file.name}'
+        : '/$folder/$filename';
+    DateTime.now().millisecondsSinceEpoch.toString();
+    Reference ref = FirebaseStorage.instance.ref().child(pathFile);
     final metadata = SettableMetadata(
       contentType: file.mimeType,
       customMetadata: {'picked-file-path': file.path},
@@ -33,8 +38,7 @@ class FireStoreService {
     } else {
       uploadTask = ref.putFile(f.File(file.path), metadata);
     }
-
-    return '/$folder/$filename';
+    return pathFile;
   }
 
   Future<List> multipleUploadFile(List<XFile> files) async {

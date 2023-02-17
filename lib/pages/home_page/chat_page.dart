@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_features/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_features/widgets/message_title.dart';
 import 'package:flutter_features/pages/home_page/group_info.dart';
+import '../tool_page/fire_storage.dart/fire_storage_service.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 
 class ChatPage extends StatefulWidget {
@@ -110,6 +114,41 @@ class _ChatPageState extends State<ChatPage> {
                   width: 12,
                 ),
                 GestureDetector(
+                  onTap: () async {
+                    var file = await ImagePicker()
+                        .pickImage(source: ImageSource.gallery);
+                    var imgPath =
+                        FireStoreService(context: context, folder: 'chat');
+                    if (kIsWeb) {
+                      // running on android or ios device
+                      var path = await imgPath.uploadFile(file, uid);
+                      sendImage(path);
+                    } else {
+                      await Permission.photos.request();
+                      var permissionStatus = await Permission.photos.status;
+                      if (permissionStatus.isGranted) {
+                        var path = await imgPath.uploadFile(file, uid);
+                        sendImage(path);
+                      } else {
+                        print(
+                            'Permission not granted. Try Again with permission access');
+                      }
+                    }
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: const Center(
+                        child: Icon(
+                      Icons.image,
+                      color: Colors.white,
+                    )),
+                  ),
+                ),
+                GestureDetector(
                   onTap: () {
                     sendMessage();
                   },
@@ -154,11 +193,16 @@ class _ChatPageState extends State<ChatPage> {
                       url = image;
                     }
                   }
+                  print(snapshot.data.docs[reversedIndex]['attach']);
                   return Column(
                     children: [
                       MessageTile(
                           message: snapshot.data.docs[reversedIndex]['message'],
                           sender: snapshot.data.docs[reversedIndex]['sender'],
+                          attachment: snapshot.data.docs[reversedIndex]
+                              ['attach'],
+                          date: snapshot.data.docs[reversedIndex]['time']
+                              .toString(),
                           sentByMe: widget.userName ==
                               snapshot.data.docs[reversedIndex]['sender'],
                           senderUid: snapshot.data.docs[reversedIndex]['uid'],
@@ -172,15 +216,31 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+  sendImage(path) async {
+    Map<String, dynamic> chatMessageMap = {
+      "uid": uid,
+      "attach": path,
+      "sender": widget.userName,
+      "time": DateTime.now().millisecondsSinceEpoch,
+      "message":
+          messageController.text.isNotEmpty ? messageController.text : '',
+    };
+    DatabaseService().sendMessage(widget.groupId, chatMessageMap);
+    setState(() {
+      messageController.clear();
+      myFocusNode.requestFocus();
+    });
+  }
+
   sendMessage() {
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
         "uid": uid,
+        "attach": '',
         "sender": widget.userName,
         "message": messageController.text,
         "time": DateTime.now().millisecondsSinceEpoch,
       };
-
       DatabaseService().sendMessage(widget.groupId, chatMessageMap);
       setState(() {
         messageController.clear();
