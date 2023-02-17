@@ -12,7 +12,7 @@ class AboutUs extends StatelessWidget {
         elevation: 1.0,
         backgroundColor: Color.fromRGBO(255, 255, 255, 1),
         title: Padding(
-          padding: const EdgeInsets.only(left: 20.0),
+          padding: const EdgeInsets.only(left: 10.0),
           child: Row(
             children: const [
               Text(
