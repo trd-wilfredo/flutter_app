@@ -133,6 +133,8 @@ class _MessagingAppState extends State<MessagingApp> {
                   return MessageTile(
                       message: snapshot.data.docs[index]['message'],
                       sender: snapshot.data.docs[index]['sender'],
+                      attachment: snapshot.data.docs[index]['attach'],
+                      date: snapshot.data.docs[index]['time'].toString(),
                       senderUid: snapshot.data.docs[index]['sender'],
                       sentByMe: snapshot.data.docs[index]['sender'],
                       url: '');
@@ -147,6 +149,7 @@ class _MessagingAppState extends State<MessagingApp> {
     if (_textController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageCS = {
         "uid": uid,
+        "attach": '',
         "sender": email,
         "message": _textController.text,
         "time": DateTime.now().millisecondsSinceEpoch,

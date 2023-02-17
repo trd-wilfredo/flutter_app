@@ -35,7 +35,6 @@ class _GroupTileState extends State<GroupTile> {
 
   @override
   Widget build(BuildContext context) {
-    print([widget.url, 'asasdf']);
     return GestureDetector(
       onTap: () {
         nextScreen(
