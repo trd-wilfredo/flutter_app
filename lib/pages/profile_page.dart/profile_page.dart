@@ -1,14 +1,21 @@
+import '../user_page/user_page.dart';
 import 'package:flutter/material.dart';
+import '../product_page/product_page.dart';
+import '../../messaging_app/messaging.dart';
+import '../company_page/comapany_page.dart';
+import '../company_page/search_company.dart';
+import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter_features/pages/home_page/home_page.dart';
 import 'package:flutter_features/pages/login/auth/login_page.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
-import 'package:flutter_features/widgets/widget.dart';
 
 class ProfilePage extends StatefulWidget {
   List docs;
+  String profilePic;
   ProfilePage({
     Key? key,
     required this.docs,
+    required this.profilePic,
   }) : super(key: key);
 
   @override
@@ -37,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
       drawer: Drawer(
         child: ListView(
           padding: const EdgeInsets.symmetric(vertical: 50),
-          children: <Widget>[
+          children: [
             widget.docs.first['profilePic'] == ''
                 ? Icon(
                     Icons.account_circle,
@@ -47,12 +54,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(100.0),
                     child: Image(
-                      image: NetworkImage(
-                          'https://firebasestorage.googleapis.com/v0/b/chatapp-3e035.appspot.com/o/profile%2Fian.jpeg?alt=media&token=dbf5f97c-3ddf-488e-8eeb-0b8ab3af2ca5'),
+                      image: NetworkImage(widget.profilePic),
                       alignment: Alignment.center,
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.fill,
+                      height: 200,
+                      fit: BoxFit.fitHeight,
                     ),
                   ),
             const SizedBox(
@@ -71,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             ListTile(
               onTap: () {
-                nextScreen(context, const HomePage());
+                nextScreen(context, HomePage());
               },
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -81,15 +86,81 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(color: Colors.black),
               ),
             ),
+
+            // ListTile(
+            //   onTap: () {},
+            //   selected: true,
+            //   selectedColor: Theme.of(context).primaryColor,
+            //   contentPadding:
+            //       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            //   leading: const Icon(Icons.group),
+            //   title: const Text(
+            //     "Profile",
+            //     style: TextStyle(color: Colors.black),
+            //   ),
+            // ),
+
             ListTile(
-              onTap: () {},
-              selected: true,
-              selectedColor: Theme.of(context).primaryColor,
+              onTap: () {
+                nextScreen(context, UserPage());
+              },
+              // selectedColor: Theme.of(context).primaryColor,
+              // selected: true,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.group),
               title: const Text(
-                "Profile",
+                "Users",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                nextScreen(context, ProductPage());
+              },
+              // selectedColor: Theme.of(context).primaryColor,
+              // selected: true,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              leading: const Icon(Icons.group),
+              title: const Text(
+                "Products",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                nextScreen(context, CompanyPage());
+              },
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              leading: const Icon(Icons.group),
+              title: const Text(
+                "Companies",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                nextScreen(context, CompanySearch());
+              },
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              leading: const Icon(Icons.group),
+              title: const Text(
+                "Search Company",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                nextScreen(context, MessagingApp());
+              },
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              leading: const Icon(Icons.group),
+              title: const Text(
+                "CS",
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -142,7 +213,8 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * .10),
+          horizontal: MediaQuery.of(context).size.width * .10,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -155,12 +227,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(100.0),
                     child: Image(
-                      image: NetworkImage(
-                          'https://firebasestorage.googleapis.com/v0/b/chatapp-3e035.appspot.com/o/profile%2Fian.jpeg?alt=media&token=dbf5f97c-3ddf-488e-8eeb-0b8ab3af2ca5'),
+                      image: NetworkImage(widget.profilePic),
                       alignment: Alignment.center,
                       height: 200,
                       width: 200,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.fitHeight,
                     ),
                   ),
             const SizedBox(
@@ -181,8 +252,10 @@ class _ProfilePageState extends State<ProfilePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Email", style: TextStyle(fontSize: 17)),
-                Text(widget.docs.first['email'],
-                    style: const TextStyle(fontSize: 17)),
+                Text(
+                  widget.docs.first['email'],
+                  style: const TextStyle(fontSize: 17),
+                ),
               ],
             ),
           ],

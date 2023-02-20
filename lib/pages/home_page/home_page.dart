@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_features/widgets/widget.dart';
@@ -28,6 +29,8 @@ class _HomePageState extends State<HomePage> {
   Stream? groups;
   bool _isLoading = false;
   String groupName = "";
+  String profile = "";
+
   List docs = [];
 
   @override
@@ -64,13 +67,16 @@ class _HomePageState extends State<HomePage> {
         groups = snapshot;
       });
     });
-
     var user =
         await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
             .getUserById();
-
+    var link = await FirebaseStorage.instance
+        .ref()
+        .child(user.docs.first['profilePic'])
+        .getDownloadURL();
     setState(() {
       docs = user.docs;
+      profile = link;
     });
   }
 
@@ -90,7 +96,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
-        title: Text(
+        title: const Text(
           'Chat List',
           style: TextStyle(
             color: Colors.white,
@@ -104,28 +110,56 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.symmetric(vertical: 50),
           children: <Widget>[
             SizedBox(
-              height: 150,
+              height: 200,
               child: IconButton(
                 onPressed: () {
                   nextScreenReplace(
                     context,
                     ProfilePage(
                       docs: docs,
+                      profilePic: profile,
                     ),
                   );
                 },
-                icon: Icon(
-                  Icons.account_circle,
-                  size: 150,
-                  color: Color(0xFF848484),
-                ),
+                icon: profile == ''
+                    ? Icon(
+                        Icons.account_circle,
+                        size: 150,
+                        color: Colors.grey[700],
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(100.0),
+                        child: Image(
+                          image: NetworkImage(profile),
+                          alignment: Alignment.center,
+                          height: 200,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
               ),
             ),
-            SizedBox(
-              height: 15.0,
+            Text(
+              email,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            Divider(
+            const SizedBox(
+              height: 30,
+            ),
+            const Divider(
               height: 2,
+            ),
+            ListTile(
+              onTap: () {},
+              selected: true,
+              selectedColor: Theme.of(context).primaryColor,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              leading: const Icon(Icons.group),
+              title: const Text(
+                "Groups",
+                style: TextStyle(color: Colors.black),
+              ),
             ),
             ListTile(
               onTap: () {
