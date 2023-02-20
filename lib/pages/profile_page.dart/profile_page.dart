@@ -37,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
       drawer: Drawer(
         child: ListView(
           padding: const EdgeInsets.symmetric(vertical: 50),
-          children: <Widget>[
+          children: [
             widget.docs.first['profilePic'] == ''
                 ? Icon(
                     Icons.account_circle,
@@ -48,11 +48,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     borderRadius: BorderRadius.circular(100.0),
                     child: Image(
                       image: NetworkImage(
-                          'https://firebasestorage.googleapis.com/v0/b/chatapp-3e035.appspot.com/o/profile%2Fian.jpeg?alt=media&token=dbf5f97c-3ddf-488e-8eeb-0b8ab3af2ca5'),
+                          'https://firebasestorage.googleapis.com/v0/b/chatapp-3e035.appspot.com/o/profile%2Fnoprofile.png?alt=media&token=b07b59e1-f423-4949-a974-9fb15c946f08'),
                       alignment: Alignment.center,
-                      height: 100,
-                      width: 100,
-                      fit: BoxFit.fill,
+                      height: 200,
+                      fit: BoxFit.fitHeight,
                     ),
                   ),
             const SizedBox(
@@ -142,7 +141,8 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * .10),
+          horizontal: MediaQuery.of(context).size.width * .10,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -154,13 +154,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   )
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(100.0),
-                    child: Image(
+                    child: const Image(
                       image: NetworkImage(
-                          'https://firebasestorage.googleapis.com/v0/b/chatapp-3e035.appspot.com/o/profile%2Fian.jpeg?alt=media&token=dbf5f97c-3ddf-488e-8eeb-0b8ab3af2ca5'),
+                          'https://firebasestorage.googleapis.com/v0/b/chatapp-3e035.appspot.com/o/profile%2Fnoprofile.png?alt=media&token=b07b59e1-f423-4949-a974-9fb15c946f08'),
                       alignment: Alignment.center,
                       height: 200,
                       width: 200,
-                      fit: BoxFit.fill,
+                      fit: BoxFit.fitHeight,
                     ),
                   ),
             const SizedBox(
@@ -181,8 +181,10 @@ class _ProfilePageState extends State<ProfilePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Email", style: TextStyle(fontSize: 17)),
-                Text(widget.docs.first['email'],
-                    style: const TextStyle(fontSize: 17)),
+                Text(
+                  widget.docs.first['email'],
+                  style: const TextStyle(fontSize: 17),
+                ),
               ],
             ),
           ],
