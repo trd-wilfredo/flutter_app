@@ -1,14 +1,21 @@
+import '../user_page/user_page.dart';
 import 'package:flutter/material.dart';
+import '../product_page/product_page.dart';
+import '../../messaging_app/messaging.dart';
+import '../company_page/comapany_page.dart';
+import '../company_page/search_company.dart';
+import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter_features/pages/home_page/home_page.dart';
 import 'package:flutter_features/pages/login/auth/login_page.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
-import 'package:flutter_features/widgets/widget.dart';
 
 class ProfilePage extends StatefulWidget {
   List docs;
+  String profilePic;
   ProfilePage({
     Key? key,
     required this.docs,
+    required this.profilePic,
   }) : super(key: key);
 
   @override
@@ -47,8 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(100.0),
                     child: Image(
-                      image: NetworkImage(
-                          'https://firebasestorage.googleapis.com/v0/b/chatapp-3e035.appspot.com/o/profile%2Fnoprofile.png?alt=media&token=b07b59e1-f423-4949-a974-9fb15c946f08'),
+                      image: NetworkImage(widget.profilePic),
                       alignment: Alignment.center,
                       height: 200,
                       fit: BoxFit.fitHeight,
@@ -70,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             ListTile(
               onTap: () {
-                nextScreen(context, const HomePage());
+                nextScreen(context, HomePage());
               },
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -80,15 +86,81 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: TextStyle(color: Colors.black),
               ),
             ),
+
+            // ListTile(
+            //   onTap: () {},
+            //   selected: true,
+            //   selectedColor: Theme.of(context).primaryColor,
+            //   contentPadding:
+            //       const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            //   leading: const Icon(Icons.group),
+            //   title: const Text(
+            //     "Profile",
+            //     style: TextStyle(color: Colors.black),
+            //   ),
+            // ),
+
             ListTile(
-              onTap: () {},
-              selected: true,
-              selectedColor: Theme.of(context).primaryColor,
+              onTap: () {
+                nextScreen(context, UserPage());
+              },
+              // selectedColor: Theme.of(context).primaryColor,
+              // selected: true,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.group),
               title: const Text(
-                "Profile",
+                "Users",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                nextScreen(context, ProductPage());
+              },
+              // selectedColor: Theme.of(context).primaryColor,
+              // selected: true,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              leading: const Icon(Icons.group),
+              title: const Text(
+                "Products",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                nextScreen(context, CompanyPage());
+              },
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              leading: const Icon(Icons.group),
+              title: const Text(
+                "Companies",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                nextScreen(context, CompanySearch());
+              },
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              leading: const Icon(Icons.group),
+              title: const Text(
+                "Search Company",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+            ListTile(
+              onTap: () {
+                nextScreen(context, MessagingApp());
+              },
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              leading: const Icon(Icons.group),
+              title: const Text(
+                "CS",
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -154,9 +226,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   )
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(100.0),
-                    child: const Image(
-                      image: NetworkImage(
-                          'https://firebasestorage.googleapis.com/v0/b/chatapp-3e035.appspot.com/o/profile%2Fnoprofile.png?alt=media&token=b07b59e1-f423-4949-a974-9fb15c946f08'),
+                    child: Image(
+                      image: NetworkImage(widget.profilePic),
                       alignment: Alignment.center,
                       height: 200,
                       width: 200,
