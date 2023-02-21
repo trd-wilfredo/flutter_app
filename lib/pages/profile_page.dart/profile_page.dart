@@ -45,21 +45,26 @@ class _ProfilePageState extends State<ProfilePage> {
         child: ListView(
           padding: const EdgeInsets.symmetric(vertical: 50),
           children: [
-            widget.docs.first['profilePic'] == ''
-                ? Icon(
-                    Icons.account_circle,
-                    size: 150,
-                    color: Colors.grey[700],
-                  )
-                : ClipRRect(
-                    borderRadius: BorderRadius.circular(100.0),
-                    child: Image(
-                      image: NetworkImage(widget.profilePic),
-                      alignment: Alignment.center,
-                      height: 200,
-                      fit: BoxFit.fitHeight,
-                    ),
-                  ),
+            SizedBox(
+                height: 200,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: widget.docs.first['profilePic'] == ''
+                      ? Icon(
+                          Icons.account_circle,
+                          size: 150,
+                          color: Colors.grey[700],
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(100.0),
+                          child: Image(
+                            image: NetworkImage(widget.profilePic),
+                            alignment: Alignment.center,
+                            height: 200,
+                            fit: BoxFit.fitHeight,
+                          ),
+                        ),
+                )),
             const SizedBox(
               height: 15,
             ),
@@ -218,6 +223,9 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            const SizedBox(
+              height: 30,
+            ),
             widget.docs.first['profilePic'] == ''
                 ? Icon(
                     Icons.account_circle,
@@ -235,7 +243,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
             const SizedBox(
-              height: 15,
+              height: 30,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

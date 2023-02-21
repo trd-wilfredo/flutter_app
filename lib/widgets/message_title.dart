@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/tool_page/custom.dart';
 
@@ -25,6 +26,25 @@ class MessageTile extends StatefulWidget {
 }
 
 class _MessageTileState extends State<MessageTile> {
+  String link = "";
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    if (widget.attachment != '') {
+      link = await FirebaseStorage.instance
+          .ref()
+          .child(widget.attachment)
+          .getDownloadURL();
+    }
+    setState(() {
+      link = link;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -74,9 +94,23 @@ class _MessageTileState extends State<MessageTile> {
                 const SizedBox(
                   height: 8,
                 ),
-                Text(widget.message,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(fontSize: 16, color: Colors.white))
+                Text(
+                  widget.message,
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
+                ),
+                link != ""
+                    ? Image(
+                        image: NetworkImage(link),
+                        alignment: Alignment.center,
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.fitWidth,
+                      )
+                    : CircleAvatar(
+                        radius: 0,
+                        backgroundImage: NetworkImage('na'),
+                      ),
               ],
             ),
           ),

@@ -49,16 +49,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   gettingUserData() async {
-    await HelperFunction.getUserEmailFromSF().then((value) {
-      setState(() {
-        email = value!;
-      });
-    });
-    await HelperFunction.getUserNameFromSF().then((val) {
-      setState(() {
-        userName = val!;
-      });
-    });
+    // await HelperFunction.getUserEmailFromSF().then((value) {
+    //   setState(() {
+    //     email = value!;
+    //   });
+    // });
+    // await HelperFunction.getUserNameFromSF().then((val) {
+    //   setState(() {
+    //     userName = val!;
+    //   });
+    // });
     // getting the list of snapshots in our stream
     await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
         .getUserGroups()
@@ -75,8 +75,10 @@ class _HomePageState extends State<HomePage> {
         .child(user.docs.first['profilePic'])
         .getDownloadURL();
     setState(() {
-      docs = user.docs;
       profile = link;
+      docs = user.docs;
+      userName = user.docs.first['fullName'];
+      email = user.docs.first['email'];
     });
   }
 
