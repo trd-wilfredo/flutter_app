@@ -187,9 +187,21 @@ class DatabaseService {
 
   // getting the chats
   getChats(String groupId) async {
+    // groupCollection
+    //     .doc(groupId)
+    //     .collection("messages")
+    //     .where("deleted", isEqualTo: "")
+    //     .orderBy("time")
+    //     .get()
+    //     .then((QuerySnapshot snapshot) {
+    //   snapshot.docs.forEach((element) {
+    //     print('The result of isNotEqualTo query is: ${element.data()}');
+    //   });
+    // });
     return groupCollection
         .doc(groupId)
         .collection("messages")
+        .where("deleted", isEqualTo: "")
         .orderBy("time")
         .snapshots();
   }

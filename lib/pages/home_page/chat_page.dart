@@ -218,19 +218,20 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   sendImage(path) async {
-    Map<String, dynamic> chatMessageMap = {
-      "uid": uid,
-      "attach": path,
-      "sender": widget.userName,
-      "time": DateTime.now().millisecondsSinceEpoch,
-      "message":
-          messageController.text.isNotEmpty ? messageController.text : '',
-    };
-    DatabaseService().sendMessage(widget.groupId, chatMessageMap);
-    setState(() {
-      messageController.clear();
-      myFocusNode.requestFocus();
-    });
+    // Map<String, dynamic> chatMessageMap = {
+    //   "uid": uid,
+    //   "attach": path,
+    //   "sender": widget.userName,
+    //   "time": DateTime.now().millisecondsSinceEpoch,
+    //   "message":
+    //       messageController.text.isNotEmpty ? messageController.text : '',
+    //   "deleted": ""
+    // };
+    // DatabaseService().sendMessage(widget.groupId, chatMessageMap);
+    // setState(() {
+    //   messageController.clear();
+    //   myFocusNode.requestFocus();
+    // });
   }
 
   sendMessage() {
@@ -241,6 +242,7 @@ class _ChatPageState extends State<ChatPage> {
         "sender": widget.userName,
         "message": messageController.text,
         "time": DateTime.now().millisecondsSinceEpoch,
+        "deleted": ""
       };
       DatabaseService().sendMessage(widget.groupId, chatMessageMap);
       setState(() {

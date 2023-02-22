@@ -58,67 +58,81 @@ class _MessageTileState extends State<MessageTile> {
               right: widget.sentByMe ? 24 : 0),
           alignment:
               widget.sentByMe ? Alignment.centerRight : Alignment.centerLeft,
-          child: Container(
-            margin: widget.sentByMe
-                ? const EdgeInsets.only(left: 30)
-                : const EdgeInsets.only(right: 30),
-            padding:
-                const EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
-            decoration: BoxDecoration(
-              borderRadius: widget.sentByMe
-                  ? const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                    )
-                  : const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
+          child: Column(
+            children: [
+              Container(
+                width: 200,
+                alignment: widget.sentByMe
+                    ? Alignment.centerLeft
+                    : Alignment.centerRight,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.more_horiz_outlined),
+                ),
+              ),
+              Container(
+                margin: widget.sentByMe
+                    ? const EdgeInsets.only(left: 30)
+                    : const EdgeInsets.only(right: 30),
+                padding: const EdgeInsets.only(
+                    top: 17, bottom: 17, left: 20, right: 20),
+                decoration: BoxDecoration(
+                  borderRadius: widget.sentByMe
+                      ? const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
+                        )
+                      : const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                  color: widget.sentByMe
+                      ? Theme.of(context).primaryColor
+                      : Colors.grey[700],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.sender.toUpperCase(),
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: -0.5),
                     ),
-              color: widget.sentByMe
-                  ? Theme.of(context).primaryColor
-                  : Colors.grey[700],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.sender.toUpperCase(),
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: -0.5),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      widget.message,
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                    link != ""
+                        ? Image(
+                            image: NetworkImage(link),
+                            alignment: Alignment.center,
+                            height: 100,
+                            width: 100,
+                            fit: BoxFit.fitWidth,
+                          )
+                        : CircleAvatar(
+                            radius: 0,
+                            backgroundImage: NetworkImage('na'),
+                          ),
+                    Text(
+                      date.toString(),
+                      textAlign: TextAlign.right,
+                      style: const TextStyle(fontSize: 9, color: Colors.white),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Text(
-                  widget.message,
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(fontSize: 16, color: Colors.white),
-                ),
-                link != ""
-                    ? Image(
-                        image: NetworkImage(link),
-                        alignment: Alignment.center,
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.fitWidth,
-                      )
-                    : CircleAvatar(
-                        radius: 0,
-                        backgroundImage: NetworkImage('na'),
-                      ),
-                Text(
-                  date.toString(),
-                  textAlign: TextAlign.right,
-                  style: const TextStyle(fontSize: 9, color: Colors.white),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         Container(
