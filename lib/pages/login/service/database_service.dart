@@ -195,7 +195,7 @@ class DatabaseService {
     //     .get()
     //     .then((QuerySnapshot snapshot) {
     //   snapshot.docs.forEach((element) {
-    //     print('The result of isNotEqualTo query is: ${element.data()}');
+    //     print('The result of isNotEqualTo query is: ${element.id}');
     //   });
     // });
     return groupCollection
@@ -204,6 +204,22 @@ class DatabaseService {
         .where("deleted", isEqualTo: "")
         .orderBy("time")
         .snapshots();
+  }
+
+  // soft delete Message
+  Future deleteMessage(
+      String groupId, String messageId, String timeDeleted) async {
+    DocumentReference userDocumentReference = groupCollection.doc(groupId);
+    var delete = await userDocumentReference
+        .collection("messages")
+        .doc(messageId)
+        .update({
+          "deleted": timeDeleted,
+        })
+        .then((value) => true)
+        .catchError((error) => print("Failed to delete Message: $error"));
+
+    return delete;
   }
 
   Future getGroupAdmin(String groupId) async {

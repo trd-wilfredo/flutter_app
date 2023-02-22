@@ -137,6 +137,8 @@ class _MessagingAppState extends State<MessagingApp> {
                       date: snapshot.data.docs[index]['time'].toString(),
                       senderUid: snapshot.data.docs[index]['sender'],
                       sentByMe: snapshot.data.docs[index]['sender'],
+                      messageID: snapshot.data.docs[index].id,
+                      groupId: email,
                       url: '');
                 },
               )

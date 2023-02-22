@@ -2,6 +2,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/tool_page/custom.dart';
 
+import '../pages/login/service/database_service.dart';
+
 class MessageTile extends StatefulWidget {
   final String message;
   final String sender;
@@ -9,6 +11,9 @@ class MessageTile extends StatefulWidget {
   final String url;
   final String attachment;
   final String date;
+  final String messageID;
+  final String groupId;
+
   final bool sentByMe;
   const MessageTile({
     Key? key,
@@ -17,7 +22,9 @@ class MessageTile extends StatefulWidget {
     required this.attachment,
     required this.date,
     required this.sentByMe,
+    required this.groupId,
     required this.senderUid,
+    required this.messageID,
     required this.url,
   }) : super(key: key);
 
@@ -26,6 +33,7 @@ class MessageTile extends StatefulWidget {
 }
 
 class _MessageTileState extends State<MessageTile> {
+  List<String> list = <String>['delete', 'unsent'];
   String link = "";
   @override
   void initState() {
@@ -60,16 +68,35 @@ class _MessageTileState extends State<MessageTile> {
               widget.sentByMe ? Alignment.centerRight : Alignment.centerLeft,
           child: Column(
             children: [
-              Container(
-                width: 200,
-                alignment: widget.sentByMe
-                    ? Alignment.centerLeft
-                    : Alignment.centerRight,
-                child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.more_horiz_outlined),
+              // Container(
+              //   width: 200,
+              //   alignment: widget.sentByMe
+              //       ? Alignment.centerLeft
+              //       : Alignment.centerRight,
+              //   child: IconButton(
+              //     onPressed: () {},
+              //     icon: Icon(Icons.more_horiz_outlined),
+              //   ),
+              // ),
+
+              DropdownButton<String>(
+                icon: const Icon(Icons.more_horiz_outlined),
+                elevation: 16,
+                underline: Container(
+                  height: 2,
                 ),
+                onChanged: (String? value) {
+                  if (value == "delete") {}
+                  delete(widget.messageID, widget.groupId);
+                },
+                items: list.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
+
               Container(
                 margin: widget.sentByMe
                     ? const EdgeInsets.only(left: 30)
@@ -158,5 +185,16 @@ class _MessageTileState extends State<MessageTile> {
         ),
       ],
     );
+  }
+
+  delete(messageId, groupId) async {
+    var timeDeleted = DateTime.now().millisecondsSinceEpoch.toString();
+    var userDlt =
+        await DatabaseService().deleteMessage(groupId, messageId, timeDeleted);
+    // if (userDlt == true) {
+    // setState(() {
+    //   users.remove(i);
+    // });
+    // }
   }
 }
