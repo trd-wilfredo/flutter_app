@@ -47,6 +47,7 @@ class _MessageTileState extends State<MessageTile> {
 
   @override
   Widget build(BuildContext context) {
+    var date = DateTime.fromMillisecondsSinceEpoch(int.parse(widget.date));
     return Stack(
       children: [
         Container(
@@ -111,6 +112,11 @@ class _MessageTileState extends State<MessageTile> {
                         radius: 0,
                         backgroundImage: NetworkImage('na'),
                       ),
+                Text(
+                  date.toString(),
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(fontSize: 9, color: Colors.white),
+                ),
               ],
             ),
           ),
