@@ -1,5 +1,8 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/pages/tool_page/custom.dart';
+
+import '../pages/login/service/database_service.dart';
 
 class MessageTile extends StatefulWidget {
   final String message;
@@ -8,6 +11,9 @@ class MessageTile extends StatefulWidget {
   final String url;
   final String attachment;
   final String date;
+  final String messageID;
+  final String groupId;
+
   final bool sentByMe;
   const MessageTile({
     Key? key,
@@ -16,7 +22,9 @@ class MessageTile extends StatefulWidget {
     required this.attachment,
     required this.date,
     required this.sentByMe,
+    required this.groupId,
     required this.senderUid,
+    required this.messageID,
     required this.url,
   }) : super(key: key);
 
@@ -25,8 +33,29 @@ class MessageTile extends StatefulWidget {
 }
 
 class _MessageTileState extends State<MessageTile> {
+  List<String> list = <String>['delete', 'unsent'];
+  String link = "";
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    if (widget.attachment != '') {
+      link = await FirebaseStorage.instance
+          .ref()
+          .child(widget.attachment)
+          .getDownloadURL();
+    }
+    setState(() {
+      link = link;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    var date = DateTime.fromMillisecondsSinceEpoch(int.parse(widget.date));
     return Stack(
       children: [
         Container(
@@ -37,48 +66,100 @@ class _MessageTileState extends State<MessageTile> {
               right: widget.sentByMe ? 24 : 0),
           alignment:
               widget.sentByMe ? Alignment.centerRight : Alignment.centerLeft,
-          child: Container(
-            margin: widget.sentByMe
-                ? const EdgeInsets.only(left: 30)
-                : const EdgeInsets.only(right: 30),
-            padding:
-                const EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
-            decoration: BoxDecoration(
-              borderRadius: widget.sentByMe
-                  ? const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomLeft: Radius.circular(20),
-                    )
-                  : const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
+          child: Column(
+            children: [
+              // Container(
+              //   width: 200,
+              //   alignment: widget.sentByMe
+              //       ? Alignment.centerLeft
+              //       : Alignment.centerRight,
+              //   child: IconButton(
+              //     onPressed: () {},
+              //     icon: Icon(Icons.more_horiz_outlined),
+              //   ),
+              // ),
+
+              DropdownButton<String>(
+                icon: const Icon(Icons.more_horiz_outlined),
+                elevation: 16,
+                underline: Container(
+                  height: 2,
+                ),
+                onChanged: (String? value) {
+                  if (value == "delete") {}
+                  delete(widget.messageID, widget.groupId);
+                },
+                items: list.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+
+              Container(
+                margin: widget.sentByMe
+                    ? const EdgeInsets.only(left: 30)
+                    : const EdgeInsets.only(right: 30),
+                padding: const EdgeInsets.only(
+                    top: 17, bottom: 17, left: 20, right: 20),
+                decoration: BoxDecoration(
+                  borderRadius: widget.sentByMe
+                      ? const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
+                        )
+                      : const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                  color: widget.sentByMe
+                      ? Theme.of(context).primaryColor
+                      : Colors.grey[700],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.sender.toUpperCase(),
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: -0.5),
                     ),
-              color: widget.sentByMe
-                  ? Theme.of(context).primaryColor
-                  : Colors.grey[700],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.sender.toUpperCase(),
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: -0.5),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      widget.message,
+                      textAlign: TextAlign.start,
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                    link != ""
+                        ? Image(
+                            image: NetworkImage(link),
+                            alignment: Alignment.center,
+                            height: 100,
+                            width: 100,
+                            fit: BoxFit.fitWidth,
+                          )
+                        : CircleAvatar(
+                            radius: 0,
+                            backgroundImage: NetworkImage('na'),
+                          ),
+                    Text(
+                      date.toString(),
+                      textAlign: TextAlign.right,
+                      style: const TextStyle(fontSize: 9, color: Colors.white),
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Text(widget.message,
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(fontSize: 16, color: Colors.white))
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         Container(
@@ -104,5 +185,16 @@ class _MessageTileState extends State<MessageTile> {
         ),
       ],
     );
+  }
+
+  delete(messageId, groupId) async {
+    var timeDeleted = DateTime.now().millisecondsSinceEpoch.toString();
+    var userDlt =
+        await DatabaseService().deleteMessage(groupId, messageId, timeDeleted);
+    // if (userDlt == true) {
+    // setState(() {
+    //   users.remove(i);
+    // });
+    // }
   }
 }

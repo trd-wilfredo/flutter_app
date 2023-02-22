@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,7 +42,11 @@ void main() async {
     profilePage = LoginApp();
   } else {
     var user = await DatabaseService(uid: getUser.uid).getUserById();
-    profilePage = ProfilePage(docs: user.docs);
+    var link = await FirebaseStorage.instance
+        .ref()
+        .child(user.docs.first['profilePic'])
+        .getDownloadURL();
+    profilePage = ProfilePage(docs: user.docs, profilePic: link);
   }
 
   runApp(
