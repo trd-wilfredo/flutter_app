@@ -124,7 +124,12 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                                              }
+                        var files = await ImagePicker().pickMultiImage();
+                        if (files != null && files.length <= 7) {
+                          setState(() {
+                            images = files;
+                          });
+                        }
                         // var file = await ImagePicker()
                         //     .pickImage(source: ImageSource.gallery);
                         // var imgPath =
