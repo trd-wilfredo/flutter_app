@@ -34,6 +34,7 @@ class _ChatPageState extends State<ChatPage> {
   String uid = "";
   String url = "";
   List imgurl = [];
+  List<XFile>? images = [];
   final storage = FirebaseStorage.instance.ref();
 
   @override
@@ -89,88 +90,140 @@ class _ChatPageState extends State<ChatPage> {
         children: <Widget>[
           // chat messages here
           chatMessages(),
+
           Container(
             alignment: Alignment.bottomCenter,
             width: MediaQuery.of(context).size.width,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-              width: MediaQuery.of(context).size.width,
-              color: Colors.grey[700],
-              child: Row(children: [
-                Expanded(
-                  child: TextFormField(
-                    onFieldSubmitted: (value) {
-                      sendMessage();
-                    },
-                    controller: messageController,
-                    focusNode: myFocusNode,
-                    style: const TextStyle(color: Colors.white, height: 2.0),
-                    decoration: const InputDecoration(
-                      hintText: "Send a message...",
-                      hintStyle: TextStyle(color: Colors.white, fontSize: 16),
-                      border: InputBorder.none,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 0),
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.grey[700],
+                  child: Row(children: [
+                    Expanded(
+                      child: TextFormField(
+                        onFieldSubmitted: (value) {
+                          sendMessage();
+                        },
+                        controller: messageController,
+                        focusNode: myFocusNode,
+                        style:
+                            const TextStyle(color: Colors.white, height: 2.0),
+                        decoration: const InputDecoration(
+                          hintText: "Send a message...",
+                          hintStyle:
+                              TextStyle(color: Colors.white, fontSize: 16),
+                          border: InputBorder.none,
+                        ),
+                      ),
                     ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                                              }
+                        // var file = await ImagePicker()
+                        //     .pickImage(source: ImageSource.gallery);
+                        // var imgPath =
+                        //     FireStoreService(context: context, folder: 'chat');
+                        // if (kIsWeb) {
+                        //   // running on android or ios device
+                        //   var path = await imgPath.uploadFile(file, uid);
+                        //   setState(() {
+                        //     file!.path;
+                        //   });
+                        //   // sendImage(path);
+                        // } else {
+                        //   await Permission.photos.request();
+                        //   var permissionStatus = await Permission.photos.status;
+                        //   if (permissionStatus.isGranted) {
+                        //     var path = await imgPath.uploadFile(file, uid);
+                        //     setState(() {
+                        //       file!.path;
+                        //     });
+                        //     // sendImage(path);
+                        //   } else {
+                        //     print(
+                        //         'Permission not granted. Try Again with permission access');
+                        //   }
+                        // }
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: const Center(
+                            child: Icon(
+                          Icons.image,
+                          color: Colors.white,
+                        )),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        sendMessage();
+                      },
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: const Center(
+                            child: Icon(
+                          Icons.send,
+                          color: Colors.white,
+                        )),
+                      ),
+                    )
+                  ]),
+                ),
+                Container(
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.grey[700],
+                  child: Row(
+                    children: [
+                      for (var image in images!)
+                        Container(
+                          child: Stack(
+                            children: <Widget>[
+                              Image(
+                                image: NetworkImage(image.path),
+                                alignment: Alignment.center,
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.fitWidth,
+                              ),
+                              Positioned(
+                                top: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      images!.remove(image);
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.close,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                    ],
                   ),
                 ),
-                const SizedBox(
-                  width: 12,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    var file = await ImagePicker()
-                        .pickImage(source: ImageSource.gallery);
-                    var imgPath =
-                        FireStoreService(context: context, folder: 'chat');
-                    if (kIsWeb) {
-                      // running on android or ios device
-                      var path = await imgPath.uploadFile(file, uid);
-                      sendImage(path);
-                    } else {
-                      await Permission.photos.request();
-                      var permissionStatus = await Permission.photos.status;
-                      if (permissionStatus.isGranted) {
-                        var path = await imgPath.uploadFile(file, uid);
-                        sendImage(path);
-                      } else {
-                        print(
-                            'Permission not granted. Try Again with permission access');
-                      }
-                    }
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: const Center(
-                        child: Icon(
-                      Icons.image,
-                      color: Colors.white,
-                    )),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    sendMessage();
-                  },
-                  child: Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: const Center(
-                        child: Icon(
-                      Icons.send,
-                      color: Colors.white,
-                    )),
-                  ),
-                )
-              ]),
+              ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -219,22 +272,22 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  sendImage(path) async {
-    // Map<String, dynamic> chatMessageMap = {
-    //   "uid": uid,
-    //   "attach": path,
-    //   "sender": widget.userName,
-    //   "time": DateTime.now().millisecondsSinceEpoch,
-    //   "message":
-    //       messageController.text.isNotEmpty ? messageController.text : '',
-    //   "deleted": ""
-    // };
-    // DatabaseService().sendMessage(widget.groupId, chatMessageMap);
-    // setState(() {
-    //   messageController.clear();
-    //   myFocusNode.requestFocus();
-    // });
-  }
+  // sendImage(path) async {
+  // Map<String, dynamic> chatMessageMap = {
+  //   "uid": uid,
+  //   "attach": path,
+  //   "sender": widget.userName,
+  //   "time": DateTime.now().millisecondsSinceEpoch,
+  //   "message":
+  //       messageController.text.isNotEmpty ? messageController.text : '',
+  //   "deleted": ""
+  // };
+  // DatabaseService().sendMessage(widget.groupId, chatMessageMap);
+  // setState(() {
+  //   messageController.clear();
+  //   myFocusNode.requestFocus();
+  // });
+  // }
 
   sendMessage() {
     if (messageController.text.isNotEmpty) {
