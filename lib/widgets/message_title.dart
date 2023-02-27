@@ -1,8 +1,7 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_features/pages/tool_page/custom.dart';
-
 import '../pages/login/service/database_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_features/pages/tool_page/custom.dart';
 
 class MessageTile extends StatefulWidget {
   final String message;
@@ -191,10 +190,5 @@ class _MessageTileState extends State<MessageTile> {
     var timeDeleted = DateTime.now().millisecondsSinceEpoch.toString();
     var userDlt =
         await DatabaseService().deleteMessage(groupId, messageId, timeDeleted);
-    // if (userDlt == true) {
-    // setState(() {
-    //   users.remove(i);
-    // });
-    // }
   }
 }
