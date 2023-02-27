@@ -68,6 +68,8 @@ void main() async {
         '/messaging_app': (context) => MessagingApp(),
         '/company_search': (context) => CompanySearch(),
         '/information_registration': (context) => InfoRegister(),
+        //
+        '/update_collection': (context) => InfoRegister(),
       },
     ),
   );

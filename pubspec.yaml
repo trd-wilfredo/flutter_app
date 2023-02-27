@@ -84,16 +84,16 @@ flutter:
   fonts:
     - family: BelloScript
       fonts:
-        - asset: assets/fonts/Bello-Script.ttf
+        - asset: fonts/Bello-Script.ttf
     - family: FeatherBold
       fonts:
-        - asset: assets/fonts/Feather-Bold.ttf
+        - asset: fonts/Feather-Bold.ttf
     - family: FeatherWrite
       fonts:
-        - asset: assets/fonts/Feather-Write.ttf
+        - asset: fonts/Feather-Write.ttf
     - family: RockoFLF
       fonts:
-        - asset: assets/fonts/RockoFLF.ttf
+        - asset: fonts/RockoFLF.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

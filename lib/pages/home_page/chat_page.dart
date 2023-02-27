@@ -124,37 +124,32 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        var files = await ImagePicker().pickMultiImage();
-                        if (files != null && files.length <= 7) {
-                          setState(() {
-                            images = files;
-                          });
-                        }
                         // var file = await ImagePicker()
-                        //     .pickImage(source: ImageSource.gallery);
-                        // var imgPath =
-                        //     FireStoreService(context: context, folder: 'chat');
-                        // if (kIsWeb) {
-                        //   // running on android or ios device
-                        //   var path = await imgPath.uploadFile(file, uid);
-                        //   setState(() {
-                        //     file!.path;
-                        //   });
-                        //   // sendImage(path);
-                        // } else {
-                        //   await Permission.photos.request();
-                        //   var permissionStatus = await Permission.photos.status;
-                        //   if (permissionStatus.isGranted) {
-                        //     var path = await imgPath.uploadFile(file, uid);
-                        //     setState(() {
-                        //       file!.path;
-                        //     });
-                        //     // sendImage(path);
-                        //   } else {
-                        //     print(
-                        //         'Permission not granted. Try Again with permission access');
-                        //   }
-                        // }
+                        // .pickImage(source: ImageSource.gallery);
+                        var imgPath =
+                            FireStoreService(context: context, folder: 'chat');
+                        if (kIsWeb) {
+                          // running on android or ios device
+                          // var path = await imgPath.uploadFile(images, uid);
+
+                          // sendImage(path);
+                        } else {
+                          await Permission.photos.request();
+                          var permissionStatus = await Permission.photos.status;
+                          if (permissionStatus.isGranted) {
+                            // var path = await imgPath.chatImageUpload(images, uid);
+                            // sendImage(path);
+                            var files = await ImagePicker().pickMultiImage();
+                            if (files != null && files.length <= 7) {
+                              setState(() {
+                                images = files;
+                              });
+                            }
+                          } else {
+                            print(
+                                'Permission not granted. Try Again with permission access');
+                          }
+                        }
                       },
                       child: Container(
                         height: 40,
@@ -298,7 +293,7 @@ class _ChatPageState extends State<ChatPage> {
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
         "uid": uid,
-        "attach": '',
+        "attach": [],
         "sender": widget.userName,
         "message": messageController.text,
         "time": DateTime.now().millisecondsSinceEpoch,
