@@ -36,6 +36,7 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
+
   var getUser = FirebaseAuth.instance.currentUser;
   StatefulWidget profilePage;
   if (getUser == null) {
