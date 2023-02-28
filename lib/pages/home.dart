@@ -2,7 +2,6 @@ import 'page.dart';
 import 'page_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -92,7 +91,7 @@ class _HomeState extends State<Home> {
     PageList(
         part: 'bottom',
         page: 'app_version',
-        title: 'AppVersion 1.0.7',
+        title: 'AppVersion 1.0.9',
         barPecent: 0.5,
         percent: "50%"),
     // PageList(
