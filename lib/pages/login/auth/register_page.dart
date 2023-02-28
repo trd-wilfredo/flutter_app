@@ -44,11 +44,32 @@ class _RegisterPageState extends State<RegisterPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        "Study App",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(35, 40, 35, 20),
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: RichText(
+                            text: const TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: 'Study ',
+                                  style: TextStyle(
+                                    color: Color(0xFF5ACC02),
+                                    fontFamily: 'FeatherBold',
+                                    fontSize: 60,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: 'App',
+                                  style: TextStyle(
+                                    color: Color(0xFF5ACC02),
+                                    fontFamily: 'FeatherWrite',
+                                    fontSize: 60,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(height: 10),
