@@ -174,7 +174,6 @@ class _AddProductState extends State<AddProduct> {
                   ),
                   onPressed: () async {
                     var files = await ImagePicker().pickMultiImage();
-
                     if (files != null && files.length <= 7) {
                       setState(() {
                         images = files;
