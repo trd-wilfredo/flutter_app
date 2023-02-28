@@ -52,6 +52,7 @@ dependencies:
   html: ^0.15.1
   flutter_image_compress: ^1.1.3
   carousel_slider: ^4.2.1
+  google_fonts: ^4.0.3
   
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -84,16 +85,16 @@ flutter:
   fonts:
     - family: BelloScript
       fonts:
-        - asset: fonts/Bello-Script.ttf
-    - family: FeatherBold
-      fonts:
-        - asset: fonts/Feather-Bold.ttf
-    - family: FeatherWrite
-      fonts:
-        - asset: fonts/Feather-Write.ttf
-    - family: RockoFLF
-      fonts:
-        - asset: fonts/RockoFLF.ttf
+        - asset: assets/fonts/Bello-Script.ttf
+    # - family: FeatherBold
+    #   fonts:
+    #     - asset: assets/fonts/Feather-Bold.ttf
+    # - family: FeatherWrite
+    #   fonts:
+    #     - asset: assets/fonts/Feather-Write.ttf
+    # - family: RockoFLF
+    #   fonts:
+    #     - asset: assets/fonts/RockoFLF.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
