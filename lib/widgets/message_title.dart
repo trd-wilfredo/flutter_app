@@ -8,7 +8,7 @@ class MessageTile extends StatefulWidget {
   final String sender;
   final String senderUid;
   final String url;
-  final String attachment;
+  final List attachment;
   final String date;
   final String messageID;
   final String groupId;
@@ -33,7 +33,7 @@ class MessageTile extends StatefulWidget {
 
 class _MessageTileState extends State<MessageTile> {
   List<String> list = <String>['delete', 'unsent'];
-  String link = "";
+  List links = [];
   @override
   void initState() {
     super.initState();
@@ -41,14 +41,16 @@ class _MessageTileState extends State<MessageTile> {
   }
 
   getData() async {
-    if (widget.attachment != '') {
-      link = await FirebaseStorage.instance
-          .ref()
-          .child(widget.attachment)
-          .getDownloadURL();
+    if (widget.attachment.isNotEmpty) {
+      for (var element in widget.attachment) {
+        links.add(await FirebaseStorage.instance
+            .ref()
+            .child(element)
+            .getDownloadURL());
+      }
     }
     setState(() {
-      link = link;
+      links = links;
     });
   }
 
@@ -138,18 +140,14 @@ class _MessageTileState extends State<MessageTile> {
                       textAlign: TextAlign.start,
                       style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
-                    link != ""
-                        ? Image(
-                            image: NetworkImage(link),
-                            alignment: Alignment.center,
-                            height: 100,
-                            width: 100,
-                            fit: BoxFit.fitWidth,
-                          )
-                        : CircleAvatar(
-                            radius: 0,
-                            backgroundImage: NetworkImage('na'),
-                          ),
+                    for (var image in links)
+                      Image(
+                        image: NetworkImage(image),
+                        alignment: Alignment.center,
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.fitWidth,
+                      ),
                     Text(
                       date.toString(),
                       textAlign: TextAlign.right,
