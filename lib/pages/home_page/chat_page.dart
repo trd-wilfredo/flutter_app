@@ -105,7 +105,7 @@ class _ChatPageState extends State<ChatPage> {
                     Expanded(
                       child: TextFormField(
                         onFieldSubmitted: (value) {
-                          sendMessage();
+                          sendMessage(images);
                         },
                         controller: messageController,
                         focusNode: myFocusNode,
@@ -124,21 +124,17 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        // var file = await ImagePicker()
-                        // .pickImage(source: ImageSource.gallery);
-                        var imgPath =
-                            FireStoreService(context: context, folder: 'chat');
                         if (kIsWeb) {
-                          // running on android or ios device
-                          // var path = await imgPath.uploadFile(images, uid);
-
-                          // sendImage(path);
+                          var files = await ImagePicker().pickMultiImage();
+                          if (files != null && files.length <= 7) {
+                            setState(() {
+                              images = files;
+                            });
+                          }
                         } else {
                           await Permission.photos.request();
                           var permissionStatus = await Permission.photos.status;
                           if (permissionStatus.isGranted) {
-                            // var path = await imgPath.chatImageUpload(images, uid);
-                            // sendImage(path);
                             var files = await ImagePicker().pickMultiImage();
                             if (files != null && files.length <= 7) {
                               setState(() {
@@ -166,7 +162,7 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        sendMessage();
+                        sendMessage(images);
                       },
                       child: Container(
                         height: 50,
@@ -192,6 +188,7 @@ class _ChatPageState extends State<ChatPage> {
                     children: [
                       for (var image in images!)
                         Container(
+                          width: 120,
                           child: Stack(
                             children: <Widget>[
                               Image(
@@ -203,7 +200,7 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                               Positioned(
                                 top: 0,
-                                right: 0,
+                                right: 15,
                                 child: GestureDetector(
                                   onTap: () {
                                     setState(() {
@@ -217,7 +214,7 @@ class _ChatPageState extends State<ChatPage> {
                               ),
                             ],
                           ),
-                        )
+                        ),
                     ],
                   ),
                 ),
@@ -272,35 +269,22 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  // sendImage(path) async {
-  // Map<String, dynamic> chatMessageMap = {
-  //   "uid": uid,
-  //   "attach": path,
-  //   "sender": widget.userName,
-  //   "time": DateTime.now().millisecondsSinceEpoch,
-  //   "message":
-  //       messageController.text.isNotEmpty ? messageController.text : '',
-  //   "deleted": ""
-  // };
-  // DatabaseService().sendMessage(widget.groupId, chatMessageMap);
-  // setState(() {
-  //   messageController.clear();
-  //   myFocusNode.requestFocus();
-  // });
-  // }
-
-  sendMessage() {
-    if (messageController.text.isNotEmpty) {
+  sendMessage(image) async {
+    if (messageController.text.isNotEmpty || image.length >= 1) {
+      var imgPath = FireStoreService(context: context, folder: 'chat');
+      var path = await imgPath.chatImageUpload(image, uid);
       Map<String, dynamic> chatMessageMap = {
         "uid": uid,
-        "attach": [],
+        "attach": path,
         "sender": widget.userName,
         "message": messageController.text,
         "time": DateTime.now().millisecondsSinceEpoch,
         "deleted": ""
       };
+
       DatabaseService().sendMessage(widget.groupId, chatMessageMap);
       setState(() {
+        images = [];
         messageController.clear();
         myFocusNode.requestFocus();
       });
