@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../pages/login/service/database_service.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_features/pages/tool_page/custom.dart';
 
 class MessageTile extends StatefulWidget {
@@ -33,26 +32,6 @@ class MessageTile extends StatefulWidget {
 
 class _MessageTileState extends State<MessageTile> {
   List<String> list = <String>['delete', 'unsent'];
-  List links = [];
-  @override
-  void initState() {
-    super.initState();
-    getData();
-  }
-
-  getData() async {
-    if (widget.attachment.isNotEmpty) {
-      for (var element in widget.attachment) {
-        links.add(await FirebaseStorage.instance
-            .ref()
-            .child(element)
-            .getDownloadURL());
-      }
-    }
-    setState(() {
-      links = links;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +119,7 @@ class _MessageTileState extends State<MessageTile> {
                       textAlign: TextAlign.start,
                       style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
-                    for (var image in links)
+                    for (var image in widget.attachment)
                       Image(
                         image: NetworkImage(image),
                         alignment: Alignment.center,
