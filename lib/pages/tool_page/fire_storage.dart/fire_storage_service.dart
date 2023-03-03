@@ -96,10 +96,21 @@ class FireStoreService {
             .child('/$folder/$date$id${files[i].name}');
         if (kIsWeb) {
           uploadTask = ref.putData(await files[i].readAsBytes(), metadata);
+          var test = await FirebaseStorage.instance
+              .ref()
+              .child('/$folder/$date$id${files[i].name}')
+              .getDownloadURL();
+
+          url.add(test);
         } else {
           uploadTask = ref.putFile(f.File(files[i].path), metadata);
+          var test = await FirebaseStorage.instance
+              .ref()
+              .child('/$folder/$date$id${files[i].name}')
+              .getDownloadURL();
+
+          url.add(test);
         }
-        url.add('/$folder/$date$id${files[i].name}');
         i++;
       } catch (e) {
         print(e.toString());
