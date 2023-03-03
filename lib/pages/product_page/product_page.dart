@@ -75,84 +75,106 @@ class _ProductPageState extends State<ProductPage> {
                 },
               ),
             ),
-            Container(
-              height: 500,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 50.0),
-                    child: DataTable(
-                      decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                color: Color.fromARGB(255, 104, 104, 104)),
-                            top: BorderSide(
-                                color: Color.fromARGB(255, 104, 104, 104)),
-                            left: BorderSide(
-                                color: Color.fromARGB(255, 104, 104, 104)),
-                            right: BorderSide(
-                                color: Color.fromARGB(255, 104, 104, 104))),
+            Center(
+              child: Container(
+                height: 500,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: 20.0, bottom: 20.0, top: 50.0),
+                        child: DataTable(
+                          decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: Color.fromARGB(255, 104, 104, 104)),
+                                top: BorderSide(
+                                    color: Color.fromARGB(255, 104, 104, 104)),
+                                left: BorderSide(
+                                    color: Color.fromARGB(255, 104, 104, 104)),
+                                right: BorderSide(
+                                    color: Color.fromARGB(255, 104, 104, 104))),
+                          ),
+                          columns: [
+                            DataColumn(
+                              label: Text("Name"),
+                            ),
+                            DataColumn(
+                              label: Text("Company"),
+                            ),
+                            DataColumn(
+                              label: Text("Stock/s"),
+                            ),
+                            DataColumn(
+                              label: Expanded(
+                                child: Text(
+                                  'Action',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
+                          rows: products.map((val) {
+                            return DataRow(cells: [
+                              DataCell(
+                                Container(
+                                  width: 133.3,
+                                  child: Text(val['name']),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  width: 133.3,
+                                  child: Text(val['company']),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  width: 133.3,
+                                  child: Text(val['stocks']),
+                                ),
+                              ),
+                              DataCell(Container(
+                                width: 150,
+                                child: Row(
+                                  children: [
+                                    ElevatedButton(
+                                      child: Text('Edit'),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.blue,
+                                      ),
+                                      onPressed: () {
+                                        nextScreenReplace(
+                                            context,
+                                            EditProduct(
+                                              producName: val['name'],
+                                              stocks: val['stocks'],
+                                              company: val['company'],
+                                              avilability: val['avilability'],
+                                              uid: val['id'],
+                                            ));
+                                      },
+                                    ),
+                                    ElevatedButton(
+                                      child: Text('Delete'),
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.red,
+                                      ),
+                                      onPressed: () {
+                                        deleteProduct(val['id'], val);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )),
+                            ]);
+                          }).toList(),
+                        ),
                       ),
-                      columns: [
-                        DataColumn(
-                          label: Text("Name"),
-                        ),
-                        DataColumn(
-                          label: Text("Company"),
-                        ),
-                        DataColumn(
-                          label: Text("Stock/s"),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              'Action',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ],
-                      rows: products.map((val) {
-                        return DataRow(cells: [
-                          DataCell(Text(val['name'])),
-                          DataCell(Text(val['company'])),
-                          DataCell(Text(val['stocks'])),
-                          DataCell(
-                            Row(
-                              children: [
-                                ElevatedButton(
-                                  child: Text('Edit'),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.blue,
-                                  ),
-                                  onPressed: () {
-                                    nextScreenReplace(
-                                        context,
-                                        EditProduct(
-                                          producName: val['name'],
-                                          stocks: val['stocks'],
-                                          company: val['company'],
-                                          avilability: val['avilability'],
-                                          uid: val['id'],
-                                        ));
-                                  },
-                                ),
-                                ElevatedButton(
-                                  child: Text('Delete'),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.red,
-                                  ),
-                                  onPressed: () {
-                                    deleteProduct(val['id'], val);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ]);
-                      }).toList(),
                     ),
                   ),
                 ),

@@ -73,80 +73,99 @@ class _UserPageState extends State<UserPage> {
                 },
               ),
             ),
-            Container(
-              height: 500,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 50.0),
-                    child: DataTable(
-                      decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(
-                                color: Color.fromARGB(255, 104, 104, 104)),
-                            top: BorderSide(
-                                color: Color.fromARGB(255, 104, 104, 104)),
-                            left: BorderSide(
-                                color: Color.fromARGB(255, 104, 104, 104)),
-                            right: BorderSide(
-                                color: Color.fromARGB(255, 104, 104, 104))),
+            Center(
+              child: Container(
+                height: 500,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: 20.0, bottom: 20.0, top: 50.0),
+                        child: DataTable(
+                          decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    color: Color.fromARGB(255, 104, 104, 104)),
+                                top: BorderSide(
+                                    color: Color.fromARGB(255, 104, 104, 104)),
+                                left: BorderSide(
+                                    color: Color.fromARGB(255, 104, 104, 104)),
+                                right: BorderSide(
+                                    color: Color.fromARGB(255, 104, 104, 104))),
+                          ),
+                          columns: [
+                            DataColumn(
+                              label: Text("Name"),
+                            ),
+                            DataColumn(
+                              label: Text("Company"),
+                            ),
+                            DataColumn(
+                              label: Expanded(
+                                child: Text(
+                                  'Action',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
+                          rows: users.map((val) {
+                            return DataRow(cells: [
+                              DataCell(
+                                Container(
+                                  width: 200,
+                                  child: Text(val['name']),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  width: 200,
+                                  child: Text(val['company']),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  width: 150,
+                                  child: Row(
+                                    children: [
+                                      ElevatedButton(
+                                        child: Text('Edit'),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.blue,
+                                        ),
+                                        onPressed: () {
+                                          nextScreenReplace(
+                                              context,
+                                              EditUser(
+                                                valName: val['name'],
+                                                valId: val['id'],
+                                                valCompany: val['company'],
+                                                valLevel: val['level'],
+                                                valEmail: val['email'],
+                                              ));
+                                        },
+                                      ),
+                                      ElevatedButton(
+                                        child: Text('Delete'),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.red,
+                                        ),
+                                        onPressed: () {
+                                          deleteUser(val['id'], val);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ]);
+                          }).toList(),
+                        ),
                       ),
-                      columns: [
-                        DataColumn(
-                          label: Text("Name"),
-                        ),
-                        DataColumn(
-                          label: Text("Company"),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              'Action',
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ],
-                      rows: users.map((val) {
-                        return DataRow(cells: [
-                          DataCell(Text(val['name'])),
-                          DataCell(Text(val['company'])),
-                          DataCell(
-                            Row(
-                              children: [
-                                ElevatedButton(
-                                  child: Text('Edit'),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.blue,
-                                  ),
-                                  onPressed: () {
-                                    nextScreenReplace(
-                                        context,
-                                        EditUser(
-                                          valName: val['name'],
-                                          valId: val['id'],
-                                          valCompany: val['company'],
-                                          valLevel: val['level'],
-                                          valEmail: val['email'],
-                                        ));
-                                  },
-                                ),
-                                ElevatedButton(
-                                  child: Text('Delete'),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.red,
-                                  ),
-                                  onPressed: () {
-                                    deleteUser(val['id'], val);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ]);
-                      }).toList(),
                     ),
                   ),
                 ),
