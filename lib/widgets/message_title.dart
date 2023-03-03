@@ -120,13 +120,14 @@ class _MessageTileState extends State<MessageTile> {
                       style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
                     for (var image in widget.attachment)
-                      Image(
-                        image: NetworkImage(image),
-                        alignment: Alignment.center,
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.fitWidth,
-                      ),
+                      if (image.contains('https'))
+                        Image(
+                          image: NetworkImage(image),
+                          alignment: Alignment.center,
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.fitWidth,
+                        ),
                     Text(
                       date.toString(),
                       textAlign: TextAlign.right,
