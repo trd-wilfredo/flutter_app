@@ -134,22 +134,25 @@ class _HomeState extends State<Home> {
                         // height: 30.0
                       ),
                       SizedBox(height: 10.0),
-                      Container(
-                        constraints: BoxConstraints(maxWidth: 650),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color.fromARGB(255, 10, 0, 0),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20.0, bottom: 20.0),
+                        child: Container(
+                          constraints: BoxConstraints(maxWidth: 650),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                color: Color.fromARGB(255, 10, 0, 0),
+                              ),
                             ),
                           ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: pages
-                              .map((page) => PageListCard(
-                                    pageprops: page,
-                                  ))
-                              .toList(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: pages
+                                .map((page) => PageListCard(
+                                      pageprops: page,
+                                    ))
+                                .toList(),
+                          ),
                         ),
                       ),
                       Row(

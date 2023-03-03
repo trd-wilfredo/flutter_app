@@ -83,7 +83,8 @@ class _UserPageState extends State<UserPage> {
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: Padding(
-                        padding: EdgeInsets.only(top: 50.0),
+                        padding: EdgeInsets.only(
+                            left: 20.0, bottom: 20.0, top: 50.0),
                         child: DataTable(
                           decoration: BoxDecoration(
                             border: Border(
@@ -116,13 +117,13 @@ class _UserPageState extends State<UserPage> {
                             return DataRow(cells: [
                               DataCell(
                                 Container(
-                                  width: 200, //SET width
+                                  width: 200,
                                   child: Text(val['name']),
                                 ),
                               ),
                               DataCell(
                                 Container(
-                                  width: 200, //SET width
+                                  width: 200,
                                   child: Text(val['company']),
                                 ),
                               ),

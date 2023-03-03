@@ -107,36 +107,44 @@ class _CompanyPageState extends State<CompanyPage> {
                       ],
                       rows: companies.map((val) {
                         return DataRow(cells: [
-                          DataCell(Text(val['name'])),
                           DataCell(
-                            Row(
-                              children: [
-                                ElevatedButton(
-                                  child: Text('Edit'),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.blue,
+                            Container(
+                              width: 400,
+                              child: Text(val['name']),
+                            ),
+                          ),
+                          DataCell(
+                            Container(
+                              width: 150,
+                              child: Row(
+                                children: [
+                                  ElevatedButton(
+                                    child: Text('Edit'),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.blue,
+                                    ),
+                                    onPressed: () {
+                                      nextScreenReplace(
+                                          context,
+                                          EditCompany(
+                                            company: val['name'],
+                                            avilability: val['avilability'],
+                                            uid: val['id'],
+                                          ));
+                                    },
                                   ),
-                                  onPressed: () {
-                                    nextScreenReplace(
-                                        context,
-                                        EditCompany(
-                                          company: val['name'],
-                                          avilability: val['avilability'],
-                                          uid: val['id'],
-                                        ));
-                                  },
-                                ),
-                                ElevatedButton(
-                                  child: Text('Delete'),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.red,
+                                  ElevatedButton(
+                                    child: Text('Delete'),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      // nextScreen(context, AddUser());
+                                      deleteCompany(val['id'], val);
+                                    },
                                   ),
-                                  onPressed: () {
-                                    // nextScreen(context, AddUser());
-                                    deleteCompany(val['id'], val);
-                                  },
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ]);
