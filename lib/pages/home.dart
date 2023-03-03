@@ -106,52 +106,58 @@ class _HomeState extends State<Home> {
     return Scaffold(
       // backgroundColor: Color.fromARGB(255, 53, 53, 53),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 50.0),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    // color: Colors.cyan,
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                        child: Text(
-                          'Flutter Features',
-                          style: GoogleFonts.getFont(
-                            'Pacifico',
-                            fontSize: 30.0,
+        child: Center(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 50.0),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        // color: Colors.cyan,
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            child: Text(
+                              'Flutter Features',
+                              style: GoogleFonts.getFont(
+                                'Pacifico',
+                                fontSize: 30.0,
+                              ),
+                            ),
                           ),
                         ),
+                        // height: 30.0
                       ),
-                    ),
-                    // height: 30.0
-                  ),
-                  SizedBox(height: 10.0),
-                  Container(
-                    constraints: BoxConstraints(maxWidth: 600),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Color.fromARGB(255, 10, 0, 0),
+                      SizedBox(height: 10.0),
+                      Container(
+                        constraints: BoxConstraints(maxWidth: 650),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Color.fromARGB(255, 10, 0, 0),
+                            ),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: pages
+                              .map((page) => PageListCard(
+                                    pageprops: page,
+                                  ))
+                              .toList(),
                         ),
                       ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: pages
-                          .map((page) => PageListCard(
-                                pageprops: page,
-                              ))
-                          .toList(),
-                    ),
+                      Row(
+                        children: [],
+                      ),
+                    ],
                   ),
-                  Row(
-                    children: [],
-                  ),
-                ],
+                ),
               ),
             ),
           ),
