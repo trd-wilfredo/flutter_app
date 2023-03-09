@@ -4,8 +4,8 @@ const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 const RESOURCES = {
   "flutter.js": "eb2682e33f25cd8f1fc59011497c35f8",
-"version.json": "8d2fb5f47dfdc002f2c8e371de594eee",
-"main.dart.js": "2228aa9816e8059b4df246888534be75",
+"version.json": "caf778a9bc4f1616c139ed5fd29186e1",
+"main.dart.js": "1b7dc51a7b4a51f00e7c3d8614c4a023",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "icons%20copy/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
 "icons%20copy/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
@@ -28,7 +28,7 @@ const RESOURCES = {
 "assets/shaders/ink_sparkle.frag": "450f915059eb6b973f9ae9be0ba160fb",
 "assets/AssetManifest.json": "7f54fae80f3363b922337d304baab45b",
 "assets/assets/image_1.jpg": "e69de6c13cec5a08683559672dc1d1a2",
-"assets/assets/app/app-release.apk": "890efdfa534ad7e958e904802eb89cc4",
+"assets/assets/app/app-release.apk": "a5f4c3cbcd1814aed0068e7acfa0a035",
 "assets/assets/monster-10.png": "7587f96c36a0a8e37675cdebf12f4575",
 "assets/assets/monster-6.png": "281f6db4ec2f54b1a595e4e55b61e1c6",
 "assets/assets/image_6.jpg": "1d8162c14d871303420c903281e6f072",
