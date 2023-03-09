@@ -90,6 +90,8 @@ class DatabaseService {
 
   //get all product
   Future getAllProduct() async {
+    // String level, String company
+    // if (level == 'normal') {}
     QuerySnapshot snapshot =
         await productCollection.where('timeDeleted', isEqualTo: 'false').get();
     return snapshot;
@@ -107,19 +109,20 @@ class DatabaseService {
       String uid,
       String producName,
       String stocks,
-      String company,
+      String companyId,
+      String companyName,
       String avilability,
       String timeEdited,
       List imgePaths) async {
     DocumentReference productDocumentReference = productCollection.doc(uid);
-    print(imgePaths);
     var edit = await productDocumentReference
         .update({
           "productName": producName,
           "stocks": stocks,
           "avilability": avilability,
           "productImages": imgePaths.map((e) => e.toString()).toList(),
-          "companyName": company,
+          "companyId": companyId,
+          "companyName": companyName,
           "timeEdited": timeEdited,
         })
         .then((value) => true)
@@ -389,8 +392,14 @@ class DatabaseService {
   }
 
   // Save Product
-  Future addSaveProduct(String productName, String companyName, String stocks,
-      String avilability, String timeCreated, List imgePaths) async {
+  Future addSaveProduct(
+      String productName,
+      String companyId,
+      String companyName,
+      String stocks,
+      String avilability,
+      String timeCreated,
+      List imgePaths) async {
     // var product = await
 
     DocumentReference productDocumentReference = await productCollection.add({
@@ -398,11 +407,11 @@ class DatabaseService {
       "stocks": stocks,
       "avilability": avilability,
       "companyName": companyName,
+      "companyId": companyId,
       "timeCreated": timeCreated,
       "productImages": imgePaths.map((e) => e.toString()).toList(),
       "timeEdited": '',
       "timeDeleted": "false",
-      "companyId": ''
     });
     var product = await productDocumentReference
         .update({
