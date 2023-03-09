@@ -16,19 +16,19 @@ class CompanyInfoPage extends StatefulWidget {
 class _CompanyInfoPageState extends State<CompanyInfoPage> {
   Stream<QuerySnapshot>? companyName;
 
-  @override
-  void initState() {
-    getCompanyName();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   getCompanyName();
+  //   super.initState();
+  // }
 
-  getCompanyName() {
-    DatabaseService().gettingCompanyInfo(widget.uid).then((val) {
-      setState(() {
-        companyName = val;
-      });
-    });
-  }
+  // getCompanyName() {
+  //   DatabaseService().gettingCompanyInfo(widget.uid).then((val) {
+  //     setState(() {
+  //       companyName = val;
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {

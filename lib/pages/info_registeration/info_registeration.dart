@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/widgets/widget.dart';
 import 'package:flutter_features/pages/user_page/add_user.dart';
 import 'package:flutter_features/pages/company_page/add_company.dart';
 import 'package:flutter_features/pages/product_page/add_product.dart';
+
+import '../login/service/database_service.dart';
 
 class InfoRegister extends StatefulWidget {
   const InfoRegister({super.key});
@@ -12,6 +15,25 @@ class InfoRegister extends StatefulWidget {
 }
 
 class _InfoRegisterState extends State<InfoRegister> {
+  List companies = [];
+  @override
+  void initState() {
+    super.initState();
+    getAllCompany();
+  }
+
+  getAllCompany() async {
+    QuerySnapshot getAllCompany = await DatabaseService().getAllCompany();
+    for (var f in getAllCompany.docs) {
+      setState(() {
+        companies.add({
+          'company': f['companyName'],
+          'companyId': f['uid'],
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +59,11 @@ class _InfoRegisterState extends State<InfoRegister> {
               SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
-                  nextScreen(context, AddProduct());
+                  nextScreen(
+                      context,
+                      AddProduct(
+                        companies: companies,
+                      ));
                 },
                 child: Text('Add Product'),
               ),

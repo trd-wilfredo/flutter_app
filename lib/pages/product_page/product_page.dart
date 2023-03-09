@@ -1,3 +1,4 @@
+import 'package:firebase_dart/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_features/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,6 +22,8 @@ class _ProductPageState extends State<ProductPage> {
   String fullname = '';
   String company = '';
   List products = [];
+  List companies = [];
+  String uid = '';
   @override
   void initState() {
     super.initState();
@@ -28,8 +31,17 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   gettingAllProduct() async {
-    QuerySnapshot snapshot = await DatabaseService().getAllProduct();
-
+    QuerySnapshot snapshot = await DatabaseService(uid: uid).getAllProduct();
+    QuerySnapshot getAllCompany =
+        await DatabaseService(uid: uid).getAllCompany();
+    for (var f in getAllCompany.docs) {
+      setState(() {
+        companies.add({
+          'company': f['companyName'],
+          'companyId': f['uid'],
+        });
+      });
+    }
     for (var f in snapshot.docs) {
       setState(() {
         products.add({
@@ -71,7 +83,11 @@ class _ProductPageState extends State<ProductPage> {
                   primary: Colors.green,
                 ),
                 onPressed: () {
-                  nextScreenReplace(context, AddProduct());
+                  nextScreenReplace(
+                      context,
+                      AddProduct(
+                        companies: companies,
+                      ));
                 },
               ),
             ),
@@ -153,7 +169,8 @@ class _ProductPageState extends State<ProductPage> {
                                             EditProduct(
                                               producName: val['name'],
                                               stocks: val['stocks'],
-                                              company: val['company'],
+                                              companyId: val['companyId'],
+                                              companies: companies,
                                               avilability: val['avilability'],
                                               uid: val['id'],
                                             ));

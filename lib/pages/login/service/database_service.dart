@@ -392,20 +392,26 @@ class DatabaseService {
   }
 
   // Save Product
-  Future addSaveProduct(String productName, String companyId, String stocks,
-      String avilability, String timeCreated, List imgePaths) async {
+  Future addSaveProduct(
+      String productName,
+      String companyId,
+      String companyName,
+      String stocks,
+      String avilability,
+      String timeCreated,
+      List imgePaths) async {
     // var product = await
 
     DocumentReference productDocumentReference = await productCollection.add({
       "productName": productName,
       "stocks": stocks,
       "avilability": avilability,
-      "companyName": productName,
+      "companyName": companyName,
+      "companyId": companyId,
       "timeCreated": timeCreated,
       "productImages": imgePaths.map((e) => e.toString()).toList(),
       "timeEdited": '',
       "timeDeleted": "false",
-      "companyId": 'companyId'
     });
     var product = await productDocumentReference
         .update({
