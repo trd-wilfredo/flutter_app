@@ -121,12 +121,25 @@ class _MessageTileState extends State<MessageTile> {
                     ),
                     for (var image in widget.attachment)
                       if (image.contains('https'))
-                        Image(
-                          image: NetworkImage(image),
-                          alignment: Alignment.center,
-                          height: 100,
-                          width: 100,
-                          fit: BoxFit.fitWidth,
+                        GestureDetector(
+                          child: Hero(
+                            tag: 'imageHero',
+                            child: Image(
+                              image: NetworkImage(image),
+                              alignment: Alignment.center,
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return DetailScreen(
+                                image: image,
+                              );
+                            }));
+                          },
                         ),
                     Text(
                       date.toString(),
@@ -168,5 +181,32 @@ class _MessageTileState extends State<MessageTile> {
     var timeDeleted = DateTime.now().millisecondsSinceEpoch.toString();
     var userDlt =
         await DatabaseService().deleteMessage(groupId, messageId, timeDeleted);
+  }
+}
+
+class DetailScreen extends StatelessWidget {
+  final String image;
+  const DetailScreen({
+    Key? key,
+    required this.image,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Center(
+          child: Hero(
+            tag: 'image',
+            child: Image.network(
+              image,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

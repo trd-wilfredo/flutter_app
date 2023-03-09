@@ -12,7 +12,8 @@ import 'package:flutter_features/pages/login/service/database_service.dart';
 class EditProduct extends StatefulWidget {
   String producName = "";
   String stocks = "";
-  String company = "";
+  List companies = [];
+  String companyId = "";
   String avilability = "";
   String timeEdited = "";
   String uid = "";
@@ -20,7 +21,8 @@ class EditProduct extends StatefulWidget {
       {Key? key,
       required this.producName,
       required this.stocks,
-      required this.company,
+      required this.companies,
+      required this.companyId,
       required this.avilability,
       required this.uid})
       : super(key: key);
@@ -33,11 +35,12 @@ class _EditProductState extends State<EditProduct> {
   final formKey = GlobalKey<FormState>();
   String producName = "";
   String stocks = "";
-  String company = '';
+  String companyId = '';
   String avilability = '';
   String timeEdited = "";
+  String companyName = "";
   List avilabilities = ['yes', 'no'];
-  List companies = [];
+  List companIds = [];
   List? urlImge = [];
   List<XFile>? images = [];
   @override
@@ -48,14 +51,14 @@ class _EditProductState extends State<EditProduct> {
 
   gettingAllCompany() async {
     QuerySnapshot snapshot = await DatabaseService().getAllCompany();
-    QuerySnapshot company = await DatabaseService().getProductById(widget.uid);
-    for (var f in company.docs) {
+    QuerySnapshot companyInfo =
+        await DatabaseService().getProductById(widget.uid);
+    for (var f in companyInfo.docs) {
       for (var t in f['productImages']) {
         var test = await FirebaseStorage.instance
             .ref()
             .child(t)
             .getDownloadURL() as String;
-        print(test);
         setState(() {
           urlImge?.add(test);
         });
@@ -64,9 +67,7 @@ class _EditProductState extends State<EditProduct> {
 
     for (var f in snapshot.docs) {
       setState(() {
-        companies.add(
-          f['companyName'],
-        );
+        companIds.add(f['uid']);
       });
     }
   }
@@ -157,21 +158,21 @@ class _EditProductState extends State<EditProduct> {
                 ),
                 SizedBox(height: 16),
                 DropdownButtonFormField(
-                  value: widget.company == "" ? null : widget.company,
-                  items: companies.map((category) {
+                  value: widget.companyId == "" ? null : widget.companyId,
+                  items: companIds.map((category) {
+                    var text = getCompany(widget.companies, category);
                     return new DropdownMenuItem(
                         value: category,
                         child: Row(
                           children: <Widget>[
-                            Text(category),
+                            Text(text),
                           ],
                         ));
                   }).toList(),
                   onChanged: (newValue) {
-                    // do other stuff with _category
+                    var text = getCompany(widget.companies, newValue);
                     setState(
-                      () => {company = '$newValue'},
-                    );
+                        () => {companyId = "$newValue", companyName = text});
                   },
                   validator: (value) {
                     if (value == null) {
@@ -220,7 +221,10 @@ class _EditProductState extends State<EditProduct> {
                   child: ElevatedButton(
                     onPressed: () {
                       editProduct(
-                          widget.uid, widget.avilability, widget.company);
+                        widget.uid,
+                        widget.avilability,
+                        widget.companies,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Theme.of(context).primaryColor,
@@ -243,6 +247,13 @@ class _EditProductState extends State<EditProduct> {
     );
   }
 
+  getCompany(companies, category) {
+    var mapCompany = companies
+        .map((e) => e['companyId'] == category ? e['company'] : '')
+        .where((e) => e != '' && e != null);
+    return mapCompany.first.toString();
+  }
+
   editProduct(id, avlty, cpny) async {
     if (formKey.currentState!.validate()) {
       setState(() {
@@ -250,15 +261,15 @@ class _EditProductState extends State<EditProduct> {
         timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
       });
       if (avilability == "") avilability = avlty;
-      if (company == "") company = cpny;
+      if (companyId == "") companyId = cpny;
       var imgPaths =
           await FireStoreService(context: context, folder: 'products')
               .multipleUploadFile(images!);
       print([imgPaths, 'edit']);
 
       await DatabaseService()
-          .editProduct(id, producName, stocks, company, avilability, timeEdited,
-              imgPaths)
+          .editProduct(id, producName, stocks, companyId, companyName,
+              avilability, timeEdited, imgPaths)
           .then((value) async {
         if (value == true) {
           nextScreenReplace(context, ProductPage());

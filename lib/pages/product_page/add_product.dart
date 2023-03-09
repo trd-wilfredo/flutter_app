@@ -10,7 +10,8 @@ import 'package:flutter_features/pages/product_page/product_page.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 
 class AddProduct extends StatefulWidget {
-  const AddProduct({super.key});
+  List companies = [];
+  AddProduct({Key? key, required this.companies}) : super(key: key);
 
   @override
   State<AddProduct> createState() => _AddProductState();
@@ -21,12 +22,13 @@ class _AddProductState extends State<AddProduct> {
   final formKey = GlobalKey<FormState>();
   String producName = "";
   String stocks = "";
-  String company = '';
+  String companyName = '';
+  String companyId = '';
   String avilability = '';
   String timeCreated = "";
   String currentSelectedValue = '';
   List avilabilities = ['yes', 'no'];
-  List companies = [];
+  List companIds = [];
   List<XFile>? images = [];
   void initState() {
     super.initState();
@@ -35,12 +37,12 @@ class _AddProductState extends State<AddProduct> {
 
   gettingAllCompany() async {
     QuerySnapshot snapshot = await DatabaseService().getAllCompany();
+    print(widget.companies);
 
     for (var f in snapshot.docs) {
+      print(f['uid']);
       setState(() {
-        companies.add(
-          f['companyName'],
-        );
+        companIds.add(f['uid']);
       });
     }
   }
@@ -130,18 +132,21 @@ class _AddProductState extends State<AddProduct> {
                 ),
                 SizedBox(height: 16),
                 DropdownButtonFormField(
-                  items: companies.map((category) {
+                  items: companIds.map((category) {
+                    var text = getCompany(widget.companies, category);
                     return new DropdownMenuItem(
                         value: category,
                         child: Row(
                           children: <Widget>[
-                            Text(category),
+                            Text(text.toString()),
                           ],
                         ));
                   }).toList(),
                   onChanged: (newValue) {
-                    // do other stuff with _category
-                    setState(() => company = '$newValue');
+                    var text = getCompany(widget.companies, newValue);
+
+                    setState(
+                        () => {companyId = "$newValue", companyName = text});
                   },
                   validator: (value) {
                     if (value == null) {
@@ -211,6 +216,13 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
+  getCompany(companies, category) {
+    var mapCompany = widget.companies
+        .map((e) => e['companyId'] == category ? e['company'] : '')
+        .where((e) => e != '' && e != null);
+    return mapCompany.first.toString();
+  }
+
   addProduct() async {
     if (formKey.currentState!.validate()) {
       setState(() {
@@ -221,8 +233,8 @@ class _AddProductState extends State<AddProduct> {
           await FireStoreService(context: context, folder: 'products')
               .multipleUploadFile(images!);
       await DatabaseService()
-          .addSaveProduct(
-              producName, company, stocks, avilability, timeCreated, imgPaths)
+          .addSaveProduct(producName, companyId, companyName, stocks,
+              avilability, timeCreated, imgPaths)
           .then((value) async {
         if (value == true) {
           nextScreenReplace(context, ProductPage());
