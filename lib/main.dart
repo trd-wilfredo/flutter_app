@@ -37,6 +37,24 @@ void main() async {
     await Firebase.initializeApp();
   }
 
+  page(title, page) {
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          title,
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 27,
+          ),
+        ),
+      ),
+      body: page,
+    );
+  }
+
   var getUser = FirebaseAuth.instance.currentUser;
   StatefulWidget profilePage;
   if (getUser == null) {
@@ -47,9 +65,9 @@ void main() async {
         .ref()
         .child(user.docs.first['profilePic'])
         .getDownloadURL();
-    profilePage = ProfilePage(docs: user.docs, profilePic: link);
+    profilePage =
+        page("ProFile Page", ProfilePage(docs: user.docs, profilePic: link));
   }
-
   runApp(
     MaterialApp(
       initialRoute: '/home',
@@ -64,7 +82,7 @@ void main() async {
         '/work_progress': (context) => AboutUs(),
         '/file_upload': (context) => FileUpload(),
         '/profile_page': (context) => profilePage,
-        '/company_list': (context) => CompanyPage(),
+        '/company_list': (context) => page('Company Page', CompanyPage()),
         '/andriod_phone': (context) => AndiodPage(),
         '/messaging_app': (context) => MessagingApp(),
         '/company_search': (context) => CompanySearch(),
