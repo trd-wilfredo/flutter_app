@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
     PageList(
         part: 'bottom',
         page: 'app_version',
-        title: 'AppVersion 1.1.02',
+        title: 'AppVersion 1.1.03',
         barPecent: 0.5,
         percent: "50%"),
     // PageList(
