@@ -117,13 +117,17 @@ class _HomePageState extends State<HomePage> {
               height: 200,
               child: IconButton(
                 onPressed: () {
-                  nextScreenReplace(
-                    context,
-                    ProfilePage(
-                      docs: docs,
-                      profilePic: profile,
-                    ),
-                  );
+                  setState(() {
+                    title = "User Profile";
+                    page = "profile_page";
+                  });
+                  // nextScreenReplace(
+                  //   context,
+                  //   ProfilePage(
+                  //     docs: docs,
+                  //     profilePic: profile,
+                  //   ),
+                  // );
                 },
                 icon: profile == ''
                     ? Icon(
@@ -160,8 +164,10 @@ class _HomePageState extends State<HomePage> {
                   page = "groups";
                 });
               },
-              selected: true,
-              selectedColor: Theme.of(context).primaryColor,
+              selectedColor: page == "groups"
+                  ? Theme.of(context).primaryColor
+                  : Colors.black,
+              selected: page == "groups" ? true : false,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.group),
@@ -178,8 +184,10 @@ class _HomePageState extends State<HomePage> {
                   page = "user";
                 });
               },
-              // selectedColor: Theme.of(context).primaryColor,
-              // selected: true,
+              selectedColor: page == "user"
+                  ? Theme.of(context).primaryColor
+                  : Colors.black,
+              selected: page == "user" ? true : false,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.group),
@@ -196,8 +204,10 @@ class _HomePageState extends State<HomePage> {
                   page = "product";
                 });
               },
-              // selectedColor: Theme.of(context).primaryColor,
-              // selected: true,
+              selectedColor: page == "product"
+                  ? Theme.of(context).primaryColor
+                  : Colors.black,
+              selected: page == "product" ? true : false,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.group),
@@ -214,6 +224,10 @@ class _HomePageState extends State<HomePage> {
                   page = "company";
                 });
               },
+              selectedColor: page == "company"
+                  ? Theme.of(context).primaryColor
+                  : Colors.black,
+              selected: page == "company" ? true : false,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.group),
@@ -308,6 +322,8 @@ class _HomePageState extends State<HomePage> {
         return UserPage();
       case "company":
         return CompanyPage();
+      case "profile_page":
+        return ProfilePage(docs: docs, profilePic: profile);
     }
   }
 
