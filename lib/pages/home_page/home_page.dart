@@ -30,6 +30,8 @@ class _HomePageState extends State<HomePage> {
   bool _isLoading = false;
   String groupName = "";
   String profile = "";
+  String title = "Chat List";
+  String page = "groups";
 
   List docs = [];
 
@@ -98,8 +100,8 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
-        title: const Text(
-          'Chat List',
+        title: Text(
+          title,
           style: TextStyle(
             color: Colors.white,
             fontSize: 27,
@@ -152,7 +154,12 @@ class _HomePageState extends State<HomePage> {
               height: 2,
             ),
             ListTile(
-              onTap: () {},
+              onTap: () {
+                setState(() {
+                  title = "Chat List";
+                  page = "groups";
+                });
+              },
               selected: true,
               selectedColor: Theme.of(context).primaryColor,
               contentPadding:
@@ -165,7 +172,11 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               onTap: () {
-                nextScreen(context, UserPage());
+                // nextScreen(context, UserPage());
+                setState(() {
+                  title = "User";
+                  page = "user";
+                });
               },
               // selectedColor: Theme.of(context).primaryColor,
               // selected: true,
@@ -179,7 +190,11 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               onTap: () {
-                nextScreen(context, ProductPage());
+                // nextScreen(context, ProductPage());
+                setState(() {
+                  title = "Product Page";
+                  page = "product";
+                });
               },
               // selectedColor: Theme.of(context).primaryColor,
               // selected: true,
@@ -193,7 +208,11 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               onTap: () {
-                nextScreen(context, CompanyPage());
+                // nextScreen(context, CompanyPage());
+                setState(() {
+                  title = "Company Page";
+                  page = "company";
+                });
               },
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -274,6 +293,26 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+
+      body: switchPage(page),
+    );
+  }
+
+  switchPage(page) {
+    switch (page) {
+      case "groups":
+        return groupList();
+      case "product":
+        return ProductPage();
+      case "user":
+        return UserPage();
+      case "company":
+        return CompanyPage();
+    }
+  }
+
+  groupList() {
+    return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           popUpDialog(context);
@@ -286,43 +325,40 @@ class _HomePageState extends State<HomePage> {
           size: 30,
         ),
       ),
-      body: groupList(),
-    );
-  }
-
-  groupList() {
-    return StreamBuilder(
-      stream: groups,
-      builder: (context, AsyncSnapshot snapshot) {
-        // make some checks
-        if (snapshot.hasData) {
-          if (snapshot.data['groups'] != null) {
-            if (snapshot.data['groups'].length != 0) {
-              return ListView.builder(
-                itemCount: snapshot.data['groups'].length,
-                itemBuilder: (context, index) {
-                  int reverseIndex = snapshot.data['groups'].length - index - 1;
-                  return GroupTile(
-                    groupId: getId(snapshot.data['groups'][reverseIndex]),
-                    groupName: getName(snapshot.data['groups'][reverseIndex]),
-                    userName: snapshot.data['fullName'],
-                    url: [],
-                  );
-                },
-              );
+      body: StreamBuilder(
+        stream: groups,
+        builder: (context, AsyncSnapshot snapshot) {
+          // make some checks
+          if (snapshot.hasData) {
+            if (snapshot.data['groups'] != null) {
+              if (snapshot.data['groups'].length != 0) {
+                return ListView.builder(
+                  itemCount: snapshot.data['groups'].length,
+                  itemBuilder: (context, index) {
+                    int reverseIndex =
+                        snapshot.data['groups'].length - index - 1;
+                    return GroupTile(
+                      groupId: getId(snapshot.data['groups'][reverseIndex]),
+                      groupName: getName(snapshot.data['groups'][reverseIndex]),
+                      userName: snapshot.data['fullName'],
+                      url: [],
+                    );
+                  },
+                );
+              } else {
+                return noGroupWidget();
+              }
             } else {
               return noGroupWidget();
             }
           } else {
-            return noGroupWidget();
+            return Center(
+              child: CircularProgressIndicator(
+                  color: Theme.of(context).primaryColor),
+            );
           }
-        } else {
-          return Center(
-            child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor),
-          );
-        }
-      },
+        },
+      ),
     );
   }
 
