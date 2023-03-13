@@ -286,7 +286,7 @@ class _EditUserState extends State<EditUser> {
       if (userDlt == true) {
         setState(() {
           // backReloadScreen(context, )
-          nextScreenReplace(context, UserPage());
+          Navigator.pop(context);
           _isLoading = false;
         });
       }
