@@ -156,6 +156,7 @@ class _ProductPageState extends State<ProductPage> {
                                             producName: val['name'],
                                             stocks: val['stocks'],
                                             companyId: val['companyId'],
+                                            companyName: val['company'],
                                             companies: companies,
                                             avilability: val['avilability'],
                                             uid: val['id'],

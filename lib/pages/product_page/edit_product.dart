@@ -14,6 +14,7 @@ class EditProduct extends StatefulWidget {
   String stocks = "";
   List companies = [];
   String companyId = "";
+  String companyName = "";
   String avilability = "";
   String timeEdited = "";
   String uid = "";
@@ -23,6 +24,7 @@ class EditProduct extends StatefulWidget {
       required this.stocks,
       required this.companies,
       required this.companyId,
+      required this.companyName,
       required this.avilability,
       required this.uid})
       : super(key: key);
@@ -165,7 +167,7 @@ class _EditProductState extends State<EditProduct> {
                         value: category,
                         child: Row(
                           children: <Widget>[
-                            Text(text),
+                            Text(text.toString()),
                           ],
                         ));
                   }).toList(),
@@ -223,7 +225,8 @@ class _EditProductState extends State<EditProduct> {
                       editProduct(
                         widget.uid,
                         widget.avilability,
-                        widget.companies,
+                        widget.companyId,
+                        widget.companyName,
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -254,25 +257,27 @@ class _EditProductState extends State<EditProduct> {
     return mapCompany.first.toString();
   }
 
-  editProduct(id, avlty, cpny) async {
+  editProduct(id, avlty, cpny, cpnyname) async {
     if (formKey.currentState!.validate()) {
       setState(() {
         // _isLoading = true;
         timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
       });
       if (avilability == "") avilability = avlty;
-      if (companyId == "") companyId = cpny;
+      if (companyId == "") {
+        companyId = cpny;
+        companyName = cpnyname;
+      }
       var imgPaths =
           await FireStoreService(context: context, folder: 'products')
               .multipleUploadFile(images!);
-      print([imgPaths, 'edit']);
 
       await DatabaseService()
           .editProduct(id, producName, stocks, companyId, companyName,
               avilability, timeEdited, imgPaths)
           .then((value) async {
         if (value == true) {
-          nextScreenReplace(context, ProductPage());
+          Navigator.pop(context);
         } else {
           showSnackBr(context, Colors.red, value);
           _isLoading = false;

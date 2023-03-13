@@ -14,7 +14,8 @@ import '../tool_page/fire_storage.dart/fire_storage_service.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
 
 class AddUser extends StatefulWidget {
-  const AddUser({super.key});
+  List companies = [];
+  AddUser({Key? key, required this.companies}) : super(key: key);
 
   @override
   State<AddUser> createState() => _AddUserState();
@@ -28,10 +29,11 @@ class _AddUserState extends State<AddUser> {
   String password = '';
   String level = '';
   String fullname = '';
-  String company = '';
+  String companyName = '';
+  String companyId = '';
   String uid = '';
   List levels = ['admin', 'normal'];
-  List companies = [];
+  List companIds = [];
   XFile? xfile;
   AuthService authService = AuthService();
   UserTool userTool = UserTool();
@@ -47,12 +49,10 @@ class _AddUserState extends State<AddUser> {
     QuerySnapshot snapshot = await DatabaseService().getAllCompany();
 
     var getUser = FirebaseAuth.instance.currentUser;
+    uid = getUser!.uid;
     for (var f in snapshot.docs) {
       setState(() {
-        uid = getUser!.uid;
-        companies.add(
-          f['companyName'],
-        );
+        companIds.add(f['uid']);
       });
     }
   }
@@ -122,18 +122,20 @@ class _AddUserState extends State<AddUser> {
                       ),
                       const SizedBox(height: 16),
                       DropdownButtonFormField(
-                        items: companies.map((category) {
+                        items: companIds.map((category) {
+                          var text = getCompany(widget.companies, category);
                           return new DropdownMenuItem(
                               value: category,
                               child: Row(
                                 children: <Widget>[
-                                  Text(category),
+                                  Text(text.toString()),
                                 ],
                               ));
                         }).toList(),
                         onChanged: (newValue) {
-                          // do other stuff with _category
-                          setState(() => {company = '$newValue'});
+                          var text = getCompany(widget.companies, newValue);
+                          setState(() =>
+                              {companyId = "$newValue", companyName = text});
                         },
                         validator: (value) {
                           if (value == null) {
@@ -253,6 +255,13 @@ class _AddUserState extends State<AddUser> {
     );
   }
 
+  getCompany(companies, category) {
+    var mapCompany = widget.companies
+        .map((e) => e['companyId'] == category ? e['company'] : '')
+        .where((e) => e != '' && e != null);
+    return mapCompany.first.toString();
+  }
+
   addUser() async {
     if (formKey.currentState!.validate()) {
       setState(() {
@@ -261,7 +270,8 @@ class _AddUserState extends State<AddUser> {
       var imgPath = await FireStoreService(context: context, folder: 'profile')
           .uploadFile(xfile, uid);
       await userTool
-          .createUser(fullname, email, password, level, company, imgPath)
+          .createUser(
+              fullname, email, password, level, companyName, companyId, imgPath)
           .then((value) async {
         if (value == true) {
           nextScreenReplace(context, UserPage());

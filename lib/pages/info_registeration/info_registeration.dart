@@ -45,7 +45,7 @@ class _InfoRegisterState extends State<InfoRegister> {
             children: <Widget>[
               ElevatedButton(
                 onPressed: () {
-                  nextScreen(context, AddUser());
+                  nextScreen(context, AddUser(companies: companies));
                 },
                 child: Text('Add User'),
               ),

@@ -21,6 +21,8 @@ class _UserPageState extends State<UserPage> {
   String fullname = '';
   String company = '';
   List users = [];
+  List companies = [];
+  String uid = '';
   @override
   void initState() {
     super.initState();
@@ -29,12 +31,23 @@ class _UserPageState extends State<UserPage> {
 
   gettingAllUser() async {
     QuerySnapshot snapshot = await DatabaseService().getAllUser();
+    QuerySnapshot getAllCompany =
+        await DatabaseService(uid: uid).getAllCompany();
+    for (var f in getAllCompany.docs) {
+      setState(() {
+        companies.add({
+          'company': f['companyName'],
+          'companyId': f['uid'],
+        });
+      });
+    }
     for (var f in snapshot.docs) {
       setState(() {
         users.add({
           'id': f['uid'],
           'name': f['fullName'],
           'company': f['company'],
+          'companyId': f['companyId'],
           'level': f['level'],
           'email': f['email'],
         });
@@ -55,7 +68,7 @@ class _UserPageState extends State<UserPage> {
                 primary: Colors.green,
               ),
               onPressed: () {
-                nextScreen(context, AddUser());
+                nextScreen(context, AddUser(companies: companies));
               },
             ),
           ),
@@ -129,7 +142,8 @@ class _UserPageState extends State<UserPage> {
                                             EditUser(
                                               valName: val['name'],
                                               valId: val['id'],
-                                              valCompany: val['company'],
+                                              companyId: val['companyId'],
+                                              companies: companies,
                                               valLevel: val['level'],
                                               valEmail: val['email'],
                                             ));
