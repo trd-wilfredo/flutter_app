@@ -58,7 +58,7 @@ class DatabaseService {
 
 // soft edit user
   Future editUser(String uid, String fullName, String email, String company,
-      String level, String timeEdited, String imgPath) async {
+      String companyId, String level, String timeEdited, String imgPath) async {
     DocumentReference userDocumentReference = userCollection.doc(uid);
     var edit = await userDocumentReference
         .update({
@@ -66,6 +66,7 @@ class DatabaseService {
           "email": email,
           "level": level,
           "company": company,
+          "companyId": companyId,
           "profilePic": imgPath,
           "timeEdited": timeEdited,
         })
@@ -335,13 +336,14 @@ class DatabaseService {
 
   // saving the userdata
   Future savingUserData(String fullName, String email, String level,
-      String company, String imgPath) async {
+      String company, String companyId, String imgPath) async {
     return await userCollection.doc(uid).set({
       "fullName": fullName,
       "email": email,
       "groups": [],
       "level": level,
       "company": company,
+      "companyId": companyId,
       "profilePic": imgPath,
       "timeDeleted": "false",
       "uid": uid,
