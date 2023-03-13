@@ -37,10 +37,7 @@ class _AddProductState extends State<AddProduct> {
 
   gettingAllCompany() async {
     QuerySnapshot snapshot = await DatabaseService().getAllCompany();
-    print(widget.companies);
-
     for (var f in snapshot.docs) {
-      print(f['uid']);
       setState(() {
         companIds.add(f['uid']);
       });
