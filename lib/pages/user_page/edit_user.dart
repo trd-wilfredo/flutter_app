@@ -13,7 +13,8 @@ import 'package:flutter_features/pages/login/service/database_service.dart';
 class EditUser extends StatefulWidget {
   String valName = '';
   String valId = '';
-  String valCompany = '';
+  String companyId = '';
+  List companies = [];
   String valLevel = '';
   String valEmail = '';
   EditUser(
@@ -21,7 +22,8 @@ class EditUser extends StatefulWidget {
       required this.valName,
       required this.valId,
       required this.valEmail,
-      required this.valCompany,
+      required this.companies,
+      required this.companyId,
       required this.valLevel})
       : super(key: key);
 
@@ -38,7 +40,9 @@ class _EditUserState extends State<EditUser> {
   String level = '';
   String fullname = '';
   String uid = '';
-  String company = '';
+  String companyId = '';
+  String companyName = "";
+  List companIds = [];
   XFile? xfile;
   List levels = ['admin', 'normal'];
   List companies = [];
@@ -50,12 +54,13 @@ class _EditUserState extends State<EditUser> {
   }
 
   gettingAllCompany() async {
+    print(widget.companies);
     QuerySnapshot snapshot = await DatabaseService().getAllCompany();
     uid = widget.valId;
     for (var f in snapshot.docs) {
       setState(() {
-        companies.add(
-          f['companyName'],
+        companIds.add(
+          f['uid'],
         );
       });
     }
@@ -126,20 +131,21 @@ class _EditUserState extends State<EditUser> {
                       ),
                       SizedBox(height: 16),
                       DropdownButtonFormField(
-                        value:
-                            widget.valCompany == "" ? null : widget.valCompany,
-                        items: companies.map((category) {
+                        value: widget.companyId == "" ? null : widget.companyId,
+                        items: companIds.map((category) {
+                          var text = getCompany(widget.companies, category);
                           return new DropdownMenuItem(
                               value: category,
                               child: Row(
                                 children: <Widget>[
-                                  Text(category),
+                                  Text(text.toString()),
                                 ],
                               ));
                         }).toList(),
                         onChanged: (newValue) {
-                          // do other stuff with _category
-                          setState(() => {company = '$newValue'});
+                          var text = getCompany(widget.companies, newValue);
+                          setState(() =>
+                              {companyId = "$newValue", companyName = text});
                         },
                         validator: (value) {
                           if (value == null) {
@@ -161,9 +167,9 @@ class _EditUserState extends State<EditUser> {
                       ),
                       SizedBox(height: 16),
                       DropdownButtonFormField(
-                        value: widget.valCompany == "" ? null : widget.valLevel,
+                        value: widget.valLevel == "" ? null : widget.valLevel,
                         items: levels.map((category) {
-                          return new DropdownMenuItem(
+                          return DropdownMenuItem(
                               value: category,
                               child: Row(
                                 children: <Widget>[
@@ -235,7 +241,7 @@ class _EditUserState extends State<EditUser> {
                         child: ElevatedButton(
                           onPressed: () {
                             editUser(widget.valId, widget.valLevel,
-                                widget.valCompany);
+                                widget.companyId);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Theme.of(context).primaryColor,
@@ -258,18 +264,25 @@ class _EditUserState extends State<EditUser> {
     );
   }
 
+  getCompany(companies, category) {
+    var mapCompany = companies
+        .map((e) => e['companyId'] == category ? e['company'] : '')
+        .where((e) => e != '' && e != null);
+    return mapCompany.first.toString();
+  }
+
   editUser(id, lvl, cpny) async {
     if (formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
       if (level == "") level = lvl;
-      if (company == "") company = cpny;
+      if (companyId == "") companyId = cpny;
       var timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
       var imgPath = await FireStoreService(context: context, folder: 'profile')
           .uploadFile(xfile, uid);
-      var userDlt = await DatabaseService(uid: id)
-          .editUser(id, fullname, email, company, level, timeEdited, imgPath);
+      var userDlt = await DatabaseService(uid: id).editUser(id, fullname, email,
+          companyName, companyId, level, timeEdited, imgPath);
       if (userDlt == true) {
         setState(() {
           // backReloadScreen(context, )
