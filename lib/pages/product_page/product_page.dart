@@ -9,7 +9,12 @@ import 'package:flutter_features/pages/login/service/database_service.dart';
 class ProductPage extends StatefulWidget {
   List companies = [];
   String companyId = "";
-  ProductPage({Key? key, required this.companies, required this.companyId})
+  String userLevel = "";
+  ProductPage(
+      {Key? key,
+      required this.companies,
+      required this.companyId,
+      required this.userLevel})
       : super(key: key);
 
   @override
@@ -34,8 +39,8 @@ class _ProductPageState extends State<ProductPage> {
 
   gettingAllProduct() async {
     print(widget.companyId);
-    QuerySnapshot snapshot =
-        await DatabaseService(uid: uid).getAllProduct(widget.companyId);
+    QuerySnapshot snapshot = await DatabaseService(uid: uid)
+        .getAllProduct(widget.companyId, widget.userLevel);
     for (var f in snapshot.docs) {
       setState(() {
         products.add({

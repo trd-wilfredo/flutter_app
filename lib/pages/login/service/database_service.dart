@@ -50,10 +50,18 @@ class DatabaseService {
   // }
 
   //get all user
-  Future getAllUser() async {
-    QuerySnapshot snapshot =
-        await userCollection.where('timeDeleted', isEqualTo: 'false').get();
-    return snapshot;
+  Future getAllUser(String companyId, String userLevel) async {
+    if (userLevel == 'admin') {
+      QuerySnapshot snapshot =
+          await userCollection.where('timeDeleted', isEqualTo: 'false').get();
+      return snapshot;
+    } else {
+      QuerySnapshot snapshot = await userCollection
+          .where('timeDeleted', isEqualTo: 'false')
+          .where('companyId', isEqualTo: companyId)
+          .get();
+      return snapshot;
+    }
   }
 
 // soft edit user
@@ -90,14 +98,20 @@ class DatabaseService {
   }
 
   //get all product
-  Future getAllProduct(String companyId) async {
+  Future getAllProduct(String companyId, String userLevel) async {
     // String level, String company
-    // if (level == 'normal') {}
-    QuerySnapshot snapshot = await productCollection
-        .where('timeDeleted', isEqualTo: 'false')
-        .where('companyId', isEqualTo: companyId)
-        .get();
-    return snapshot;
+    if (userLevel == 'admin') {
+      QuerySnapshot snapshot = await productCollection
+          .where('timeDeleted', isEqualTo: 'false')
+          .get();
+      return snapshot;
+    } else {
+      QuerySnapshot snapshot = await productCollection
+          .where('timeDeleted', isEqualTo: 'false')
+          .where('companyId', isEqualTo: companyId)
+          .get();
+      return snapshot;
+    }
   }
 
   //get all user

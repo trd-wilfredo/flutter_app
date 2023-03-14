@@ -6,7 +6,15 @@ import 'package:flutter_features/pages/user_page/edit_user.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 
 class UserPage extends StatefulWidget {
-  const UserPage({Key? key}) : super(key: key);
+  List companies = [];
+  String companyId = "";
+  String userLevel = "";
+  UserPage(
+      {Key? key,
+      required this.companies,
+      required this.companyId,
+      required this.userLevel})
+      : super(key: key);
 
   @override
   State<UserPage> createState() => _UserPageState();
@@ -21,7 +29,6 @@ class _UserPageState extends State<UserPage> {
   String fullname = '';
   String company = '';
   List users = [];
-  List companies = [];
   String uid = '';
   @override
   void initState() {
@@ -30,17 +37,9 @@ class _UserPageState extends State<UserPage> {
   }
 
   gettingAllUser() async {
-    QuerySnapshot snapshot = await DatabaseService().getAllUser();
-    QuerySnapshot getAllCompany =
-        await DatabaseService(uid: uid).getAllCompany();
-    for (var f in getAllCompany.docs) {
-      setState(() {
-        companies.add({
-          'company': f['companyName'],
-          'companyId': f['uid'],
-        });
-      });
-    }
+    QuerySnapshot snapshot =
+        await DatabaseService().getAllUser(widget.companyId, widget.userLevel);
+
     for (var f in snapshot.docs) {
       setState(() {
         users.add({
@@ -68,7 +67,7 @@ class _UserPageState extends State<UserPage> {
                 primary: Colors.green,
               ),
               onPressed: () {
-                nextScreen(context, AddUser(companies: companies));
+                nextScreen(context, AddUser(companies: widget.companies));
               },
             ),
           ),
@@ -140,12 +139,13 @@ class _UserPageState extends State<UserPage> {
                                         nextScreen(
                                             context,
                                             EditUser(
-                                              valName: val['name'],
                                               valId: val['id'],
-                                              companyId: val['companyId'],
-                                              companies: companies,
+                                              valName: val['name'],
+                                              companies: widget.companies,
                                               valLevel: val['level'],
                                               valEmail: val['email'],
+                                              companyId: val['companyId'],
+                                              companyName: val['company'],
                                             ));
                                       },
                                     ),

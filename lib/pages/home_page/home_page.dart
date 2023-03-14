@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   Stream? groups;
   bool _isLoading = false;
   String groupName = "";
+  String userLevel = "";
   String companyId = "";
   String profile = "";
   String title = "Chat List";
@@ -80,11 +81,12 @@ class _HomePageState extends State<HomePage> {
         .child(user.docs.first['profilePic'])
         .getDownloadURL();
     setState(() {
-      companyId = user.docs.first['companyId'];
       profile = link;
       docs = user.docs;
-      userName = user.docs.first['fullName'];
       email = user.docs.first['email'];
+      userName = user.docs.first['fullName'];
+      userLevel = user.docs.first['level'];
+      companyId = user.docs.first['companyId'];
     });
   }
 
@@ -321,9 +323,17 @@ class _HomePageState extends State<HomePage> {
       case "groups":
         return groupList();
       case "product":
-        return ProductPage(companies: companies, companyId: companyId);
+        return ProductPage(
+          companies: companies,
+          companyId: companyId,
+          userLevel: userLevel,
+        );
       case "user":
-        return UserPage();
+        return UserPage(
+          companyId: companyId,
+          companies: companies,
+          userLevel: userLevel,
+        );
       case "company":
         return CompanyPage();
       case "profile_page":
