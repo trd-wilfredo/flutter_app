@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,11 +30,12 @@ class _HomePageState extends State<HomePage> {
   Stream? groups;
   bool _isLoading = false;
   String groupName = "";
+  String companyId = "";
   String profile = "";
   String title = "Chat List";
   String page = "groups";
-
   List docs = [];
+  List companies = [];
 
   @override
   void initState() {
@@ -51,16 +53,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   gettingUserData() async {
-    // await HelperFunction.getUserEmailFromSF().then((value) {
-    //   setState(() {
-    //     email = value!;
-    //   });
-    // });
-    // await HelperFunction.getUserNameFromSF().then((val) {
-    //   setState(() {
-    //     userName = val!;
-    //   });
-    // });
     // getting the list of snapshots in our stream
     await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
         .getUserGroups()
@@ -72,11 +64,23 @@ class _HomePageState extends State<HomePage> {
     var user =
         await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
             .getUserById();
+    // QuerySnapshot snapshot = await DatabaseService(uid: companyId).getAllProduct(companyId);
+    ;
+    QuerySnapshot getAllCompany = await DatabaseService().getAllCompany();
+    for (var f in getAllCompany.docs) {
+      setState(() {
+        companies.add({
+          'company': f['companyName'],
+          'companyId': f['uid'],
+        });
+      });
+    }
     var link = await FirebaseStorage.instance
         .ref()
         .child(user.docs.first['profilePic'])
         .getDownloadURL();
     setState(() {
+      companyId = user.docs.first['companyId'];
       profile = link;
       docs = user.docs;
       userName = user.docs.first['fullName'];
@@ -317,7 +321,7 @@ class _HomePageState extends State<HomePage> {
       case "groups":
         return groupList();
       case "product":
-        return ProductPage();
+        return ProductPage(companies: companies, companyId: companyId);
       case "user":
         return UserPage();
       case "company":

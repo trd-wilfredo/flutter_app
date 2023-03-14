@@ -90,11 +90,13 @@ class DatabaseService {
   }
 
   //get all product
-  Future getAllProduct() async {
+  Future getAllProduct(String companyId) async {
     // String level, String company
     // if (level == 'normal') {}
-    QuerySnapshot snapshot =
-        await productCollection.where('timeDeleted', isEqualTo: 'false').get();
+    QuerySnapshot snapshot = await productCollection
+        .where('timeDeleted', isEqualTo: 'false')
+        .where('companyId', isEqualTo: companyId)
+        .get();
     return snapshot;
   }
 
