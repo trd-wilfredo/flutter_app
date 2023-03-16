@@ -81,10 +81,10 @@ class _UserPageState extends State<UserPage> {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Padding(
-                      padding:
-                          EdgeInsets.only(left: 20.0, bottom: 20.0, top: 50.0),
+                      padding: const EdgeInsets.only(
+                          left: 20.0, bottom: 20.0, top: 50.0),
                       child: DataTable(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           border: Border(
                               bottom: BorderSide(
                                   color: Color.fromARGB(255, 104, 104, 104)),
@@ -95,7 +95,7 @@ class _UserPageState extends State<UserPage> {
                               right: BorderSide(
                                   color: Color.fromARGB(255, 104, 104, 104))),
                         ),
-                        columns: [
+                        columns: const [
                           DataColumn(
                             label: Text("Name"),
                           ),
