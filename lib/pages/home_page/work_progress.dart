@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_features/pages/home_page/version_page.dart';
 import 'progress_table.dart';
 
 class WorkProgress extends StatefulWidget {
@@ -19,7 +20,7 @@ class _WorkProgressState extends State<WorkProgress> {
   ];
   Map<String, dynamic> changes = {
     'Work Progress': ProgressTable(),
-    'Version 1.1.04': Text('stets'),
+    'Version 1.1.04': VersionPage('1.1.04'),
     'Previous Version': Text(
       'details',
     )
@@ -76,6 +77,7 @@ class _WorkProgressState extends State<WorkProgress> {
             ],
           );
         },
+        padding: const EdgeInsets.only(bottom: 70.0),
       ),
     );
   }
