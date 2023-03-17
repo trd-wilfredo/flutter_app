@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'progress_table.dart';
 
 class WorkProgress extends StatefulWidget {
   @override
@@ -6,24 +7,31 @@ class WorkProgress extends StatefulWidget {
 }
 
 class _WorkProgressState extends State<WorkProgress> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   List<String> title = [
+    'Work Progress',
     'Version 1.1.04',
     'Previous Version',
-    'Page Update',
   ];
-  Map<String, String> changes = {
-    'Version 1.1.04': 'stets',
-    'Previous Version':
-        'chicken, garam masala, yogurt, tomato sauce, onion, garlic',
-    'Page Update': '',
+  Map<String, dynamic> changes = {
+    'Work Progress': ProgressTable(),
+    'Version 1.1.04': Text('stets'),
+    'Previous Version': Text(
+      'details',
+    )
   };
-  List<bool> _expanded = [true, false, false, false];
+
+  List<bool> _expanded = [true, false, false];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Versions'),
+        title: Text('Work Progress'),
       ),
       body: ListView.builder(
         itemCount: title.length,
@@ -59,7 +67,7 @@ class _WorkProgressState extends State<WorkProgress> {
                         ),
                       ),
                       SizedBox(height: 8.0),
-                      Text(changes[title[index]]!),
+                      changes[title[index]]!,
                     ],
                   ),
                 ),
