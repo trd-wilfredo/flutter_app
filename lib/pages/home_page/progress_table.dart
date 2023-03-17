@@ -158,12 +158,6 @@ ProgressTable() {
                   backgroundColor: Colors.white,
                 ),
               ),
-              // LinearProgressIndicator(
-              //   value: tablist.bar, // Defaults to 0.5.
-              //   color: Color.fromARGB(255, 0, 0, 0),
-              //   backgroundColor: Colors.white,
-              // ),
-              // onTap: () {},
             ),
             DataCell(
               Text(tablist.pecent),
