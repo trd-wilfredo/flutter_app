@@ -14,6 +14,7 @@ class EditUser extends StatefulWidget {
   String valName = '';
   String valId = '';
   String companyId = '';
+  String companyName = '';
   List companies = [];
   String valLevel = '';
   String valEmail = '';
@@ -22,6 +23,7 @@ class EditUser extends StatefulWidget {
       required this.valName,
       required this.valId,
       required this.valEmail,
+      required this.companyName,
       required this.companies,
       required this.companyId,
       required this.valLevel})
@@ -241,7 +243,7 @@ class _EditUserState extends State<EditUser> {
                         child: ElevatedButton(
                           onPressed: () {
                             editUser(widget.valId, widget.valLevel,
-                                widget.companyId);
+                                widget.companyId, widget.companyName);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Theme.of(context).primaryColor,
@@ -271,13 +273,16 @@ class _EditUserState extends State<EditUser> {
     return mapCompany.first.toString();
   }
 
-  editUser(id, lvl, cpny) async {
+  editUser(id, lvl, cpny, cpnyname) async {
     if (formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
       if (level == "") level = lvl;
-      if (companyId == "") companyId = cpny;
+      if (companyId == "") {
+        companyId = cpny;
+        companyName = cpnyname;
+      }
       var timeEdited = DateTime.now().millisecondsSinceEpoch.toString();
       var imgPath = await FireStoreService(context: context, folder: 'profile')
           .uploadFile(xfile, uid);

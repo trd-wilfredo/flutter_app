@@ -20,6 +20,7 @@ import 'package:flutter_features/pages/profile_page.dart/profile_page.dart';
 import 'package:flutter_features/pages/info_registeration/info_registeration.dart';
 
 import 'pages/about_us.dart';
+import 'pages/home_page/work_progress.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,7 +80,7 @@ void main() async {
         '/skill_ii': (context) => SkillII(),
         '/about_us': (context) => AboutUs(),
         '/app_version': (context) => IosPage(),
-        '/work_progress': (context) => AboutUs(),
+        '/work_progress': (context) => WorkProgress(),
         '/file_upload': (context) => FileUpload(),
         '/profile_page': (context) => profilePage,
         '/company_list': (context) => page('Company Page', CompanyPage()),
