@@ -274,7 +274,8 @@ class _AddUserState extends State<AddUser> {
               fullname, email, password, level, companyName, companyId, imgPath)
           .then((value) async {
         if (value == true) {
-          nextScreenReplace(context, UserPage());
+          // nextScreenReplace(context, UserPage());
+          Navigator.pop(context);
         } else {
           showSnackBr(context, Colors.red, value);
           _isLoading = false;

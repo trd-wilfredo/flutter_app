@@ -234,7 +234,8 @@ class _AddProductState extends State<AddProduct> {
               avilability, timeCreated, imgPaths)
           .then((value) async {
         if (value == true) {
-          nextScreenReplace(context, ProductPage());
+          // nextScreenReplace(context, ProductPage());
+          Navigator.pop(context);
         } else {
           showSnackBr(context, Colors.red, value);
           _isLoading = false;

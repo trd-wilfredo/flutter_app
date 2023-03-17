@@ -7,7 +7,15 @@ import 'package:flutter_features/pages/product_page/edit_product.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({Key? key}) : super(key: key);
+  List companies = [];
+  String companyId = "";
+  String userLevel = "";
+  ProductPage(
+      {Key? key,
+      required this.companies,
+      required this.companyId,
+      required this.userLevel})
+      : super(key: key);
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -22,7 +30,6 @@ class _ProductPageState extends State<ProductPage> {
   String fullname = '';
   String company = '';
   List products = [];
-  List companies = [];
   String uid = '';
   @override
   void initState() {
@@ -31,17 +38,9 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   gettingAllProduct() async {
-    QuerySnapshot snapshot = await DatabaseService(uid: uid).getAllProduct();
-    QuerySnapshot getAllCompany =
-        await DatabaseService(uid: uid).getAllCompany();
-    for (var f in getAllCompany.docs) {
-      setState(() {
-        companies.add({
-          'company': f['companyName'],
-          'companyId': f['uid'],
-        });
-      });
-    }
+    print(widget.companyId);
+    QuerySnapshot snapshot = await DatabaseService(uid: uid)
+        .getAllProduct(widget.companyId, widget.userLevel);
     for (var f in snapshot.docs) {
       setState(() {
         products.add({
@@ -72,7 +71,7 @@ class _ProductPageState extends State<ProductPage> {
                 nextScreen(
                     context,
                     AddProduct(
-                      companies: companies,
+                      companies: widget.companies,
                     ));
               },
             ),
@@ -105,6 +104,7 @@ class _ProductPageState extends State<ProductPage> {
                           DataColumn(
                             label: Text("Name"),
                           ),
+                          // if (false)
                           DataColumn(
                             label: Text("Company"),
                           ),
@@ -128,6 +128,7 @@ class _ProductPageState extends State<ProductPage> {
                                 child: Text(val['name']),
                               ),
                             ),
+                            // if (false)
                             DataCell(
                               Container(
                                 width: 133.3,
@@ -157,7 +158,7 @@ class _ProductPageState extends State<ProductPage> {
                                             stocks: val['stocks'],
                                             companyId: val['companyId'],
                                             companyName: val['company'],
-                                            companies: companies,
+                                            companies: widget.companies,
                                             avilability: val['avilability'],
                                             uid: val['id'],
                                           ));
