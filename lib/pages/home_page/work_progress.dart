@@ -3,6 +3,11 @@ import 'package:flutter_features/pages/home_page/version_page.dart';
 import 'progress_table.dart';
 
 class WorkProgress extends StatefulWidget {
+  StatefulWidget profile;
+  WorkProgress({
+    Key? key,
+    required this.profile,
+  }) : super(key: key);
   @override
   _WorkProgressState createState() => _WorkProgressState();
 }
@@ -18,18 +23,18 @@ class _WorkProgressState extends State<WorkProgress> {
     'Version 1.1.04',
     'Previous Version',
   ];
-  Map<String, dynamic> changes = {
-    'Work Progress': ProgressTable(),
-    'Version 1.1.04': VersionPage('1.1.04'),
-    'Previous Version': Text(
-      'details',
-    )
-  };
 
   List<bool> _expanded = [true, false, false];
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> changes = {
+      'Work Progress': ProgressTable(profile: widget.profile),
+      'Version 1.1.04': VersionPage('1.1.04'),
+      'Previous Version': Text(
+        'details',
+      )
+    };
     return Scaffold(
       appBar: AppBar(
         title: Text('Work Progress'),
