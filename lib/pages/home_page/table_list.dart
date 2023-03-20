@@ -2,7 +2,7 @@ class TableList {
   String page;
   double bar;
   String pecent;
-  String link;
+  dynamic link;
   dynamic color;
 
   TableList(
@@ -17,7 +17,7 @@ class TableList {
       page: json['page'] as String,
       bar: json['bar'] as double,
       pecent: json['pecent'] as String,
-      link: json['link'] as String,
+      link: json['link'] as dynamic,
       color: json['color'] as dynamic,
     );
   }
