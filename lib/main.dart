@@ -80,7 +80,7 @@ void main() async {
         '/skill_ii': (context) => SkillII(),
         '/about_us': (context) => AboutUs(),
         '/app_version': (context) => IosPage(),
-        '/work_progress': (context) => WorkProgress(),
+        '/work_progress': (context) => WorkProgress(profile: profilePage),
         '/file_upload': (context) => FileUpload(),
         '/profile_page': (context) => profilePage,
         '/company_list': (context) => page('Company Page', CompanyPage()),

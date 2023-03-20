@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
         await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
             .getUserById();
     // QuerySnapshot snapshot = await DatabaseService(uid: companyId).getAllProduct(companyId);
-    ;
+    // ;
     QuerySnapshot getAllCompany = await DatabaseService().getAllCompany();
     for (var f in getAllCompany.docs) {
       setState(() {
