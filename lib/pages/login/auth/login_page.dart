@@ -9,9 +9,14 @@ import 'package:flutter_features/pages/home_page/home_page.dart';
 import 'package:flutter_features/pages/login/auth/register_page.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  dynamic fonts;
+  LoginPage({
+    Key? key,
+    required this.fonts,
+  }) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -22,6 +27,19 @@ class _LoginPageState extends State<LoginPage> {
   String email = '';
   String password = '';
   bool _isLoading = false;
+
+  dynamic fredoka = GoogleFonts.getFont(
+    'Fredoka One',
+    fontSize: 60,
+    color: Color(0xFF5ACC02),
+  );
+
+  dynamic birthstone = GoogleFonts.getFont(
+    'Birthstone Bounce',
+    fontSize: 60,
+    color: Color(0xFF5ACC02),
+  );
+
   AuthService authService = AuthService();
   @override
   Widget build(BuildContext context) {
@@ -50,30 +68,20 @@ class _LoginPageState extends State<LoginPage> {
                         child: FittedBox(
                           fit: BoxFit.fitWidth,
                           child: RichText(
-                            text: const TextSpan(
+                            text: TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: 'Study ',
-                                  style: TextStyle(
-                                    color: Color(0xFF5ACC02),
-                                    fontFamily: 'FeatherBold',
-                                    fontSize: 60,
-                                  ),
-                                ),
+                                    text: 'Study ',
+                                    style: widget.fonts['fredoka']),
                                 TextSpan(
-                                  text: 'App',
-                                  style: TextStyle(
-                                    color: Color(0xFF5ACC02),
-                                    fontFamily: 'FeatherWrite',
-                                    fontSize: 60,
-                                  ),
-                                ),
+                                    text: 'App',
+                                    style: widget.fonts['birthstone']),
                               ],
                             ),
                           ),
                         ),
                       ),
-                      
+
                       const SizedBox(height: 10),
                       const Text(
                         "Login here",
@@ -169,7 +177,8 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  nextScreen(context, RegisterPage());
+                                  nextScreen(context,
+                                      RegisterPage(fonts: widget.fonts));
                                 },
                             ),
                           ],
@@ -203,7 +212,11 @@ class _LoginPageState extends State<LoginPage> {
           await HelperFunction.saveUserLoggedInStatus(true);
           await HelperFunction.saveUserEmailSF(email);
           await HelperFunction.saveUserNameSF(snapshot.docs[0]['fullName']);
-          nextScreenReplace(context, const HomePage());
+          nextScreenReplace(
+              context,
+              HomePage(
+                fonts: widget.fonts,
+              ));
         } else {
           showSnackBr(context, Colors.red, value);
           setState(() {

@@ -15,11 +15,13 @@ class ChatPage extends StatefulWidget {
   final String groupId;
   final String groupName;
   final String userName;
+  final dynamic fonts;
   const ChatPage(
       {Key? key,
       required this.groupId,
       required this.groupName,
-      required this.userName})
+      required this.userName,
+      required this.fonts})
       : super(key: key);
 
   @override
@@ -78,6 +80,7 @@ class _ChatPageState extends State<ChatPage> {
                 GroupInfo(
                   groupId: widget.groupId,
                   groupName: widget.groupName,
+                  fonts: widget.fonts,
                   adminName: admin,
                 ),
               );

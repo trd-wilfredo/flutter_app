@@ -8,7 +8,11 @@ import 'package:flutter_features/pages/login/service/auth_service.dart';
 import 'package:flutter_features/widgets/widget.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  dynamic fonts;
+  RegisterPage({
+    Key? key,
+    required this.fonts,
+  }) : super(key: key);
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -49,24 +53,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: FittedBox(
                           fit: BoxFit.fitWidth,
                           child: RichText(
-                            text: const TextSpan(
+                            text: TextSpan(
                               children: <TextSpan>[
                                 TextSpan(
-                                  text: 'Study ',
-                                  style: TextStyle(
-                                    color: Color(0xFF5ACC02),
-                                    fontFamily: 'FeatherBold',
-                                    fontSize: 60,
-                                  ),
-                                ),
+                                    text: 'Study ',
+                                    style: widget.fonts['fredoka']),
                                 TextSpan(
-                                  text: 'App',
-                                  style: TextStyle(
-                                    color: Color(0xFF5ACC02),
-                                    fontFamily: 'FeatherWrite',
-                                    fontSize: 60,
-                                  ),
-                                ),
+                                    text: 'App',
+                                    style: widget.fonts['birthstone']),
                               ],
                             ),
                           ),
@@ -193,7 +187,8 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  nextScreen(context, LoginPage());
+                                  nextScreen(
+                                      context, LoginPage(fonts: widget.fonts));
                                 },
                             ),
                           ],
@@ -223,7 +218,7 @@ class _RegisterPageState extends State<RegisterPage> {
           await HelperFunction.saveUserLoggedInStatus(true);
           await HelperFunction.saveUserNameSF(fullname);
           await HelperFunction.saveUserEmailSF(email);
-          nextScreenReplace(context, LoginApp());
+          nextScreenReplace(context, LoginApp(fonts: widget.fonts));
         } else {
           showSnackBr(context, Colors.red, value);
           _isLoading = false;

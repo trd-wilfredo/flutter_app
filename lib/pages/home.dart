@@ -125,7 +125,7 @@ class _HomeState extends State<Home> {
                             child: Text(
                               'Flutter Features',
                               style: GoogleFonts.getFont(
-                                'Pacifico',
+                                'Fredoka One',
                                 fontSize: 30.0,
                               ),
                             ),

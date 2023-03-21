@@ -18,6 +18,7 @@ import 'package:flutter_features/pages/company_page/search_company.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/profile_page.dart/profile_page.dart';
 import 'package:flutter_features/pages/info_registeration/info_registeration.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'pages/about_us.dart';
 import 'pages/home_page/work_progress.dart';
@@ -37,6 +38,20 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
+
+  dynamic fredoka = GoogleFonts.getFont(
+    'Fredoka One',
+    fontSize: 60,
+    color: Color(0xFF5ACC02),
+  );
+
+  dynamic birthstone = GoogleFonts.getFont(
+    'Birthstone Bounce',
+    fontSize: 60,
+    color: Color(0xFF5ACC02),
+  );
+
+  Object fonts = {'birthstone': birthstone, 'fredoka': fredoka};
 
   page(title, page) {
     return Scaffold(
@@ -59,7 +74,7 @@ void main() async {
   var getUser = FirebaseAuth.instance.currentUser;
   StatefulWidget profilePage;
   if (getUser == null) {
-    profilePage = LoginApp();
+    profilePage = LoginApp(fonts: fonts);
   } else {
     var user = await DatabaseService(uid: getUser.uid).getUserById();
     var link = await FirebaseStorage.instance
@@ -75,12 +90,13 @@ void main() async {
       routes: {
         // '/': (context) => Loading(),
         '/home': (context) => Home(),
-        '/login': (context) => LoginApp(),
+        '/login': (context) => LoginApp(fonts: fonts),
         '/skill_i': (context) => SkillI(),
         '/skill_ii': (context) => SkillII(),
         '/about_us': (context) => AboutUs(),
-        '/app_version': (context) => IosPage(),
-        '/work_progress': (context) => WorkProgress(profile: profilePage),
+        '/app_version': (context) => AppVersion(),
+        '/work_progress': (context) =>
+            WorkProgress(profile: profilePage, fonts: fonts),
         '/file_upload': (context) => FileUpload(),
         '/profile_page': (context) => profilePage,
         '/company_list': (context) => page('Company Page', CompanyPage()),
