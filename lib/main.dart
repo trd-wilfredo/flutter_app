@@ -38,20 +38,42 @@ void main() async {
   } else {
     await Firebase.initializeApp();
   }
+  dynamic fredoka01 = GoogleFonts.getFont(
+    'Fredoka One',
+    fontSize: 30,
+    color: Color(0xFF5ACC02),
+  );
 
+  dynamic birthstone01 = GoogleFonts.getFont(
+    'Birthstone Bounce',
+    fontSize: 30,
+    color: Color(0xFF5ACC02),
+  );
   dynamic fredoka = GoogleFonts.getFont(
     'Fredoka One',
     fontSize: 60,
+    fontWeight: FontWeight.w600,
     color: Color(0xFF5ACC02),
   );
 
   dynamic birthstone = GoogleFonts.getFont(
     'Birthstone Bounce',
     fontSize: 60,
+    fontWeight: FontWeight.w600,
     color: Color(0xFF5ACC02),
   );
 
-  Object fonts = {'birthstone': birthstone, 'fredoka': fredoka};
+  Object fonts = {
+    'birthstone': birthstone,
+    'fredoka': fredoka,
+    'birthstone01': birthstone01,
+    'fredoka01': fredoka01,
+  };
+
+  dynamic leagueSpartan = GoogleFonts.getFont(
+    'League Spartan',
+    color: Color.fromARGB(233, 102, 102, 102),
+  );
 
   page(title, page) {
     return Scaffold(
@@ -93,7 +115,7 @@ void main() async {
         '/login': (context) => LoginApp(fonts: fonts),
         '/skill_i': (context) => SkillI(),
         '/skill_ii': (context) => SkillII(),
-        '/about_us': (context) => AboutUs(),
+        '/about_us': (context) => AboutUs(fonts: fonts),
         '/app_version': (context) => AppVersion(),
         '/work_progress': (context) =>
             WorkProgress(profile: profilePage, fonts: fonts),

@@ -190,26 +190,27 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(color: Colors.black),
               ),
             ),
-            ListTile(
-              onTap: () {
-                // nextScreen(context, UserPage());
-                setState(() {
-                  title = "User";
-                  page = "user";
-                });
-              },
-              selectedColor: page == "user"
-                  ? Theme.of(context).primaryColor
-                  : Colors.black,
-              selected: page == "user" ? true : false,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Users",
-                style: TextStyle(color: Colors.black),
+            if (userLevel == 'admin')
+              ListTile(
+                onTap: () {
+                  // nextScreen(context, UserPage());
+                  setState(() {
+                    title = "User";
+                    page = "user";
+                  });
+                },
+                selectedColor: page == "user"
+                    ? Theme.of(context).primaryColor
+                    : Colors.black,
+                selected: page == "user" ? true : false,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                leading: const Icon(Icons.group),
+                title: const Text(
+                  "Users",
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ),
             ListTile(
               onTap: () {
                 // nextScreen(context, ProductPage());
@@ -230,38 +231,40 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(color: Colors.black),
               ),
             ),
-            ListTile(
-              onTap: () {
-                // nextScreen(context, CompanyPage());
-                setState(() {
-                  title = "Company Page";
-                  page = "company";
-                });
-              },
-              selectedColor: page == "company"
-                  ? Theme.of(context).primaryColor
-                  : Colors.black,
-              selected: page == "company" ? true : false,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Companies",
-                style: TextStyle(color: Colors.black),
+            if (userLevel == 'admin')
+              ListTile(
+                onTap: () {
+                  // nextScreen(context, CompanyPage());
+                  setState(() {
+                    title = "Company Page";
+                    page = "company";
+                  });
+                },
+                selectedColor: page == "company"
+                    ? Theme.of(context).primaryColor
+                    : Colors.black,
+                selected: page == "company" ? true : false,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                leading: const Icon(Icons.group),
+                title: const Text(
+                  "Companies",
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ),
-            ListTile(
-              onTap: () {
-                nextScreen(context, CompanySearch());
-              },
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Search Company",
-                style: TextStyle(color: Colors.black),
+            if (userLevel == 'admin')
+              ListTile(
+                onTap: () {
+                  nextScreen(context, CompanySearch());
+                },
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                leading: const Icon(Icons.group),
+                title: const Text(
+                  "Search Company",
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ),
             ListTile(
               onTap: () {
                 nextScreen(context, MessagingApp());

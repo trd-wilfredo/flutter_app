@@ -28,18 +28,6 @@ class _LoginPageState extends State<LoginPage> {
   String password = '';
   bool _isLoading = false;
 
-  dynamic fredoka = GoogleFonts.getFont(
-    'Fredoka One',
-    fontSize: 60,
-    color: Color(0xFF5ACC02),
-  );
-
-  dynamic birthstone = GoogleFonts.getFont(
-    'Birthstone Bounce',
-    fontSize: 60,
-    color: Color(0xFF5ACC02),
-  );
-
   AuthService authService = AuthService();
   @override
   Widget build(BuildContext context) {

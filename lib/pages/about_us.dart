@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class AboutUs extends StatelessWidget {
-  const AboutUs({super.key});
+  dynamic fonts;
+  AboutUs({
+    Key? key,
+    required this.fonts,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,22 +18,11 @@ class AboutUs extends StatelessWidget {
         title: Padding(
           padding: const EdgeInsets.only(left: 10.0),
           child: Row(
-            children: const [
-              Text(
-                'Study ',
-                style: TextStyle(
-                  color: Color(0xFF5ACC02),
-                  fontFamily: 'FeatherBold',
-                  fontSize: 30,
-                ),
-              ),
+            children: [
+              Text('Study ', style: fonts['fredoka01']),
               Text(
                 'App',
-                style: TextStyle(
-                  color: Color(0xFF5ACC02),
-                  fontFamily: 'FeatherWrite',
-                  fontSize: 30,
-                ),
+                style: fonts['birthstone01'],
               ),
             ],
           ),

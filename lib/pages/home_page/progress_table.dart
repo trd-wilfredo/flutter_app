@@ -246,7 +246,7 @@ class _ProgressTableState extends State<ProgressTable> {
           page: 'About Us Page',
           bar: .7,
           pecent: '70%',
-          link: AboutUs(),
+          link: AboutUs(fonts: widget.fonts),
           color: Color.fromARGB(255, 183, 169, 44)),
       TableList(
           page: 'Appversion Page',
