@@ -1,10 +1,10 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_features/pages/home.dart';
 import 'package:flutter_features/shared/constants.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_features/pages/app_version.dart';
 import 'package:flutter_features/pages/login/login.dart';
 import 'package:flutter_features/messaging_app/messaging.dart';
@@ -63,17 +63,18 @@ void main() async {
     color: Color(0xFF5ACC02),
   );
 
+  dynamic leagueSpartan = GoogleFonts.getFont(
+    'League Spartan',
+    color: Color.fromRGBO(105, 105, 105, 1),
+    fontSize: 18,
+  );
   Object fonts = {
     'birthstone': birthstone,
     'fredoka': fredoka,
     'birthstone01': birthstone01,
     'fredoka01': fredoka01,
+    'leagueSpartan': leagueSpartan,
   };
-
-  dynamic leagueSpartan = GoogleFonts.getFont(
-    'League Spartan',
-    color: Color.fromARGB(233, 102, 102, 102),
-  );
 
   page(title, page) {
     return Scaffold(
