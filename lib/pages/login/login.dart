@@ -5,7 +5,11 @@ import 'package:flutter_features/pages/home_page/home_page.dart';
 import 'package:flutter_features/pages/login/auth/login_page.dart';
 
 class LoginApp extends StatefulWidget {
-  const LoginApp({Key? key}) : super(key: key);
+  dynamic fonts;
+  LoginApp({
+    Key? key,
+    required this.fonts,
+  }) : super(key: key);
 
   @override
   State<LoginApp> createState() => _LoginAppState();
@@ -38,7 +42,9 @@ class _LoginAppState extends State<LoginApp> {
         scaffoldBackgroundColor: Colors.white,
       ),
       debugShowCheckedModeBanner: false,
-      home: _isSignedIn ? HomePage() : LoginPage(),
+      home: _isSignedIn
+          ? HomePage(fonts: widget.fonts)
+          : LoginPage(fonts: widget.fonts),
     );
   }
 }

@@ -7,7 +7,11 @@ import 'package:flutter_features/pages/home_page/chat_page.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  dynamic fonts;
+  SearchPage({
+    Key? key,
+    required this.fonts,
+  }) : super(key: key);
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -180,6 +184,7 @@ class _SearchPageState extends State<SearchPage> {
               nextScreen(
                   context,
                   ChatPage(
+                      fonts: widget.fonts,
                       groupId: groupId,
                       groupName: groupName,
                       userName: userName));
