@@ -121,62 +121,92 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                         ],
                         rows: products.map((val) {
-                          return DataRow(cells: [
-                            DataCell(
-                              Container(
-                                width: 133.3,
-                                child: Text(val['name']),
+                          return DataRow(
+                            cells: [
+                              DataCell(
+                                Container(
+                                  width: 133.3,
+                                  child: Text(val['name']),
+                                ),
                               ),
-                            ),
-                            // if (false)
-                            DataCell(
-                              Container(
-                                width: 133.3,
-                                child: Text(val['company']),
+                              // if (false)
+                              DataCell(
+                                Container(
+                                  width: 133.3,
+                                  child: Text(val['company']),
+                                ),
                               ),
-                            ),
-                            DataCell(
-                              Container(
-                                width: 133.3,
-                                child: Text(val['stocks']),
+                              DataCell(
+                                Container(
+                                  width: 133.3,
+                                  child: Text(val['stocks']),
+                                ),
                               ),
-                            ),
-                            DataCell(Container(
-                              width: 150,
-                              child: Row(
-                                children: [
-                                  ElevatedButton(
-                                    child: Text('Edit'),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.blue,
-                                    ),
-                                    onPressed: () {
-                                      nextScreen(
-                                          context,
-                                          EditProduct(
-                                            producName: val['name'],
-                                            stocks: val['stocks'],
-                                            companyId: val['companyId'],
-                                            companyName: val['company'],
-                                            companies: widget.companies,
-                                            avilability: val['avilability'],
-                                            uid: val['id'],
-                                          ));
-                                    },
+                              DataCell(
+                                Container(
+                                  width: 150,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.edit, size: 15),
+                                        onPressed: () {
+                                          nextScreen(
+                                              context,
+                                              EditProduct(
+                                                producName: val['name'],
+                                                stocks: val['stocks'],
+                                                companyId: val['companyId'],
+                                                companyName: val['company'],
+                                                companies: widget.companies,
+                                                avilability: val['avilability'],
+                                                uid: val['id'],
+                                              ));
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.delete, size: 15),
+                                        onPressed: () {
+                                          showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: const Text("Delete"),
+                                                content: const Text(
+                                                    "Are you sure you want to delete this product?"),
+                                                actions: [
+                                                  IconButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons.cancel,
+                                                      color: Colors.red,
+                                                    ),
+                                                  ),
+                                                  IconButton(
+                                                    onPressed: () async {
+                                                      deleteProduct(
+                                                          val['id'], val);
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons.done,
+                                                      color: Colors.green,
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                  ElevatedButton(
-                                    child: Text('Delete'),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: Colors.red,
-                                    ),
-                                    onPressed: () {
-                                      deleteProduct(val['id'], val);
-                                    },
-                                  ),
-                                ],
+                                ),
                               ),
-                            )),
-                          ]);
+                            ],
+                          );
                         }).toList(),
                       ),
                     ),
