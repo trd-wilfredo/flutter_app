@@ -127,14 +127,23 @@ class _UserPageState extends State<UserPage> {
                             ),
                             DataCell(
                               Container(
-                                width: 150,
+                                width: 160,
                                 child: Row(
                                   children: [
-                                    ElevatedButton(
-                                      child: Text('Edit'),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.blue,
-                                      ),
+                                    IconButton(
+                                      icon: Icon(Icons.message, size: 15),
+                                      onPressed: () {
+                                        // deleteUser(val['id'], val);
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.person, size: 15),
+                                      onPressed: () {
+                                        // deleteUser(val['id'], val);
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.edit, size: 15),
                                       onPressed: () {
                                         nextScreen(
                                             context,
@@ -149,13 +158,40 @@ class _UserPageState extends State<UserPage> {
                                             ));
                                       },
                                     ),
-                                    ElevatedButton(
-                                      child: Text('Delete'),
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.red,
-                                      ),
+                                    IconButton(
+                                      icon: Icon(Icons.delete, size: 15),
                                       onPressed: () {
-                                        deleteUser(val['id'], val);
+                                        showDialog(
+                                          barrierDismissible: false,
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text("Delete"),
+                                              content: const Text(
+                                                  "Are you sure you want to delete user?"),
+                                              actions: [
+                                                IconButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.cancel,
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  onPressed: () async {
+                                                    deleteUser(val['id'], val);
+                                                  },
+                                                  icon: const Icon(
+                                                    Icons.done,
+                                                    color: Colors.green,
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
                                       },
                                     ),
                                   ],

@@ -127,7 +127,7 @@ class _CompanyPageState extends State<CompanyPage> {
                                         return AlertDialog(
                                           title: const Text("Delete"),
                                           content: const Text(
-                                              "Are you sure you want to delete this product?"),
+                                              "Are you sure you want to delete this company?"),
                                           actions: [
                                             IconButton(
                                               onPressed: () {
