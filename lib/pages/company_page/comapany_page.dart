@@ -103,12 +103,10 @@ class _CompanyPageState extends State<CompanyPage> {
                           Container(
                             width: 150,
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                ElevatedButton(
-                                  child: Text('Edit'),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.blue,
-                                  ),
+                                IconButton(
+                                  icon: Icon(Icons.edit, size: 15),
                                   onPressed: () {
                                     nextScreen(
                                         context,
@@ -119,14 +117,41 @@ class _CompanyPageState extends State<CompanyPage> {
                                         ));
                                   },
                                 ),
-                                ElevatedButton(
-                                  child: Text('Delete'),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.red,
-                                  ),
+                                IconButton(
+                                  icon: Icon(Icons.delete, size: 15),
                                   onPressed: () {
-                                    // nextScreen(context, AddUser());
-                                    deleteCompany(val['id'], val);
+                                    showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text("Delete"),
+                                          content: const Text(
+                                              "Are you sure you want to delete this product?"),
+                                          actions: [
+                                            IconButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              icon: const Icon(
+                                                Icons.cancel,
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                            IconButton(
+                                              onPressed: () async {
+                                                ;
+                                                deleteCompany(val['id'], val);
+                                              },
+                                              icon: const Icon(
+                                                Icons.done,
+                                                color: Colors.green,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   },
                                 ),
                               ],
