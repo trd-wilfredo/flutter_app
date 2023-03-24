@@ -8,9 +8,11 @@ import 'package:flutter_features/pages/login/service/database_service.dart';
 
 class SearchPage extends StatefulWidget {
   dynamic fonts;
+  String page;
   SearchPage({
     Key? key,
     required this.fonts,
+    required this.page,
   }) : super(key: key);
 
   @override
@@ -65,16 +67,19 @@ class _SearchPageState extends State<SearchPage> {
         children: [
           Container(
             color: Theme.of(context).primaryColor,
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
+                    onChanged: (text) {
+                      initiateSearchMethod();
+                    },
                     controller: searchController,
                     style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: "Search groups....",
+                        hintText: "Search ${widget.page}....",
                         hintStyle:
                             TextStyle(color: Colors.white, fontSize: 16)),
                   ),
@@ -103,7 +108,7 @@ class _SearchPageState extends State<SearchPage> {
                   child: CircularProgressIndicator(
                       color: Theme.of(context).primaryColor),
                 )
-              : groupList(),
+              : searchList(),
         ],
       ),
     );
@@ -115,7 +120,7 @@ class _SearchPageState extends State<SearchPage> {
         isLoading = true;
       });
       await DatabaseService()
-          .searchByName(searchController.text)
+          .searchByName(searchController.text, widget.page)
           .then((snapshot) {
         setState(() {
           searchSnapshot = snapshot;
@@ -126,21 +131,36 @@ class _SearchPageState extends State<SearchPage> {
     }
   }
 
-  groupList() {
-    return hasUserSearched
-        ? ListView.builder(
-            shrinkWrap: true,
-            itemCount: searchSnapshot!.docs.length,
-            itemBuilder: (context, index) {
-              return groupTile(
-                userName,
-                searchSnapshot!.docs[index]['groupId'],
-                searchSnapshot!.docs[index]['groupName'],
-                searchSnapshot!.docs[index]['admin'],
-              );
-            },
-          )
-        : Container();
+  searchList() {
+    if (widget.page == "groups") {
+      return hasUserSearched
+          ? ListView.builder(
+              shrinkWrap: true,
+              itemCount: searchSnapshot!.docs.length,
+              itemBuilder: (context, index) {
+                return groupTile(
+                  userName,
+                  searchSnapshot!.docs[index]['groupId'],
+                  searchSnapshot!.docs[index]['groupName'],
+                  searchSnapshot!.docs[index]['admin'],
+                );
+              },
+            )
+          : Container();
+    }
+    if (widget.page == "user") {
+      return hasUserSearched
+          ? ListView.builder(
+              shrinkWrap: true,
+              itemCount: searchSnapshot!.docs.length,
+              itemBuilder: (context, index) {
+                return userList(
+                  searchSnapshot!.docs[index],
+                );
+              },
+            )
+          : Container();
+    }
   }
 
   joinedOrNot(
@@ -152,6 +172,24 @@ class _SearchPageState extends State<SearchPage> {
         isJoined = value;
       });
     });
+  }
+
+  Widget userList(dynamic user) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      leading: CircleAvatar(
+        radius: 30,
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Text(
+          user['fullName'].substring(0, 1).toUpperCase(),
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
+      title: Text(
+        user['fullName'],
+        style: const TextStyle(fontWeight: FontWeight.w600),
+      ),
+    );
   }
 
   Widget groupTile(
