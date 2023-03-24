@@ -52,8 +52,10 @@ class DatabaseService {
   //get all user
   Future getAllUser(String companyId, String userLevel) async {
     if (userLevel == 'admin') {
-      QuerySnapshot snapshot =
-          await userCollection.where('timeDeleted', isEqualTo: 'false').get();
+      QuerySnapshot snapshot = await userCollection
+          .where('timeDeleted', isEqualTo: 'false')
+          .where('uid', isNotEqualTo: 'sample')
+          .get();
       return snapshot;
     } else {
       QuerySnapshot snapshot = await userCollection
@@ -103,6 +105,7 @@ class DatabaseService {
     if (userLevel == 'admin') {
       QuerySnapshot snapshot = await productCollection
           .where('timeDeleted', isEqualTo: 'false')
+          .where('uid', isNotEqualTo: 'sample')
           .get();
       return snapshot;
     } else {
@@ -163,8 +166,10 @@ class DatabaseService {
 
   //get all company
   Future getAllCompany() async {
-    QuerySnapshot snapshot =
-        await companyCollection.where('timeDeleted', isEqualTo: 'false').get();
+    QuerySnapshot snapshot = await companyCollection
+        .where('timeDeleted', isEqualTo: 'false')
+        .where('uid', isNotEqualTo: 'sample')
+        .get();
     return snapshot;
   }
 
@@ -351,18 +356,22 @@ class DatabaseService {
       case 'user':
         return await userCollection
             .where("fullName", isEqualTo: searched)
+            .where("uid", isNotEqualTo: 'sample')
             .get();
       case 'company':
         return await companyCollection
             .where("companyName", isEqualTo: searched)
+            .where("uid", isNotEqualTo: 'sample')
             .get();
       case 'product':
         return await productCollection
             .where("productName", isEqualTo: searched)
+            .where("uid", isNotEqualTo: 'sample')
             .get();
       default:
         return await groupCollection
             .where("groupName", isEqualTo: searched)
+            .where("uid", isNotEqualTo: 'sample')
             .get();
     }
   }
