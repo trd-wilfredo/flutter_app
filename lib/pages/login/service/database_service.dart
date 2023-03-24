@@ -371,7 +371,7 @@ class DatabaseService {
       default:
         return await groupCollection
             .where("groupName", isEqualTo: searched)
-            .where("uid", isNotEqualTo: 'sample')
+            .where("groupId", isNotEqualTo: 'sample')
             .get();
     }
   }
