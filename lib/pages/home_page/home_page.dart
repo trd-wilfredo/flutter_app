@@ -102,11 +102,13 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              nextScreen(
-                  context,
-                  SearchPage(
-                    fonts: widget.fonts,
-                  ));
+              if (page != null)
+                nextScreen(
+                    context,
+                    SearchPage(
+                      fonts: widget.fonts,
+                      page: page,
+                    ));
             },
             icon: Icon(Icons.search),
           ),

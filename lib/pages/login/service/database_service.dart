@@ -346,8 +346,25 @@ class DatabaseService {
   }
 
   // search
-  searchByName(String groupName) {
-    return groupCollection.where("groupName", isEqualTo: groupName).get();
+  searchByName(String searched, String page) async {
+    switch (page) {
+      case 'user':
+        return await userCollection
+            .where("fullName", isEqualTo: searched)
+            .get();
+      case 'company':
+        return await companyCollection
+            .where("companyName", isEqualTo: searched)
+            .get();
+      case 'product':
+        return await productCollection
+            .where("productName", isEqualTo: searched)
+            .get();
+      default:
+        return await groupCollection
+            .where("groupName", isEqualTo: searched)
+            .get();
+    }
   }
 
   // saving the userdata
