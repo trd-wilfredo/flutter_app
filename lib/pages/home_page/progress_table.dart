@@ -198,8 +198,8 @@ class _ProgressTableState extends State<ProgressTable> {
           link: EditProduct(
             producName: 'sample',
             stocks: '',
-            companyId: 'sample',
-            companyName: 'sample',
+            companyId: '',
+            companyName: '',
             companies: companies,
             avilability: 'yes',
             uid: 'sample',
