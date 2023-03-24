@@ -17,6 +17,8 @@ class AppVersion extends StatelessWidget {
           children: [
             Text('App version 1.1.05'),
             Text('Add Search User'),
+            Text('Add Search pruduct'),
+            Text('Add Search Company in comapny page'),
             Text('Add pop up message when delete user, product, company'),
             Text('Auto search on type in search text feild'),
             Text(

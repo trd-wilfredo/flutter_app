@@ -132,35 +132,38 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   searchList() {
-    if (widget.page == "groups") {
-      return hasUserSearched
-          ? ListView.builder(
-              shrinkWrap: true,
-              itemCount: searchSnapshot!.docs.length,
-              itemBuilder: (context, index) {
+    return hasUserSearched
+        ? ListView.builder(
+            shrinkWrap: true,
+            itemCount: searchSnapshot!.docs.length,
+            itemBuilder: (context, index) {
+              if (widget.page == "groups") {
                 return groupTile(
                   userName,
                   searchSnapshot!.docs[index]['groupId'],
                   searchSnapshot!.docs[index]['groupName'],
                   searchSnapshot!.docs[index]['admin'],
                 );
-              },
-            )
-          : Container();
-    }
-    if (widget.page == "user") {
-      return hasUserSearched
-          ? ListView.builder(
-              shrinkWrap: true,
-              itemCount: searchSnapshot!.docs.length,
-              itemBuilder: (context, index) {
+              }
+              if (widget.page == "user") {
                 return userList(
                   searchSnapshot!.docs[index],
                 );
-              },
-            )
-          : Container();
-    }
+              }
+              if (widget.page == "product") {
+                return productList(
+                  searchSnapshot!.docs[index],
+                );
+              }
+              if (widget.page == "company") {
+                return companttList(
+                  searchSnapshot!.docs[index],
+                );
+              }
+              return Container();
+            },
+          )
+        : Container();
   }
 
   joinedOrNot(
@@ -172,6 +175,42 @@ class _SearchPageState extends State<SearchPage> {
         isJoined = value;
       });
     });
+  }
+
+  Widget companttList(dynamic user) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      leading: CircleAvatar(
+        radius: 30,
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Text(
+          user['companyName'].substring(0, 1).toUpperCase(),
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
+      title: Text(
+        user['companyName'],
+        style: const TextStyle(fontWeight: FontWeight.w600),
+      ),
+    );
+  }
+
+  Widget productList(dynamic user) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      leading: CircleAvatar(
+        radius: 30,
+        backgroundColor: Theme.of(context).primaryColor,
+        child: Text(
+          user['productName'].substring(0, 1).toUpperCase(),
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
+      title: Text(
+        user['productName'],
+        style: const TextStyle(fontWeight: FontWeight.w600),
+      ),
+    );
   }
 
   Widget userList(dynamic user) {
