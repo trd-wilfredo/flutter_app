@@ -9,11 +9,13 @@ class GroupTile extends StatefulWidget {
   final String groupId;
   final String groupName;
   final List url;
+  final dynamic fonts;
   const GroupTile(
       {Key? key,
       required this.groupId,
       required this.groupName,
       required this.url,
+      required this.fonts,
       required this.userName})
       : super(key: key);
 
@@ -43,6 +45,7 @@ class _GroupTileState extends State<GroupTile> {
               groupId: widget.groupId,
               groupName: widget.groupName,
               userName: widget.userName,
+              fonts: widget.fonts,
             ));
       },
       child: Container(

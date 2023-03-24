@@ -8,11 +8,13 @@ class GroupInfo extends StatefulWidget {
   final String groupId;
   final String groupName;
   final String adminName;
+  final dynamic fonts;
   const GroupInfo(
       {Key? key,
       required this.adminName,
       required this.groupName,
-      required this.groupId})
+      required this.groupId,
+      required this.fonts})
       : super(key: key);
 
   @override
@@ -84,7 +86,11 @@ class _GroupInfoState extends State<GroupInfo> {
                                       getName(widget.adminName),
                                       widget.groupName)
                                   .whenComplete(() {
-                                nextScreenReplace(context, const HomePage());
+                                nextScreenReplace(
+                                    context,
+                                    HomePage(
+                                      fonts: widget.fonts,
+                                    ));
                               });
                             },
                             icon: const Icon(

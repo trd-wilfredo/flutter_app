@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class AboutUs extends StatelessWidget {
-  const AboutUs({super.key});
+  dynamic fonts;
+  AboutUs({
+    Key? key,
+    required this.fonts,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,22 +18,11 @@ class AboutUs extends StatelessWidget {
         title: Padding(
           padding: const EdgeInsets.only(left: 10.0),
           child: Row(
-            children: const [
-              Text(
-                'Study ',
-                style: TextStyle(
-                  color: Color(0xFF5ACC02),
-                  fontFamily: 'FeatherBold',
-                  fontSize: 30,
-                ),
-              ),
+            children: [
+              Text('Study ', style: fonts['fredoka01']),
               Text(
                 'App',
-                style: TextStyle(
-                  color: Color(0xFF5ACC02),
-                  fontFamily: 'FeatherWrite',
-                  fontSize: 30,
-                ),
+                style: fonts['birthstone01'],
               ),
             ],
           ),
@@ -47,24 +40,12 @@ class AboutUs extends StatelessWidget {
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
                     child: RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'all about Study ',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherBold',
-                              fontSize: 60,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'App',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherWrite',
-                              fontSize: 60,
-                            ),
-                          ),
+                              text: 'all about Study ',
+                              style: fonts['fredoka']),
+                          TextSpan(text: 'App', style: fonts['birthstone']),
                         ],
                       ),
                     ),
@@ -73,14 +54,9 @@ class AboutUs extends StatelessWidget {
                 Container(
                   width: 400,
                   child: Text(
-                    "Study app is designed to help you connect and communicate seamlessly with your contacts, whether it's for personal or professional use. Stay connected on the go and never miss a message with our app.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromRGBO(105, 105, 105, 1),
-                      fontFamily: 'RockoFLF',
-                      fontSize: 15,
-                    ),
-                  ),
+                      "Study app is designed to help you connect and communicate seamlessly with your contacts, whether it's for personal or professional use. Stay connected on the go and never miss a message with our app.",
+                      textAlign: TextAlign.center,
+                      style: fonts['leagueSpartan']),
                 ),
                 SizedBox(
                   height: 30,
@@ -129,64 +105,32 @@ class AboutUs extends StatelessWidget {
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
                     child: RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'our missio',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherBold',
-                              fontSize: 40,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'n',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherWrite',
-                              fontSize: 50,
-                            ),
-                          ),
+                              text: 'our mission', style: fonts['fredoka']),
+                          // TextSpan(text: 'n', style: fonts['birthstone']),
                         ],
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 400,
                   child: Text(
-                    "Our mission is to provide a seamless and secure communication experience that connects people and empowers them to achieve their goals.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromRGBO(105, 105, 105, 1),
-                      fontFamily: 'RockoFLF',
-                      fontSize: 15,
-                    ),
-                  ),
+                      "Our mission is to provide a seamless and secure communication experience that connects people and empowers them to achieve their goals.",
+                      textAlign: TextAlign.center,
+                      style: fonts['leagueSpartan']),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(5, 40, 35, 0),
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
                     child: RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: <TextSpan>[
-                          TextSpan(
-                            text: 'our offi',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherBold',
-                              fontSize: 40,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'ce',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherWrite',
-                              fontSize: 50,
-                            ),
-                          ),
+                          TextSpan(text: 'our office', style: fonts['fredoka']),
+                          // TextSpan(text: 'ce', style: fonts['birthstone']),
                         ],
                       ),
                     ),
@@ -195,38 +139,27 @@ class AboutUs extends StatelessWidget {
                 Container(
                   width: 400,
                   child: Text(
-                    "Comprised of professionals with a shared passion for creating the best communication app, we are committed to helping people connect and communicate seamlessly. We believe that effective communication is essential for success in both personal and professional life. We take pride in our work and are dedicated to ongoing innovation and improvement. Feedback from our users is highly valued and taken into consideration when implementing updates and new feature",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromRGBO(105, 105, 105, 1),
-                      fontFamily: 'RockoFLF',
-                      fontSize: 15,
-                    ),
-                  ),
+                      "Comprised of professionals with a shared passion for creating the best communication app, we are committed to helping people connect and communicate seamlessly. We believe that effective communication is essential for success in both personal and professional life. We take pride in our work and are dedicated to ongoing innovation and improvement. Feedback from our users is highly valued and taken into consideration when implementing updates and new feature",
+                      textAlign: TextAlign.center,
+                      style: fonts['leagueSpartan']),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(5, 40, 35, 0),
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
                     child: RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: <TextSpan>[
-                          TextSpan(
-                            text: 'tea',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherBold',
-                              fontSize: 40,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'm',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherWrite',
-                              fontSize: 50,
-                            ),
-                          ),
+                          TextSpan(text: 'team', style: fonts['fredoka']),
+                          // ),
+                          // TextSpan(
+                          //   text: 'm',
+                          //   style: TextStyle(
+                          //     color: Color(0xFF5ACC02),
+                          //     fontFamily: 'FeatherWrite',
+                          //     fontSize: 50,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -237,11 +170,7 @@ class AboutUs extends StatelessWidget {
                   child: Text(
                     "Our office is located in the bustling city of Mandaue in the beautiful island of Cebu, Philippines. At our office, we foster a culture of teamwork, respect, and innovation. We believe that by working together, we can achieve great things and make a positive impact in the world. We encourage our team members to bring their unique skills and perspectives to the table and provide ongoing opportunities for professional growth and development.",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromRGBO(105, 105, 105, 1),
-                      fontFamily: 'RockoFLF',
-                      fontSize: 15,
-                    ),
+                    style: fonts['leagueSpartan'],
                   ),
                 ),
                 Padding(
@@ -249,24 +178,17 @@ class AboutUs extends StatelessWidget {
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
                     child: RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: <TextSpan>[
-                          TextSpan(
-                            text: 'cultu',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherBold',
-                              fontSize: 40,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 're',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherWrite',
-                              fontSize: 50,
-                            ),
-                          ),
+                          TextSpan(text: 'culture', style: fonts['fredoka']),
+                          // TextSpan(
+                          //   text: 're',
+                          //   style: TextStyle(
+                          //     color: Color(0xFF5ACC02),
+                          //     fontFamily: 'FeatherWrite',
+                          //     fontSize: 50,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -275,38 +197,28 @@ class AboutUs extends StatelessWidget {
                 Container(
                   width: 400,
                   child: Text(
-                    "We believe that a positive and supportive work culture is the key to building a successful and fulfilling workplace. We're dedicated to fostering a culture of respect, collaboration, and innovation that empowers our team members to thrive. One of the core values of our culture is respect. We believe that every team member deserves to be treated with dignity and fairness, and we strive to create a work environment that is free from discrimination, harassment, or prejudice. We encourage open and honest communication, and we value feedback from our team members to help us continuously improve and grow.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromRGBO(105, 105, 105, 1),
-                      fontFamily: 'RockoFLF',
-                      fontSize: 15,
-                    ),
-                  ),
+                      "We believe that a positive and supportive work culture is the key to building a successful and fulfilling workplace. We're dedicated to fostering a culture of respect, collaboration, and innovation that empowers our team members to thrive. One of the core values of our culture is respect. We believe that every team member deserves to be treated with dignity and fairness, and we strive to create a work environment that is free from discrimination, harassment, or prejudice. We encourage open and honest communication, and we value feedback from our team members to help us continuously improve and grow.",
+                      textAlign: TextAlign.center,
+                      style: fonts['leagueSpartan']),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(5, 40, 35, 0),
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
                     child: RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'Firebase Stora',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherBold',
-                              fontSize: 40,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'ge',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherWrite',
-                              fontSize: 50,
-                            ),
-                          ),
+                              text: 'Firebase Storage',
+                              style: fonts['fredoka']),
+                          // TextSpan(
+                          //   text: 'ge',
+                          //   style: TextStyle(
+                          //     color: Color(0xFF5ACC02),
+                          //     fontFamily: 'FeatherWrite',
+                          //     fontSize: 50,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -314,39 +226,28 @@ class AboutUs extends StatelessWidget {
                 ),
                 Container(
                   width: 400,
-                  child: Text(
-                    "Firebase Storage",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromRGBO(105, 105, 105, 1),
-                      fontFamily: 'RockoFLF',
-                      fontSize: 15,
-                    ),
-                  ),
+                  child: Text("Firebase Storage",
+                      textAlign: TextAlign.center,
+                      style: fonts['leagueSpartan']),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(5, 40, 35, 0),
                   child: FittedBox(
                     fit: BoxFit.fitWidth,
                     child: RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: 'Firebase Databa',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherBold',
-                              fontSize: 40,
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'se',
-                            style: TextStyle(
-                              color: Color(0xFF5ACC02),
-                              fontFamily: 'FeatherWrite',
-                              fontSize: 50,
-                            ),
-                          ),
+                              text: 'Firebase Database',
+                              style: fonts['fredoka']),
+                          // TextSpan(
+                          //   text: 'se',
+                          //   style: TextStyle(
+                          //     color: Color(0xFF5ACC02),
+                          //     fontFamily: 'FeatherWrite',
+                          //     fontSize: 50,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -354,15 +255,9 @@ class AboutUs extends StatelessWidget {
                 ),
                 Container(
                   width: 400,
-                  child: Text(
-                    "Firebase Database",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromRGBO(105, 105, 105, 1),
-                      fontFamily: 'RockoFLF',
-                      fontSize: 15,
-                    ),
-                  ),
+                  child: Text("Firebase Database",
+                      textAlign: TextAlign.center,
+                      style: fonts['leagueSpartan']),
                 ),
                 SizedBox(
                   height: 100,

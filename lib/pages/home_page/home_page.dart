@@ -17,7 +17,11 @@ import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/profile_page.dart/profile_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  dynamic fonts;
+  HomePage({
+    Key? key,
+    required this.fonts,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -98,7 +102,13 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             onPressed: () {
-              nextScreen(context, SearchPage());
+              if (page != null)
+                nextScreen(
+                    context,
+                    SearchPage(
+                      fonts: widget.fonts,
+                      page: page,
+                    ));
             },
             icon: Icon(Icons.search),
           ),
@@ -182,26 +192,27 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(color: Colors.black),
               ),
             ),
-            ListTile(
-              onTap: () {
-                // nextScreen(context, UserPage());
-                setState(() {
-                  title = "User";
-                  page = "user";
-                });
-              },
-              selectedColor: page == "user"
-                  ? Theme.of(context).primaryColor
-                  : Colors.black,
-              selected: page == "user" ? true : false,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Users",
-                style: TextStyle(color: Colors.black),
+            if (userLevel == 'admin')
+              ListTile(
+                onTap: () {
+                  // nextScreen(context, UserPage());
+                  setState(() {
+                    title = "User";
+                    page = "user";
+                  });
+                },
+                selectedColor: page == "user"
+                    ? Theme.of(context).primaryColor
+                    : Colors.black,
+                selected: page == "user" ? true : false,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                leading: const Icon(Icons.group),
+                title: const Text(
+                  "Users",
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ),
             ListTile(
               onTap: () {
                 // nextScreen(context, ProductPage());
@@ -222,38 +233,40 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(color: Colors.black),
               ),
             ),
-            ListTile(
-              onTap: () {
-                // nextScreen(context, CompanyPage());
-                setState(() {
-                  title = "Company Page";
-                  page = "company";
-                });
-              },
-              selectedColor: page == "company"
-                  ? Theme.of(context).primaryColor
-                  : Colors.black,
-              selected: page == "company" ? true : false,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Companies",
-                style: TextStyle(color: Colors.black),
+            if (userLevel == 'admin')
+              ListTile(
+                onTap: () {
+                  // nextScreen(context, CompanyPage());
+                  setState(() {
+                    title = "Company Page";
+                    page = "company";
+                  });
+                },
+                selectedColor: page == "company"
+                    ? Theme.of(context).primaryColor
+                    : Colors.black,
+                selected: page == "company" ? true : false,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                leading: const Icon(Icons.group),
+                title: const Text(
+                  "Companies",
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ),
-            ListTile(
-              onTap: () {
-                nextScreen(context, CompanySearch());
-              },
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Search Company",
-                style: TextStyle(color: Colors.black),
+            if (userLevel == 'admin')
+              ListTile(
+                onTap: () {
+                  nextScreen(context, CompanySearch());
+                },
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                leading: const Icon(Icons.group),
+                title: const Text(
+                  "Search Company",
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ),
             ListTile(
               onTap: () {
                 nextScreen(context, MessagingApp());
@@ -290,7 +303,9 @@ class _HomePageState extends State<HomePage> {
                               await authService.signOut();
                               Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
-                                      builder: (context) => const LoginPage()),
+                                      builder: (context) => LoginPage(
+                                            fonts: widget.fonts,
+                                          )),
                                   (route) => false);
                             },
                             icon: const Icon(
@@ -369,6 +384,7 @@ class _HomePageState extends State<HomePage> {
                         snapshot.data['groups'].length - index - 1;
                     return GroupTile(
                       groupId: getId(snapshot.data['groups'][reverseIndex]),
+                      fonts: widget.fonts,
                       groupName: getName(snapshot.data['groups'][reverseIndex]),
                       userName: snapshot.data['fullName'],
                       url: [],

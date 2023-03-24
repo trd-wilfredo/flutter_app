@@ -4,9 +4,11 @@ import 'progress_table.dart';
 
 class WorkProgress extends StatefulWidget {
   StatefulWidget profile;
+  dynamic fonts;
   WorkProgress({
     Key? key,
     required this.profile,
+    required this.fonts,
   }) : super(key: key);
   @override
   _WorkProgressState createState() => _WorkProgressState();
@@ -20,16 +22,21 @@ class _WorkProgressState extends State<WorkProgress> {
 
   List<String> title = [
     'Work Progress',
+    'Version 1.1.05',
     'Version 1.1.04',
     'Previous Version',
   ];
 
-  List<bool> _expanded = [true, false, false];
+  List<bool> _expanded = [true, false, false, false];
 
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> changes = {
-      'Work Progress': ProgressTable(profile: widget.profile),
+      'Work Progress': ProgressTable(
+        profile: widget.profile,
+        fonts: widget.fonts,
+      ),
+      'Version 1.1.05': VersionPage('1.1.05'),
       'Version 1.1.04': VersionPage('1.1.04'),
       'Previous Version': Text(
         'details',

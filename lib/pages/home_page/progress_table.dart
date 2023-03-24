@@ -26,9 +26,11 @@ import 'table_list.dart';
 
 class ProgressTable extends StatefulWidget {
   StatefulWidget profile;
+  dynamic fonts;
   ProgressTable({
     Key? key,
     required this.profile,
+    required this.fonts,
   }) : super(key: key);
 
   @override
@@ -105,13 +107,13 @@ class _ProgressTableState extends State<ProgressTable> {
           page: 'Login Page',
           bar: 1.0,
           pecent: '100%',
-          link: LoginPage(),
+          link: LoginPage(fonts: widget.fonts),
           color: Color.fromARGB(255, 229, 111, 111)),
       TableList(
           page: 'Register Page',
           bar: 1.0,
           pecent: '100%',
-          link: RegisterPage(),
+          link: RegisterPage(fonts: widget.fonts),
           color: Color.fromARGB(255, 220, 159, 61)),
       TableList(
           page: 'Profile Page',
@@ -196,8 +198,8 @@ class _ProgressTableState extends State<ProgressTable> {
           link: EditProduct(
             producName: 'sample',
             stocks: '',
-            companyId: 'sample',
-            companyName: 'sample',
+            companyId: '',
+            companyName: '',
             companies: companies,
             avilability: 'yes',
             uid: 'sample',
@@ -213,7 +215,9 @@ class _ProgressTableState extends State<ProgressTable> {
           page: 'Group List Page',
           bar: 1.0,
           pecent: '100%',
-          link: HomePage(),
+          link: HomePage(
+            fonts: widget.fonts,
+          ),
           color: Color.fromARGB(255, 37, 121, 100)),
       TableList(
           page: 'Chat Page',
@@ -223,6 +227,7 @@ class _ProgressTableState extends State<ProgressTable> {
             groupId: 'sample',
             groupName: 'sample',
             userName: userName,
+            fonts: widget.fonts,
           ),
           color: Color.fromARGB(255, 162, 255, 168)),
       TableList(
@@ -241,7 +246,7 @@ class _ProgressTableState extends State<ProgressTable> {
           page: 'About Us Page',
           bar: .7,
           pecent: '70%',
-          link: AboutUs(),
+          link: AboutUs(fonts: widget.fonts),
           color: Color.fromARGB(255, 183, 169, 44)),
       TableList(
           page: 'Appversion Page',
