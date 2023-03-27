@@ -41,14 +41,6 @@ class DatabaseService {
     return snapshot;
   }
 
-  // //get user
-  // Future getByIdUser(String sid) async {
-  //   QuerySnapshot snapshot =
-  //       await userCollection.where('uid', isEqualTo: sid).get();
-  //   var tes = snapshot.docs.isNotEmpty ? snapshot.docs : [];
-  //   return tes;
-  // }
-
   //get all user
   Future getAllUser(String companyId, String userLevel) async {
     if (userLevel == 'admin') {
@@ -212,17 +204,6 @@ class DatabaseService {
 
   // getting the chats
   getChats(String groupId) async {
-    // groupCollection
-    //     .doc(groupId)
-    //     .collection("messages")
-    //     .where("deleted", isEqualTo: "")
-    //     .orderBy("time")
-    //     .get()
-    //     .then((QuerySnapshot snapshot) {
-    //   snapshot.docs.forEach((element) {
-    //     print('The result of isNotEqualTo query is: ${element.id}');
-    //   });
-    // });
     return groupCollection
         .doc(groupId)
         .collection("messages")

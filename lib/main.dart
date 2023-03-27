@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_features/pages/home.dart';
+import 'package:flutter_features/pages/tool_page/page.dart';
 import 'package:flutter_features/shared/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_features/pages/app_version.dart';
@@ -76,24 +77,6 @@ void main() async {
     'leagueSpartan': leagueSpartan,
   };
 
-  page(title, page) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          title,
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 27,
-          ),
-        ),
-      ),
-      body: page,
-    );
-  }
-
   var getUser = FirebaseAuth.instance.currentUser;
   StatefulWidget profilePage;
   if (getUser == null) {
@@ -105,7 +88,7 @@ void main() async {
         .child(user.docs.first['profilePic'])
         .getDownloadURL();
     profilePage =
-        page("ProFile Page", ProfilePage(docs: user.docs, profilePic: link));
+        page("ProFile Page", ProfilePage(user: user.docs, profilePic: link));
   }
   runApp(
     MaterialApp(

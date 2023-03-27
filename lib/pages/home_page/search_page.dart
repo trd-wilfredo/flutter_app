@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_features/widgets/widget.dart';
@@ -5,6 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/pages/home_page/chat_page.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
+
+import '../profile_page.dart/profile_page.dart';
+import '../tool_page/page.dart';
 
 class SearchPage extends StatefulWidget {
   dynamic fonts;
@@ -24,7 +28,7 @@ class _SearchPageState extends State<SearchPage> {
   bool isLoading = false;
   QuerySnapshot? searchSnapshot;
   bool hasUserSearched = false;
-  String userName = "";
+  String userName = "tets";
   bool isJoined = false;
   User? user;
 
@@ -35,12 +39,12 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   getCurrentUserIdandName() async {
-    await HelperFunction.getUserNameFromSF().then((value) {
-      setState(() {
-        userName = value!;
-      });
-    });
     user = FirebaseAuth.instance.currentUser;
+    QuerySnapshot snapshot =
+        await DatabaseService(uid: user!.uid).getUserById();
+    setState(() {
+      userName = snapshot.docs.first['fullName'];
+    });
   }
 
   String getName(String r) {
@@ -224,9 +228,72 @@ class _SearchPageState extends State<SearchPage> {
           style: const TextStyle(color: Colors.white),
         ),
       ),
-      title: Text(
-        user['fullName'],
-        style: const TextStyle(fontWeight: FontWeight.w600),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            child: Text(
+              user['fullName'],
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ),
+          Container(
+            child: Row(
+              children: [
+                // Tooltip(
+                //   message: 'cancel request',
+                //   child: IconButton(
+                //     icon: Icon(Icons.cancel, size: 25),
+                //     onPressed: () {
+                //       // deleteUser(val['id'], val);
+                //     },
+                //   ),
+                // ),
+                Tooltip(
+                  message: 'add friend',
+                  child: IconButton(
+                    icon: Icon(Icons.add, size: 25),
+                    onPressed: () {
+                      // deleteUser(val['id'], val);
+                    },
+                  ),
+                ),
+                Tooltip(
+                  message: 'message',
+                  child: IconButton(
+                    icon: Icon(Icons.message, size: 25),
+                    onPressed: () {
+                      // deleteUser(val['id'], val);
+                    },
+                  ),
+                ),
+                Tooltip(
+                  message: 'view profile',
+                  child: IconButton(
+                    icon: Icon(Icons.person, size: 25),
+                    onPressed: () async {
+                      var userData =
+                          await DatabaseService(uid: user['uid']).getUserById();
+                      var link = await FirebaseStorage.instance
+                          .ref()
+                          .child(user['profilePic'])
+                          .getDownloadURL();
+                      print([userData, link]);
+
+                      nextScreen(
+                        context,
+                        page(
+                          user['fullName'],
+                          ProfilePage(user: userData.docs, profilePic: link),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
