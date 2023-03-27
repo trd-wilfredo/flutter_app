@@ -39,7 +39,7 @@ class _HomePageState extends State<HomePage> {
   String profile = "";
   String title = "Chat List";
   String page = "groups";
-  List docs = [];
+  List userData = [];
   List companies = [];
 
   @override
@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
         .getDownloadURL();
     setState(() {
       profile = link;
-      docs = user.docs;
+      userData = user.docs;
       email = user.docs.first['email'];
       userName = user.docs.first['fullName'];
       userLevel = user.docs.first['level'];
@@ -269,12 +269,13 @@ class _HomePageState extends State<HomePage> {
               ),
             ListTile(
               onTap: () {
-                nextScreenReplace(
-                    context,
-                    SearchPage(
-                      fonts: widget.fonts,
-                      page: "user",
-                    ));
+                if (page != null)
+                  nextScreenReplace(
+                      context,
+                      SearchPage(
+                        fonts: widget.fonts,
+                        page: "user",
+                      ));
               },
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -357,7 +358,7 @@ class _HomePageState extends State<HomePage> {
       case "company":
         return CompanyPage();
       case "profile_page":
-        return ProfilePage(docs: docs, profilePic: profile);
+        return ProfilePage(user: userData, profilePic: profile);
     }
   }
 

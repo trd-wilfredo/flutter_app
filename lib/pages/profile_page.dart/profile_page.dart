@@ -10,11 +10,11 @@ import 'package:flutter_features/pages/login/auth/login_page.dart';
 import 'package:flutter_features/pages/login/service/auth_service.dart';
 
 class ProfilePage extends StatefulWidget {
-  List docs;
+  List user;
   String profilePic;
   ProfilePage({
     Key? key,
-    required this.docs,
+    required this.user,
     required this.profilePic,
   }) : super(key: key);
 
@@ -37,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
           const SizedBox(
             height: 30,
           ),
-          widget.docs.first['profilePic'] == ''
+          widget.user.first['profilePic'] == ''
               ? Icon(
                   Icons.account_circle,
                   size: 200,
@@ -60,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text("Full Name", style: TextStyle(fontSize: 17)),
-              Text(widget.docs.first['fullName'],
+              Text(widget.user.first['fullName'],
                   style: const TextStyle(fontSize: 17)),
             ],
           ),
@@ -72,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               const Text("Email", style: TextStyle(fontSize: 17)),
               Text(
-                widget.docs.first['email'],
+                widget.user.first['email'],
                 style: const TextStyle(fontSize: 17),
               ),
             ],
