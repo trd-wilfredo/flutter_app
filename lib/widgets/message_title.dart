@@ -61,6 +61,9 @@ class _MessageTileState extends State<MessageTile> {
 
               DropdownButton<String>(
                 icon: const Icon(Icons.more_horiz_outlined),
+                style:const TextStyle(
+                  color: Colors.grey,
+                ),
                 elevation: 16,
                 underline: Container(
                   height: 2,
