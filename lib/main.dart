@@ -23,6 +23,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'pages/about_us.dart';
 import 'pages/home_page/work_progress.dart';
+import 'pages/tool_page/add_fields.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,8 +80,10 @@ void main() async {
 
   var getUser = FirebaseAuth.instance.currentUser;
   StatefulWidget profilePage;
+  StatefulWidget addField;
   if (getUser == null) {
     profilePage = LoginApp(fonts: fonts);
+    addField = LoginApp(fonts: fonts);
   } else {
     var user = await DatabaseService(uid: getUser.uid).getUserById();
     var link = await FirebaseStorage.instance
@@ -89,6 +92,9 @@ void main() async {
         .getDownloadURL();
     profilePage =
         page("ProFile Page", ProfilePage(user: user.docs, profilePic: link));
+    addField = AddFields(
+        companyId: user.docs.first['companyId'],
+        userLevel: user.docs.first['level']);
   }
   runApp(
     MaterialApp(
@@ -112,6 +118,7 @@ void main() async {
         '/information_registration': (context) => InfoRegister(),
         //
         '/update_collection': (context) => InfoRegister(),
+        '/add_fields': (context) => addField,
       },
     ),
   );
