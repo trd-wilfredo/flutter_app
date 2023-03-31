@@ -66,4 +66,34 @@ VersionPage(version) {
       ),
     );
   }
+  if (version == "1.1.06") {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'App version 1.1.06**',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          SizedBox(height: 15),
+          Container(
+            margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('March 31 2023 4:00pm'),
+                Text('Open other profile in search user'),
+                Text('Friend Request to other user'),
+                Text('Cancel Friend Request to other user'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
