@@ -16,6 +16,8 @@ import 'package:flutter_features/pages/login/service/auth_service.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 import 'package:flutter_features/pages/profile_page.dart/profile_page.dart';
 
+import 'dm_title.dart';
+
 class HomePage extends StatefulWidget {
   dynamic fonts;
   HomePage({
@@ -39,13 +41,18 @@ class _HomePageState extends State<HomePage> {
   String profile = "";
   String title = "Chat List";
   String page = "groups";
-  List docs = [];
+  List userData = [];
   List companies = [];
 
   @override
   void initState() {
     super.initState();
     gettingUserData();
+  }
+
+  bool ifDM(String res) {
+    var check = res.substring(0, res.indexOf("_"));
+    return check == 'dm' ? true : false;
   }
 
   // string manipulation
@@ -86,7 +93,7 @@ class _HomePageState extends State<HomePage> {
         .getDownloadURL();
     setState(() {
       profile = link;
-      docs = user.docs;
+      userData = user.docs;
       email = user.docs.first['email'];
       userName = user.docs.first['fullName'];
       userLevel = user.docs.first['level'];
@@ -269,13 +276,19 @@ class _HomePageState extends State<HomePage> {
               ),
             ListTile(
               onTap: () {
-                nextScreen(context, MessagingApp());
+                if (page != null)
+                  nextScreenReplace(
+                      context,
+                      SearchPage(
+                        fonts: widget.fonts,
+                        page: "user",
+                      ));
               },
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.group),
               title: const Text(
-                "CS",
+                "Search",
                 style: TextStyle(color: Colors.black),
               ),
             ),
@@ -336,7 +349,7 @@ class _HomePageState extends State<HomePage> {
   switchPage(page) {
     switch (page) {
       case "groups":
-        return groupList();
+        return chatList();
       case "product":
         return ProductPage(
           companies: companies,
@@ -352,11 +365,11 @@ class _HomePageState extends State<HomePage> {
       case "company":
         return CompanyPage();
       case "profile_page":
-        return ProfilePage(docs: docs, profilePic: profile);
+        return ProfilePage(user: userData, profilePic: profile);
     }
   }
 
-  groupList() {
+  chatList() {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -382,13 +395,19 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     int reverseIndex =
                         snapshot.data['groups'].length - index - 1;
-                    return GroupTile(
-                      groupId: getId(snapshot.data['groups'][reverseIndex]),
-                      fonts: widget.fonts,
-                      groupName: getName(snapshot.data['groups'][reverseIndex]),
-                      userName: snapshot.data['fullName'],
-                      url: [],
-                    );
+                    if (!ifDM(snapshot.data['groups'][reverseIndex])) {
+                      return GroupTile(
+                        groupId: getId(snapshot.data['groups'][reverseIndex]),
+                        fonts: widget.fonts,
+                        groupName:
+                            getName(snapshot.data['groups'][reverseIndex]),
+                        userName: snapshot.data['fullName'],
+                        url: [],
+                      );
+                    } else {
+                      // personal chat
+                      return DMTitle();
+                    }
                   },
                 );
               } else {

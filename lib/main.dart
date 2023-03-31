@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_features/pages/home.dart';
+import 'package:flutter_features/pages/tool_page/page.dart';
 import 'package:flutter_features/shared/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_features/pages/app_version.dart';
@@ -22,6 +23,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'pages/about_us.dart';
 import 'pages/home_page/work_progress.dart';
+import 'pages/tool_page/add_fields.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -76,28 +78,12 @@ void main() async {
     'leagueSpartan': leagueSpartan,
   };
 
-  page(title, page) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          title,
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 27,
-          ),
-        ),
-      ),
-      body: page,
-    );
-  }
-
   var getUser = FirebaseAuth.instance.currentUser;
   StatefulWidget profilePage;
+  StatefulWidget addField;
   if (getUser == null) {
     profilePage = LoginApp(fonts: fonts);
+    addField = LoginApp(fonts: fonts);
   } else {
     var user = await DatabaseService(uid: getUser.uid).getUserById();
     var link = await FirebaseStorage.instance
@@ -105,7 +91,10 @@ void main() async {
         .child(user.docs.first['profilePic'])
         .getDownloadURL();
     profilePage =
-        page("ProFile Page", ProfilePage(docs: user.docs, profilePic: link));
+        page("ProFile Page", ProfilePage(user: user.docs, profilePic: link));
+    addField = AddFields(
+        companyId: user.docs.first['companyId'],
+        userLevel: user.docs.first['level']);
   }
   runApp(
     MaterialApp(
@@ -129,6 +118,7 @@ void main() async {
         '/information_registration': (context) => InfoRegister(),
         //
         '/update_collection': (context) => InfoRegister(),
+        '/add_fields': (context) => addField,
       },
     ),
   );

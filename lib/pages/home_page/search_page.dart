@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_features/widgets/widget.dart';
@@ -5,6 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_features/helper/helper_function.dart';
 import 'package:flutter_features/pages/home_page/chat_page.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
+
+import '../profile_page.dart/profile_page.dart';
+import '../tool_page/page.dart';
 
 class SearchPage extends StatefulWidget {
   dynamic fonts;
@@ -24,7 +28,9 @@ class _SearchPageState extends State<SearchPage> {
   bool isLoading = false;
   QuerySnapshot? searchSnapshot;
   bool hasUserSearched = false;
-  String userName = "";
+  String userName = "user";
+  List friend = [];
+  List request = [];
   bool isJoined = false;
   User? user;
 
@@ -35,12 +41,12 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   getCurrentUserIdandName() async {
-    await HelperFunction.getUserNameFromSF().then((value) {
-      setState(() {
-        userName = value!;
-      });
-    });
     user = FirebaseAuth.instance.currentUser;
+    QuerySnapshot snapshot =
+        await DatabaseService(uid: user!.uid).getUserById();
+    setState(() {
+      userName = snapshot.docs.first['fullName'];
+    });
   }
 
   String getName(String r) {
@@ -115,6 +121,10 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   initiateSearchMethod() async {
+    setState(() {
+      request = [];
+      friend = [];
+    });
     if (searchController.text.isNotEmpty) {
       setState(() {
         isLoading = true;
@@ -122,8 +132,34 @@ class _SearchPageState extends State<SearchPage> {
       await DatabaseService()
           .searchByName(searchController.text, widget.page)
           .then((snapshot) {
+        for (var users in snapshot['data'].docs) {
+          var userfr = users['addFriend'] as List;
+          if (userfr.contains(user!.uid)) {
+            setState(() {
+              friend.add(true);
+            });
+          } else {
+            setState(() {
+              friend.add(false);
+            });
+          }
+        }
+
+        for (var users in snapshot['data'].docs) {
+          var userfr = users['friendRequest'] as List;
+          if (userfr.contains(user!.uid)) {
+            setState(() {
+              request.add(true);
+            });
+          } else {
+            setState(() {
+              request.add(false);
+            });
+          }
+        }
+
         setState(() {
-          searchSnapshot = snapshot;
+          searchSnapshot = snapshot['data'];
           isLoading = false;
           hasUserSearched = true;
         });
@@ -146,9 +182,8 @@ class _SearchPageState extends State<SearchPage> {
                 );
               }
               if (widget.page == "user") {
-                return userList(
-                  searchSnapshot!.docs[index],
-                );
+                return userList(searchSnapshot!.docs[index], friend[index],
+                    request[index], index);
               }
               if (widget.page == "product") {
                 return productList(
@@ -213,20 +248,105 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget userList(dynamic user) {
+  Widget userList(dynamic otheruser, bool friend, bool requested, int index) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       leading: CircleAvatar(
         radius: 30,
         backgroundColor: Theme.of(context).primaryColor,
         child: Text(
-          user['fullName'].substring(0, 1).toUpperCase(),
+          otheruser['fullName'].substring(0, 1).toUpperCase(),
           style: const TextStyle(color: Colors.white),
         ),
       ),
-      title: Text(
-        user['fullName'],
-        style: const TextStyle(fontWeight: FontWeight.w600),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            child: Text(
+              otheruser['fullName'],
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ),
+          Container(
+            child: Row(
+              children: [
+                requested
+                    ? (friend
+                        ? Tooltip(
+                            message: 'unfriend',
+                            child: IconButton(
+                              icon: Icon(Icons.remove_rounded, size: 25),
+                              onPressed: () async {
+                                await DatabaseService()
+                                    .unfriend(otheruser['uid'], user!.uid);
+                                setState(() {
+                                  friend = false;
+                                });
+                              },
+                            ),
+                          )
+                        : Tooltip(
+                            message: 'cancel request',
+                            child: IconButton(
+                              icon: Icon(Icons.cancel_rounded, size: 25),
+                              onPressed: () async {
+                                await DatabaseService()
+                                    .cancelRequest(otheruser['uid'], user!.uid);
+                                setState(() {
+                                  request[index] = false;
+                                });
+                              },
+                            ),
+                          ))
+                    : Tooltip(
+                        message: 'add friend',
+                        child: IconButton(
+                          icon: Icon(Icons.add_rounded, size: 25),
+                          onPressed: () async {
+                            await DatabaseService()
+                                .addFriend(otheruser['uid'], user!.uid);
+                            setState(() {
+                              request[index] = true;
+                            });
+                          },
+                        ),
+                      ),
+                Tooltip(
+                  message: 'message',
+                  child: IconButton(
+                    icon: Icon(Icons.message_rounded, size: 25),
+                    onPressed: () {
+                      // deleteUser(val['id'], val);
+                    },
+                  ),
+                ),
+                Tooltip(
+                  message: 'view profile',
+                  child: IconButton(
+                    icon: Icon(Icons.person_rounded, size: 25),
+                    onPressed: () async {
+                      var userData =
+                          await DatabaseService(uid: otheruser['uid'])
+                              .getUserById();
+                      var link = await FirebaseStorage.instance
+                          .ref()
+                          .child(otheruser['profilePic'])
+                          .getDownloadURL();
+                      nextScreen(
+                        context,
+                        page(
+                          otheruser['fullName'],
+                          ProfilePage(user: userData.docs, profilePic: link),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

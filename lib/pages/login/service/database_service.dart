@@ -41,13 +41,21 @@ class DatabaseService {
     return snapshot;
   }
 
-  // //get user
-  // Future getByIdUser(String sid) async {
-  //   QuerySnapshot snapshot =
-  //       await userCollection.where('uid', isEqualTo: sid).get();
-  //   var tes = snapshot.docs.isNotEmpty ? snapshot.docs : [];
-  //   return tes;
-  // }
+  //get add field user
+  Future addField(String uid) async {
+    DocumentReference updatefields = userCollection.doc(uid);
+    await updatefields
+        .update({
+          "addFriend": [],
+          "friendList": [],
+          "friendRequest": [],
+          "blockContact": [],
+        })
+        .then((value) => true)
+        .catchError((error) => print("Failed to update User: $error"));
+
+    return updatefields;
+  }
 
   //get all user
   Future getAllUser(String companyId, String userLevel) async {
@@ -212,17 +220,6 @@ class DatabaseService {
 
   // getting the chats
   getChats(String groupId) async {
-    // groupCollection
-    //     .doc(groupId)
-    //     .collection("messages")
-    //     .where("deleted", isEqualTo: "")
-    //     .orderBy("time")
-    //     .get()
-    //     .then((QuerySnapshot snapshot) {
-    //   snapshot.docs.forEach((element) {
-    //     print('The result of isNotEqualTo query is: ${element.id}');
-    //   });
-    // });
     return groupCollection
         .doc(groupId)
         .collection("messages")
@@ -354,26 +351,108 @@ class DatabaseService {
   searchByName(String searched, String page) async {
     switch (page) {
       case 'user':
-        return await userCollection
-            .where("fullName", isEqualTo: searched)
-            .where("uid", isNotEqualTo: 'sample')
-            .get();
+        return {
+          'data': await userCollection
+              .where("fullName", isEqualTo: searched)
+              .where("uid", isNotEqualTo: 'sample')
+              .get()
+        };
+
       case 'company':
-        return await companyCollection
-            .where("companyName", isEqualTo: searched)
-            .where("uid", isNotEqualTo: 'sample')
-            .get();
+        return {
+          'data': await companyCollection
+              .where("companyName", isEqualTo: searched)
+              .where("uid", isNotEqualTo: 'sample')
+              .get()
+        };
       case 'product':
-        return await productCollection
-            .where("productName", isEqualTo: searched)
-            .where("uid", isNotEqualTo: 'sample')
-            .get();
+        return {
+          'data': await productCollection
+              .where("productName", isEqualTo: searched)
+              .where("uid", isNotEqualTo: 'sample')
+              .get()
+        };
       default:
-        return await groupCollection
-            .where("groupName", isEqualTo: searched)
-            .where("groupId", isNotEqualTo: 'sample')
-            .get();
+        return {
+          'data': await groupCollection
+              .where("groupName", isEqualTo: searched)
+              .where("groupId", isNotEqualTo: 'sample')
+              .get()
+        };
     }
+  }
+
+  confirmFriendRequest(String id, String yourId) {
+    return [''];
+  }
+
+  unfriend(String id, String yourId) {
+    return [''];
+  }
+
+  Future cancelRequest(String hisId, String yourId) async {
+    QuerySnapshot snapshot =
+        await userCollection.where('uid', isEqualTo: yourId).get();
+    var cancelFr = snapshot.docs.first['addFriend'] as List;
+    if (cancelFr.contains(hisId)) {
+      cancelFr.remove(hisId);
+    }
+    DocumentReference userDocumentReference = userCollection.doc(yourId);
+    var cancel = await userDocumentReference
+        .update({
+          "addFriend": cancelFr,
+        })
+        .then((value) => true)
+        .catchError((error) => print("Failed to add friend: $error"));
+    // his Friend request
+    QuerySnapshot friendRequested =
+        await userCollection.where('uid', isEqualTo: hisId).get();
+    var fr = friendRequested.docs.first['friendRequest'] as List;
+    if (fr.contains(yourId)) {
+      fr.remove(yourId);
+    }
+    DocumentReference userFRDocumentReference = userCollection.doc(hisId);
+    await userFRDocumentReference
+        .update({
+          "friendRequest": fr,
+        })
+        .then((value) => true)
+        .catchError((error) => print("Failed to add friend: $error"));
+    return cancel;
+  }
+
+  Future addFriend(String hisId, String yourId) async {
+    // your addFriend request
+    QuerySnapshot snapshot =
+        await userCollection.where('uid', isEqualTo: yourId).get();
+    var addFriend = snapshot.docs.first['addFriend'] as List;
+    if (!addFriend.contains(hisId)) {
+      addFriend.add(hisId);
+    }
+    DocumentReference userDocumentReference = userCollection.doc(yourId);
+    var add = await userDocumentReference
+        .update({
+          "addFriend": addFriend,
+        })
+        .then((value) => true)
+        .catchError((error) => print("Failed to add friend: $error"));
+
+    // his Friend request
+    QuerySnapshot friendRequested =
+        await userCollection.where('uid', isEqualTo: hisId).get();
+    var fr = friendRequested.docs.first['friendRequest'] as List;
+    print(yourId);
+    if (!fr.contains(yourId)) {
+      fr.add(yourId);
+    }
+    DocumentReference userFRDocumentReference = userCollection.doc(hisId);
+    await userFRDocumentReference
+        .update({
+          "friendRequest": fr,
+        })
+        .then((value) => true)
+        .catchError((error) => print("Failed to add friend: $error"));
+    return add;
   }
 
   // saving the userdata

@@ -16,6 +16,26 @@ class AppVersion extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
+              'App version 1.1.06**',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+            SizedBox(height: 15),
+            Container(
+              margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Text('March 24 2023 7:00pm'),
+                  Text('Open other profile'),
+                  Text('Friend Request to other user'),
+                  Text('Cancel Friend Request to other user'),
+                ],
+              ),
+            ),
+            Text(
               'App version 1.1.05**',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
