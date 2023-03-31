@@ -30,6 +30,8 @@ class AppVersion extends StatelessWidget {
                 children: [
                   // Text('March 24 2023 7:00pm'),
                   Text('Open other profile'),
+                  Text('Friend Request to other user'),
+                  Text('Cancel Friend Request to other user'),
                 ],
               ),
             ),
