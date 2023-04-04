@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
   String page = "groups";
   List userData = [];
   List companies = [];
+  bool isButtonLongPressed = false;
 
   @override
   void initState() {
@@ -371,16 +372,52 @@ class _HomePageState extends State<HomePage> {
 
   chatList() {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          popUpDialog(context);
+      floatingActionButton: GestureDetector(
+        onLongPress: () {
+          setState(() {
+            isButtonLongPressed = true;
+          });
         },
-        elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 30,
+        // onLongPressEnd: (_) {
+        //   setState(() {
+        //     isButtonLongPressed = false;
+        //   });
+        // },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (isButtonLongPressed)
+              FloatingActionButton(
+                onPressed: () {
+                  popUpDialog(context);
+                  setState(() {
+                    isButtonLongPressed = false;
+                  });
+                },
+                elevation: 0,
+                backgroundColor: Theme.of(context).primaryColor,
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+            FloatingActionButton(
+              onPressed: () {
+                // popUpDialog(context);
+                setState(() {
+                  isButtonLongPressed = false;
+                });
+              },
+              elevation: 0,
+              backgroundColor: Theme.of(context).primaryColor,
+              child: const Icon(
+                Icons.person,
+                color: Colors.white,
+                size: 30,
+              ),
+            ),
+          ],
         ),
       ),
       body: StreamBuilder(
