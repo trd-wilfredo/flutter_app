@@ -323,6 +323,24 @@ class DatabaseService {
     return groupCollection.doc(groupId).snapshots();
   }
 
+  // Direct Message
+  Future directMessage(String userName, String id, String groupName) async {
+    DocumentReference groupDocumentReference = await groupCollection.add({
+      "groupName": "",
+      "groupIcon": "",
+      "admin": "",
+      "members": [],
+      "groupId": "",
+      "recentMessage": "",
+      "recentMessageSender": "",
+    });
+    // update the members
+    await groupDocumentReference.update({
+      "members": FieldValue.arrayUnion(["${uid}_$userName"]),
+      "groupId": groupDocumentReference.id,
+    });
+  }
+
   // creating a group
   Future createGroup(String userName, String id, String groupName) async {
     DocumentReference groupDocumentReference = await groupCollection.add({
@@ -382,12 +400,41 @@ class DatabaseService {
     }
   }
 
-  confirmFriendRequest(String id, String yourId) {
+  unfriend(String id, String yourId) {
     return [''];
   }
 
-  unfriend(String id, String yourId) {
-    return [''];
+  Future accecptRequest(String hisId, String yourId) async {
+    QuerySnapshot snapshot =
+        await userCollection.where('uid', isEqualTo: yourId).get();
+    var frndlst = snapshot.docs.first['friendList'] as List;
+    if (!frndlst.contains(hisId)) {
+      frndlst.add(hisId);
+    }
+    DocumentReference userDocumentReference = userCollection.doc(yourId);
+    var accept = await userDocumentReference
+        .update({"friendList": frndlst})
+        .then((value) => true)
+        .catchError((error) => print("Failed to accept friend: $error"));
+    // his Friend request
+
+    QuerySnapshot hisfrndlist =
+        await userCollection.where('uid', isEqualTo: hisId).get();
+    var hisfl = hisfrndlist.docs.first['friendList'] as List;
+    var hisAddfrn = hisfrndlist.docs.first['addFriend'] as List;
+
+    if (hisAddfrn.contains(yourId)) {
+      hisAddfrn.remove(yourId);
+    }
+    if (!hisfl.contains(yourId)) {
+      hisfl.add(yourId);
+    }
+    DocumentReference userFLDocumentReference = userCollection.doc(hisId);
+    await userFLDocumentReference
+        .update({"addFriend": hisAddfrn, "friendList": hisfl})
+        .then((value) => true)
+        .catchError((error) => print("Failed to accept friend: $error"));
+    return accept;
   }
 
   Future cancelRequest(String hisId, String yourId) async {
@@ -399,9 +446,7 @@ class DatabaseService {
     }
     DocumentReference userDocumentReference = userCollection.doc(yourId);
     var cancel = await userDocumentReference
-        .update({
-          "addFriend": cancelFr,
-        })
+        .update({"addFriend": cancelFr})
         .then((value) => true)
         .catchError((error) => print("Failed to add friend: $error"));
     // his Friend request
@@ -413,9 +458,7 @@ class DatabaseService {
     }
     DocumentReference userFRDocumentReference = userCollection.doc(hisId);
     await userFRDocumentReference
-        .update({
-          "friendRequest": fr,
-        })
+        .update({"friendRequest": fr})
         .then((value) => true)
         .catchError((error) => print("Failed to add friend: $error"));
     return cancel;
@@ -431,9 +474,7 @@ class DatabaseService {
     }
     DocumentReference userDocumentReference = userCollection.doc(yourId);
     var add = await userDocumentReference
-        .update({
-          "addFriend": addFriend,
-        })
+        .update({"addFriend": addFriend})
         .then((value) => true)
         .catchError((error) => print("Failed to add friend: $error"));
 
@@ -447,9 +488,7 @@ class DatabaseService {
     }
     DocumentReference userFRDocumentReference = userCollection.doc(hisId);
     await userFRDocumentReference
-        .update({
-          "friendRequest": fr,
-        })
+        .update({"friendRequest": fr})
         .then((value) => true)
         .catchError((error) => print("Failed to add friend: $error"));
     return add;
