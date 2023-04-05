@@ -31,6 +31,7 @@ class _SearchPageState extends State<SearchPage> {
   String userName = "user";
   List friend = [];
   List request = [];
+  List friendlist = [];
   bool isJoined = false;
   User? user;
 
@@ -124,6 +125,7 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {
       request = [];
       friend = [];
+      friendlist = [];
     });
     if (searchController.text.isNotEmpty) {
       setState(() {
@@ -144,7 +146,18 @@ class _SearchPageState extends State<SearchPage> {
             });
           }
         }
-
+        for (var users in snapshot['data'].docs) {
+          var userfl = users['friendList'] as List;
+          if (userfl.contains(user!.uid)) {
+            setState(() {
+              friendlist.add(true);
+            });
+          } else {
+            setState(() {
+              friendlist.add(false);
+            });
+          }
+        }
         for (var users in snapshot['data'].docs) {
           var userfr = users['friendRequest'] as List;
           if (userfr.contains(user!.uid)) {
@@ -183,7 +196,7 @@ class _SearchPageState extends State<SearchPage> {
               }
               if (widget.page == "user") {
                 return userList(searchSnapshot!.docs[index], friend[index],
-                    request[index], index);
+                    request[index], friendlist[index], index);
               }
               if (widget.page == "product") {
                 return productList(
@@ -248,7 +261,8 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget userList(dynamic otheruser, bool friend, bool requested, int index) {
+  Widget userList(dynamic otheruser, bool heFR, bool youRequested, bool friends,
+      int index) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       leading: CircleAvatar(
@@ -271,17 +285,18 @@ class _SearchPageState extends State<SearchPage> {
           Container(
             child: Row(
               children: [
-                requested
-                    ? (friend
+                youRequested || heFR
+                    ? (heFR
                         ? Tooltip(
-                            message: 'unfriend',
+                            message: 'accect request',
                             child: IconButton(
-                              icon: Icon(Icons.remove_rounded, size: 25),
+                              icon: Icon(Icons.contacts, size: 25),
                               onPressed: () async {
-                                await DatabaseService()
-                                    .unfriend(otheruser['uid'], user!.uid);
+                                await DatabaseService().accecptRequest(
+                                    otheruser['uid'], user!.uid);
                                 setState(() {
-                                  friend = false;
+                                  friend[index] = true;
+                                  friendlist[index] = true;
                                 });
                               },
                             ),
@@ -299,19 +314,33 @@ class _SearchPageState extends State<SearchPage> {
                               },
                             ),
                           ))
-                    : Tooltip(
-                        message: 'add friend',
-                        child: IconButton(
-                          icon: Icon(Icons.add_rounded, size: 25),
-                          onPressed: () async {
-                            await DatabaseService()
-                                .addFriend(otheruser['uid'], user!.uid);
-                            setState(() {
-                              request[index] = true;
-                            });
-                          },
-                        ),
-                      ),
+                    : friends
+                        ? Tooltip(
+                            message: 'unfriend',
+                            child: IconButton(
+                              icon: Icon(Icons.remove_rounded, size: 25),
+                              onPressed: () async {
+                                await DatabaseService()
+                                    .unfriend(otheruser['uid'], user!.uid);
+                                setState(() {
+                                  friend[index] = false;
+                                });
+                              },
+                            ),
+                          )
+                        : Tooltip(
+                            message: 'add friend',
+                            child: IconButton(
+                              icon: Icon(Icons.add_rounded, size: 25),
+                              onPressed: () async {
+                                await DatabaseService()
+                                    .addFriend(otheruser['uid'], user!.uid);
+                                setState(() {
+                                  request[index] = true;
+                                });
+                              },
+                            ),
+                          ),
                 Tooltip(
                   message: 'message',
                   child: IconButton(
