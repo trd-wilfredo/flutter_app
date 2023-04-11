@@ -1,5 +1,3 @@
-import 'dart:io' as f;
-import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -19,6 +17,7 @@ class FileUpload extends StatefulWidget {
 
 class _FileUploadState extends State<FileUpload> {
   String imageUrl = "";
+  bool loading = false;
   final storage = FirebaseStorage.instance;
   List images = [];
 
@@ -33,13 +32,10 @@ class _FileUploadState extends State<FileUpload> {
     setState(() {
       images = listResult.items;
     });
-    // for (var prefix in listResult.prefixes) {// The prefixes under storageRef.// You can call listAll() recursively on them.}
-    // for (var item in listResult.items) {// The items under storageRef.}
   }
 
   @override
   Widget build(BuildContext context) {
-    // print(images);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -80,18 +76,24 @@ class _FileUploadState extends State<FileUpload> {
               SizedBox(
                 height: 20.0,
               ),
-              ElevatedButton(
-                child: Text(
-                  "Upload Image",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
-                ),
-                onPressed: () async {
-                  imgUpload();
-                },
-              ),
+              loading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 5.0,
+                      ),
+                    )
+                  : ElevatedButton(
+                      child: Text(
+                        "Upload Image",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                      onPressed: () async {
+                        imgUpload();
+                      },
+                    ),
               SizedBox(
                 height: 20.0,
               ),
@@ -122,8 +124,6 @@ class _FileUploadState extends State<FileUpload> {
                 ],
                 rows: images.map((val) {
                   TextStyle linkStyle = TextStyle(color: Colors.blue);
-                  print([val.fullPath]);
-
                   return DataRow(cells: [
                     DataCell(
                       RichText(
@@ -200,51 +200,42 @@ class _FileUploadState extends State<FileUpload> {
 
   imgUpload() async {
     if (kIsWeb) {
-      // running on android or ios device
-      // final file = await ImagePicker().pickImage(source: ImageSource.gallery);
       FilePickerResult? result = await FilePicker.platform.pickFiles();
-      var test = result!.files.first.bytes as Uint8List;
+      var unit8File = result!.files.first.bytes as Uint8List;
       Reference ref = FirebaseStorage.instance
           .ref()
           .child('/file_upload/${result.files.first.name}');
-      ref.putData(test);
-
-      // FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
-      // if (result != null) {
-      //   List<f.File> files = result.paths.map((path) => f.File(path)).toList();
-      // } else {
-      //   // User canceled the picker
-      // }
-      // await FireStoreService(context: context, folder: 'file_pload')
-      //     .uploadFile(file, 'NA')
-      //     .whenComplete(() async => {gettingAllImages()});
+      setState(() {
+        loading = true;
+      });
+      ref.putData(unit8File).asStream().listen((event) {
+        setState(() {
+          loading = false;
+        });
+        gettingAllImages();
+      });
     } else {
       await Permission.photos.request();
       var permissionStatus = await Permission.photos.status;
       if (permissionStatus.isGranted) {
         final file = await ImagePicker().pickImage(source: ImageSource.gallery);
+        setState(() {
+          loading = true;
+        });
         await FireStoreService(context: context, folder: 'file_upload')
             .uploadFile(file, 'NA')
-            .whenComplete(() async => {gettingAllImages()});
+            .whenComplete(() async => {
+                  setState(() {
+                    loading = false;
+                  }),
+                  gettingAllImages()
+                });
       } else {
         print('Permission not granted. Try Again with permission access');
       }
     }
   }
 }
-// FilePickerResult? result = await FilePicker.platform
-//     .pickFiles(
-//         type: FileType.custom,
-//         allowedExtensions: ['jpg', 'pdf', 'doc']);
-
-// if (result != null) {
-//   List<XFile>? files = result.paths
-//       .map((path) => XFile(path as String))
-//       .toList();
-//   setState(() {
-//     images = files;
-//   });
-// }
 
 class ImageDialog extends StatelessWidget {
   final String path;
@@ -254,106 +245,12 @@ class ImageDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        // width: 200,
-        // height: 200,
         decoration: BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(data),
-            // fit: BoxFit.fill,
           ),
         ),
       ),
     );
   }
 }
-//   uploadSrorage() {
-//     // .future
-//   }
-//   uploadImage(file) async {
-//     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-//     // print(pickedFile!.path);
-//     // setState(() {
-//     //   if (pickedFile != null) {
-//     //     // _photo = File(pickedFile.path, 'sdf');
-//     //     // uploadFile();
-//     //   } else {
-//     //     print('No image selected.');
-//     //   }
-//     // });
-//     //   print(file);
-//     //   fileUpload() async {
-//     //     FilePickerResult? picked = await FilePicker.platform.pickFiles(
-//     //       type: FileType.image,
-//     //       withReadStream: true,
-//     //     );
-//     //     // var test = await ImagePicker()
-//     //     //     .getImage(source: ImageSource.gallery)
-//     //     //     .then((pickedFile) => pickedFile);
-//     //     // setState(() {
-//     //     //   _imagePicker = test as Type;
-//     //     // });
-//     //     if (_imagePicker != null) {
-//     FirebaseStorage storage = FirebaseStorage.instance;
-//     Reference ref = storage.ref().child("image/" + DateTime.now().toString());
-//     UploadTask uploadTask = ref.putString(pickedFile!.path);
-
-//     //       // uploadTask.then((res) {
-//     //       //   res.ref.getDownloadURL();
-//     //       // });
-//     //     } else {
-//     //       // User canceled the picker
-//     //     }
-//     //     // final StorageUploadTask uploadTask = ref.put(await imageFile);
-//     //     // final Uri downloadUrl = (await uploadTask.future).downloadUrl;
-
-//     //     // UploadImage().upload(img: image);
-//     //     // var imageFile = File(
-//     //     //     await ImagePicker()
-//     //     //         .getImage(source: ImageSource.gallery)
-//     //     //         .then((pickedFile) => pickedFile.path),
-//     //     // 'png');
-//     //     // if (file != null) {
-//     //     //   final dateTime = DateTime.now();
-//     //     //   final userId = '110';
-//     //     //   final path = '110/$dateTime';
-//     //     //   _firebaseStorage.storage
-//     //     //       .refFromURL(Constants.storageBucket)
-//     //     //       .child(path)
-//     //     //       .putFile(imageFile)
-//     //     //       // .future
-//     //     //       .then((_) {
-//     //     //     // FirebaseFirestore.instance
-//     //     //     //     .collection('users')
-//     //     //     //     .doc('110')
-//     //     //     //     .update({'photo_url': path});
-//     //     //   });
-//     //     //   print(file);
-//     //     //   // Create the file metadata
-//     //     //   // final metadata = SettableMetadata(contentType: "image/jpeg");
-//     //     //   // // Upload to Firebase
-//     //     //   // var snapshot = await _firebaseStorage.child("sdfas/sdf").putFile(file);
-//     //     //   // print([file, metadata, snapshot]);
-//     //     //   // var downloadUrl = await snapshot.ref.getDownloadURL();
-//     //     //   // setState(() {
-//     //     //   //   imageUrl = downloadUrl;
-//     //     //   // });
-//     //     // } else {
-//     //     //   print('No Image Path Received');
-//     //     // }
-//     //   }
-
-//     //   if (kIsWeb) {
-//     //     //running on android or ios device
-//     //     fileUpload();
-//     //   }
-//     //   // else {
-//     //   //   await Permission.photos.request();
-//     //   //   var permissionStatus = await Permission.photos.status;
-//     //   //   if (permissionStatus.isGranted) {
-//     //   //     fileUpload();
-//     //   //   } else {
-//     //   //     print('Permission not granted. Try Again with permission access');
-//     //   //   }
-//     //   // }
-//   }
-// }

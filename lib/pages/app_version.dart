@@ -28,10 +28,11 @@ class AppVersion extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('April 5 2023 5:00pm'),
+                  Text('April 11 2023 5:00pm'),
                   Text('Long press button in chat list. show type of message'),
                   Text('Create direct message in chat list'),
                   Text('Make friend list'),
+                  Text('Accept Friend Request '),
                 ],
               ),
             ),
