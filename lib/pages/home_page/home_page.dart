@@ -44,6 +44,7 @@ class _HomePageState extends State<HomePage> {
   String page = "groups";
   List userData = [];
   List companies = [];
+  List friendList = [];
   bool isButtonLongPressed = false;
 
   @override
@@ -89,6 +90,15 @@ class _HomePageState extends State<HomePage> {
         });
       });
     }
+    var friends = user.docs.first["friendList"] as List;
+
+    for (var userId in friends) {
+      var friends = await DatabaseService(uid: userId).getUserById();
+      setState(() {
+        friendList.add(friends.docs.first);
+      });
+    }
+
     var link = await FirebaseStorage.instance
         .ref()
         .child(user.docs.first['profilePic'])
@@ -444,7 +454,10 @@ class _HomePageState extends State<HomePage> {
                       );
                     } else {
                       // personal chat
-                      return DMTitle();
+                      return DMTitle(
+                        fonts: widget.fonts,
+                        name: snapshot.data['fullName'],
+                      );
                     }
                   },
                 );
@@ -583,6 +596,11 @@ class _HomePageState extends State<HomePage> {
         barrierDismissible: false,
         context: context,
         builder: (context) {
+          // ignore: no_leading_underscores_for_local_identifiers
+          void _toggleDialogdWidget() {
+            Navigator.of(context).pop();
+          }
+
           return StatefulBuilder(
             builder: ((context, setState) {
               return Container(
@@ -594,7 +612,10 @@ class _HomePageState extends State<HomePage> {
                         "Direct Message",
                         textAlign: TextAlign.left,
                       ),
-                      content: FriendList(friends: []),
+                      content: FriendList(
+                          friends: friendList,
+                          fonts: widget.fonts,
+                          onTrigger: _toggleDialogdWidget),
                     ),
                     Positioned(
                       top: 15,

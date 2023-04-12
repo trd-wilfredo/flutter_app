@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/widget.dart';
+import '../home_page/dm_title.dart';
+
 class FriendList extends StatefulWidget {
   List friends = [];
-  FriendList({Key? key, required this.friends}) : super(key: key);
+  final Function onTrigger;
+  dynamic fonts;
+  FriendList(
+      {Key? key,
+      required this.friends,
+      required this.fonts,
+      required this.onTrigger})
+      : super(key: key);
 
   @override
   State<FriendList> createState() => _FriendListState();
@@ -20,22 +30,24 @@ class _FriendListState extends State<FriendList> {
           for (var i = currentIndex;
               i < currentIndex + increment && i < widget.friends.length;
               i++)
-            ListTile(
-              title: Text(widget.friends[i]),
-            ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                child: Text('Load More'),
-                onPressed: () {
-                  setState(() {
-                    currentIndex += increment;
-                  });
-                },
+            GestureDetector(
+              onTap: () {
+                widget.onTrigger();
+                nextScreen(
+                    context,
+                    DMTitle(
+                      fonts: widget.fonts,
+                      name: widget.friends[i]['fullName'],
+                    ));
+              },
+              child: Container(
+                height: 60,
+                alignment: Alignment(-1.0, -1.0),
+                child: Text(
+                  widget.friends[i]['fullName'],
+                ),
               ),
-            ],
-          ),
+            ),
         ],
       ),
     );
