@@ -134,43 +134,44 @@ class _SearchPageState extends State<SearchPage> {
       await DatabaseService()
           .searchByName(searchController.text, widget.page)
           .then((snapshot) {
-        for (var users in snapshot['data'].docs) {
-          var userfr = users['addFriend'] as List;
-          if (userfr.contains(user!.uid)) {
-            setState(() {
-              friend.add(true);
-            });
-          } else {
-            setState(() {
-              friend.add(false);
-            });
+        if (widget.page == 'user') {
+          for (var users in snapshot['data'].docs) {
+            var userfr = users['addFriend'] as List;
+            if (userfr.contains(user!.uid)) {
+              setState(() {
+                friend.add(true);
+              });
+            } else {
+              setState(() {
+                friend.add(false);
+              });
+            }
+          }
+          for (var users in snapshot['data'].docs) {
+            var userfl = users['friendList'] as List;
+            if (userfl.contains(user!.uid)) {
+              setState(() {
+                friendlist.add(true);
+              });
+            } else {
+              setState(() {
+                friendlist.add(false);
+              });
+            }
+          }
+          for (var users in snapshot['data'].docs) {
+            var userfr = users['friendRequest'] as List;
+            if (userfr.contains(user!.uid)) {
+              setState(() {
+                request.add(true);
+              });
+            } else {
+              setState(() {
+                request.add(false);
+              });
+            }
           }
         }
-        for (var users in snapshot['data'].docs) {
-          var userfl = users['friendList'] as List;
-          if (userfl.contains(user!.uid)) {
-            setState(() {
-              friendlist.add(true);
-            });
-          } else {
-            setState(() {
-              friendlist.add(false);
-            });
-          }
-        }
-        for (var users in snapshot['data'].docs) {
-          var userfr = users['friendRequest'] as List;
-          if (userfr.contains(user!.uid)) {
-            setState(() {
-              request.add(true);
-            });
-          } else {
-            setState(() {
-              request.add(false);
-            });
-          }
-        }
-
         setState(() {
           searchSnapshot = snapshot['data'];
           isLoading = false;
@@ -186,11 +187,11 @@ class _SearchPageState extends State<SearchPage> {
             shrinkWrap: true,
             itemCount: searchSnapshot!.docs.length,
             itemBuilder: (context, index) {
-              if (widget.page == "groups") {
+              if (widget.page == "chats") {
                 return groupTile(
                   userName,
-                  searchSnapshot!.docs[index]['groupId'],
-                  searchSnapshot!.docs[index]['groupName'],
+                  searchSnapshot!.docs[index]['chatId'],
+                  searchSnapshot!.docs[index]['chatName'],
                   searchSnapshot!.docs[index]['admin'],
                 );
               }
@@ -400,7 +401,7 @@ class _SearchPageState extends State<SearchPage> {
       trailing: InkWell(
         onTap: () async {
           await DatabaseService(uid: user!.uid)
-              .toggleGroupJoin(groupId, userName, groupName);
+              .toggleChatJoin(groupId, userName, groupName);
           if (isJoined) {
             setState(() {
               isJoined = !isJoined;
