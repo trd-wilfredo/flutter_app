@@ -9,8 +9,8 @@ class DatabaseService {
 
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection("users");
-  final CollectionReference groupCollection =
-      FirebaseFirestore.instance.collection("group");
+  final CollectionReference chatCollection =
+      FirebaseFirestore.instance.collection("chat");
   final CollectionReference csCollection =
       FirebaseFirestore.instance.collection("cs");
   final CollectionReference companyCollection =
@@ -23,14 +23,14 @@ class DatabaseService {
     return await userCollection.doc(uid).set({
       "fullname": fullname,
       "email": email,
-      "groups": [],
+      "chats": [],
       "profilePic": '',
       "uid": uid
     });
   }
 
-  // get user groups
-  getUserGroups() async {
+  // get user chats
+  getUserChats() async {
     return userCollection.doc(uid).snapshots();
   }
 
@@ -219,9 +219,9 @@ class DatabaseService {
   }
 
   // getting the chats
-  getChats(String groupId) async {
-    return groupCollection
-        .doc(groupId)
+  getChats(String chatId) async {
+    return chatCollection
+        .doc(chatId)
         .collection("messages")
         .where("deleted", isEqualTo: "")
         .orderBy("time")
@@ -230,8 +230,8 @@ class DatabaseService {
 
   // soft delete Message
   Future deleteMessage(
-      String groupId, String messageId, String timeDeleted) async {
-    DocumentReference userDocumentReference = groupCollection.doc(groupId);
+      String chatId, String messageId, String timeDeleted) async {
+    DocumentReference userDocumentReference = chatCollection.doc(chatId);
     var delete = await userDocumentReference
         .collection("messages")
         .doc(messageId)
@@ -244,35 +244,34 @@ class DatabaseService {
     return delete;
   }
 
-  Future getGroupAdmin(String groupId) async {
-    DocumentReference d = groupCollection.doc(groupId);
+  Future getChatAdmin(String chatId) async {
+    DocumentReference d = chatCollection.doc(chatId);
     DocumentSnapshot documentSnapshot = await d.get();
     return documentSnapshot['admin'];
   }
 
-  // toggling the group join/exit
-  Future toggleGroupJoin(
-      String groupId, String userName, String groupName) async {
+  // toggling the chat join/exit
+  Future toggleChatJoin(String chatId, String userName, String chatName) async {
     // doc reference
     DocumentReference userDocumentReference = userCollection.doc(uid);
-    DocumentReference groupDocumentReference = groupCollection.doc(groupId);
+    DocumentReference chatDocumentReference = chatCollection.doc(chatId);
 
     DocumentSnapshot documentSnapshot = await userDocumentReference.get();
-    List<dynamic> groups = await documentSnapshot['groups'];
+    List<dynamic> chats = await documentSnapshot['chats'];
 
-    // if user has our groups -> then remove then or also in other part re join
-    if (groups.contains("${groupId}_$groupName")) {
+    // if user has our chats -> then remove then or also in other part re join
+    if (chats.contains("${chatId}_$chatName")) {
       await userDocumentReference.update({
-        "groups": FieldValue.arrayRemove(["${groupId}_$groupName"])
+        "chats": FieldValue.arrayRemove(["${chatId}_$chatName"])
       });
-      await groupDocumentReference.update({
+      await chatDocumentReference.update({
         "members": FieldValue.arrayRemove(["${uid}_$userName"])
       });
     } else {
       await userDocumentReference.update({
-        "groups": FieldValue.arrayUnion(["${groupId}_$groupName"])
+        "chats": FieldValue.arrayUnion(["${chatId}_$chatName"])
       });
-      await groupDocumentReference.update({
+      await chatDocumentReference.update({
         "members": FieldValue.arrayUnion(["${uid}_$userName"])
       });
     }
@@ -280,12 +279,12 @@ class DatabaseService {
 
   // function -> bool
   Future<bool> isUserJoined(
-      String groupName, String groupId, String userName) async {
+      String chatName, String chatId, String userName) async {
     DocumentReference userDocumentReference = userCollection.doc(uid);
     DocumentSnapshot documentSnapshot = await userDocumentReference.get();
 
-    List<dynamic> groups = await documentSnapshot['groups'];
-    if (groups.contains("${groupId}_$groupName")) {
+    List<dynamic> chats = await documentSnapshot['chats'];
+    if (chats.contains("${chatId}_$chatName")) {
       return true;
     } else {
       return false;
@@ -300,13 +299,13 @@ class DatabaseService {
     return 'na';
   }
 
-  Future getMembers(String groupId) async {
+  Future getMembers(String chatId) async {
     final storage = FirebaseStorage.instance.ref();
     var arr = [];
     QuerySnapshot snapshot =
-        await groupCollection.where('groupId', isEqualTo: groupId).get();
-    for (var group in snapshot.docs) {
-      for (var user in group['members']) {
+        await chatCollection.where('chatId', isEqualTo: chatId).get();
+    for (var chat in snapshot.docs) {
+      for (var user in chat['members']) {
         var id = user.split('_');
         var link = await storage
             .child('profile/${id[0]}')
@@ -318,50 +317,49 @@ class DatabaseService {
     return arr;
   }
 
-  // get group members
-  getGroupMembers(groupId) async {
-    return groupCollection.doc(groupId).snapshots();
+  // get chat members
+  getChatMembers(chatId) async {
+    return chatCollection.doc(chatId).snapshots();
   }
 
   // Direct Message
-  Future directMessage(String userName, String id, String groupName) async {
-    DocumentReference groupDocumentReference = await groupCollection.add({
-      "groupName": "",
-      "groupIcon": "",
+  Future directMessage(String userName, String id, String chatName) async {
+    DocumentReference chatDocumentReference = await chatCollection.add({
+      "chatName": "",
+      "chatIcon": "",
       "admin": "",
       "members": [],
-      "groupId": "",
+      "chatId": "",
       "recentMessage": "",
       "recentMessageSender": "",
     });
     // update the members
-    await groupDocumentReference.update({
+    await chatDocumentReference.update({
       "members": FieldValue.arrayUnion(["${uid}_$userName"]),
-      "groupId": groupDocumentReference.id,
+      "chatId": chatDocumentReference.id,
     });
   }
 
-  // creating a group
-  Future createGroup(String userName, String id, String groupName) async {
-    DocumentReference groupDocumentReference = await groupCollection.add({
-      "groupName": groupName,
-      "groupIcon": "",
+  // creating a chat
+  Future createChat(String userName, String id, String chatName) async {
+    DocumentReference chatDocumentReference = await chatCollection.add({
+      "chatName": chatName,
+      "chatIcon": "",
       "admin": "${id}_$userName",
       "members": [],
-      "groupId": "",
+      "chatId": "",
       "recentMessage": "",
       "recentMessageSender": "",
     });
     // update the members
-    await groupDocumentReference.update({
+    await chatDocumentReference.update({
       "members": FieldValue.arrayUnion(["${uid}_$userName"]),
-      "groupId": groupDocumentReference.id,
+      "chatId": chatDocumentReference.id,
     });
 
     DocumentReference userDocumentReference = userCollection.doc(uid);
     return await userDocumentReference.update({
-      "groups":
-          FieldValue.arrayUnion(["${groupDocumentReference.id}_$groupName"])
+      "chats": FieldValue.arrayUnion(["${chatDocumentReference.id}_$chatName"])
     });
   }
 
@@ -392,9 +390,9 @@ class DatabaseService {
         };
       default:
         return {
-          'data': await groupCollection
-              .where("groupName", isEqualTo: searched)
-              .where("groupId", isNotEqualTo: 'sample')
+          'data': await chatCollection
+              .where("chatName", isEqualTo: searched)
+              .where("chatId", isNotEqualTo: 'sample')
               .get()
         };
     }
@@ -500,7 +498,7 @@ class DatabaseService {
     return await userCollection.doc(uid).set({
       "fullName": fullName,
       "email": email,
-      "groups": [],
+      "chats": [],
       "level": level,
       "company": company,
       "companyId": companyId,
@@ -590,9 +588,9 @@ class DatabaseService {
   }
 
   // send message
-  sendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
-    groupCollection.doc(groupId).collection("messages").add(chatMessageData);
-    groupCollection.doc(groupId).update({
+  sendMessage(String chatId, Map<String, dynamic> chatMessageData) async {
+    chatCollection.doc(chatId).collection("messages").add(chatMessageData);
+    chatCollection.doc(chatId).update({
       "recentMessage": chatMessageData['message'],
       "recentMessageSender": chatMessageData['sender'],
       "recentMessageTime": chatMessageData['time'].toString(),
@@ -600,8 +598,8 @@ class DatabaseService {
   }
 
   // send message
-  csSendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
-    csCollection.doc(groupId).collection("messages").add(chatMessageData);
+  csSendMessage(String chatId, Map<String, dynamic> chatMessageData) async {
+    csCollection.doc(chatId).collection("messages").add(chatMessageData);
   }
 
   Future gettingCompanyInfo(String uid) async {
