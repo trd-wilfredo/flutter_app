@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../../widgets/widget.dart';
+import '../home_page/chat_page.dart';
 import '../home_page/dm_title.dart';
 
 class FriendList extends StatefulWidget {
   List friends = [];
   final Function onTrigger;
   dynamic fonts;
+  dynamic user;
   FriendList(
       {Key? key,
       required this.friends,
       required this.fonts,
+      required this.user,
       required this.onTrigger})
       : super(key: key);
 
@@ -35,9 +38,13 @@ class _FriendListState extends State<FriendList> {
                 widget.onTrigger();
                 nextScreen(
                     context,
-                    DMTitle(
+                    ChatPage(
+                      chatId: widget.user.first['uid'] +
+                          "_" +
+                          widget.friends[i]['uid'],
+                      groupName: widget.friends[i]['fullName'],
                       fonts: widget.fonts,
-                      name: widget.friends[i]['fullName'],
+                      userName: widget.friends[i]['fullName'],
                     ));
               },
               child: Container(
