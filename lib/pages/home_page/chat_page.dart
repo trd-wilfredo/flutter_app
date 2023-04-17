@@ -12,13 +12,13 @@ import '../tool_page/fire_storage.dart/fire_storage_service.dart';
 import 'package:flutter_features/pages/login/service/database_service.dart';
 
 class ChatPage extends StatefulWidget {
-  final String groupId;
+  final String chatId;
   final String groupName;
   final String userName;
   final dynamic fonts;
   const ChatPage(
       {Key? key,
-      required this.groupId,
+      required this.chatId,
       required this.groupName,
       required this.userName,
       required this.fonts})
@@ -46,18 +46,18 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   getChatandAdmin() async {
-    var members = await DatabaseService().getMembers(widget.groupId);
+    var members = await DatabaseService().getMembers(widget.chatId);
     setState(() {
       imgurl = members;
     });
     var getUser = FirebaseAuth.instance.currentUser;
-    DatabaseService().getChats(widget.groupId).then((val) {
+    DatabaseService().getChats(widget.chatId).then((val) {
       setState(() {
         chats = val;
         uid = getUser!.uid;
       });
     });
-    DatabaseService().getGroupAdmin(widget.groupId).then((val) {
+    DatabaseService().getChatAdmin(widget.chatId).then((val) {
       setState(() {
         admin = val;
       });
@@ -78,7 +78,7 @@ class _ChatPageState extends State<ChatPage> {
               nextScreen(
                 context,
                 GroupInfo(
-                  groupId: widget.groupId,
+                  groupId: widget.chatId,
                   groupName: widget.groupName,
                   fonts: widget.fonts,
                   adminName: admin,
@@ -261,7 +261,7 @@ class _ChatPageState extends State<ChatPage> {
                               snapshot.data.docs[reversedIndex]['sender'],
                           senderUid: snapshot.data.docs[reversedIndex]['uid'],
                           messageID: snapshot.data.docs[reversedIndex].id,
-                          groupId: widget.groupId,
+                          groupId: widget.chatId,
                           url: url)
                     ],
                   );
@@ -285,7 +285,7 @@ class _ChatPageState extends State<ChatPage> {
         "deleted": ""
       };
 
-      DatabaseService().sendMessage(widget.groupId, chatMessageMap);
+      DatabaseService().sendMessage(widget.chatId, chatMessageMap);
       setState(() {
         images = [];
         messageController.clear();
