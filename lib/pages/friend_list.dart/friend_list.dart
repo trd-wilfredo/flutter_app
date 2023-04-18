@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../../widgets/widget.dart';
 import '../home_page/chat_page.dart';
-import '../home_page/dm_title.dart';
 
 class FriendList extends StatefulWidget {
   List friends = [];
@@ -40,11 +38,11 @@ class _FriendListState extends State<FriendList> {
                     context,
                     ChatPage(
                       chatId: widget.user.first['uid'] +
-                          "_" +
+                          '_' +
                           widget.friends[i]['uid'],
                       groupName: widget.friends[i]['fullName'],
                       fonts: widget.fonts,
-                      userName: widget.friends[i]['fullName'],
+                      userName: widget.user[i]['fullName'],
                     ));
               },
               child: Container(

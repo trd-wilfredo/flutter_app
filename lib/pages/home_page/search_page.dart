@@ -412,7 +412,7 @@ class _SearchPageState extends State<SearchPage> {
                   context,
                   ChatPage(
                       fonts: widget.fonts,
-                      groupId: groupId,
+                      chatId: groupId,
                       groupName: groupName,
                       userName: userName));
             });
