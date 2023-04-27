@@ -34,6 +34,7 @@ class AppVersion extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 15),
             Text(
               'App version 1.1.07**',
               style: TextStyle(

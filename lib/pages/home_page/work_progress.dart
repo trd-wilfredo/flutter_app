@@ -22,13 +22,15 @@ class _WorkProgressState extends State<WorkProgress> {
 
   List<String> title = [
     'Work Progress',
+    'Version 1.1.08',
+    'Version 1.1.07',
     'Version 1.1.06',
     'Version 1.1.05',
     'Version 1.1.04',
     'Previous Version',
   ];
 
-  List<bool> _expanded = [true, false, false, false, false];
+  List<bool> _expanded = [true, false, false, false, false, false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,8 @@ class _WorkProgressState extends State<WorkProgress> {
         profile: widget.profile,
         fonts: widget.fonts,
       ),
+      'Version 1.1.08': VersionPage('1.1.08'),
+      'Version 1.1.07': VersionPage('1.1.07'),
       'Version 1.1.06': VersionPage('1.1.06'),
       'Version 1.1.05': VersionPage('1.1.05'),
       'Version 1.1.04': VersionPage('1.1.04'),
