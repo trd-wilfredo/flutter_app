@@ -15,11 +15,13 @@ class ChatPage extends StatefulWidget {
   final String chatId;
   final String groupName;
   final String userName;
+  final String chatedDM;
   final dynamic fonts;
   const ChatPage(
       {Key? key,
       required this.chatId,
       required this.groupName,
+      required this.chatedDM,
       required this.userName,
       required this.fonts})
       : super(key: key);
@@ -38,7 +40,7 @@ class _ChatPageState extends State<ChatPage> {
   List imgurl = [];
   List<XFile>? images = [];
   final storage = FirebaseStorage.instance.ref();
-
+  String chatId = '';
   @override
   void initState() {
     getChatandAdmin();
@@ -46,22 +48,28 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   getChatandAdmin() async {
-    var members = await DatabaseService().getMembers(widget.chatId);
-    setState(() {
-      imgurl = members;
-    });
-    var getUser = FirebaseAuth.instance.currentUser;
-    DatabaseService().getChats(widget.chatId).then((val) {
+    // if not dm
+    if (widget.chatId != 'createDMId' && chatId == '') {
       setState(() {
-        chats = val;
-        uid = getUser!.uid;
+        chatId = widget.chatId;
       });
-    });
-    DatabaseService().getChatAdmin(widget.chatId).then((val) {
+      var members = await DatabaseService().getMembers(chatId);
       setState(() {
-        admin = val;
+        imgurl = members;
       });
-    });
+      var getUser = FirebaseAuth.instance.currentUser;
+      DatabaseService().getChats(chatId).then((val) {
+        setState(() {
+          chats = val;
+          uid = getUser!.uid;
+        });
+      });
+      DatabaseService().getChatAdmin(chatId).then((val) {
+        setState(() {
+          admin = val;
+        });
+      });
+    }
   }
 
   @override
@@ -78,7 +86,7 @@ class _ChatPageState extends State<ChatPage> {
               nextScreen(
                 context,
                 GroupInfo(
-                  groupId: widget.chatId,
+                  groupId: chatId,
                   groupName: widget.groupName,
                   fonts: widget.fonts,
                   adminName: admin,
@@ -261,7 +269,7 @@ class _ChatPageState extends State<ChatPage> {
                               snapshot.data.docs[reversedIndex]['sender'],
                           senderUid: snapshot.data.docs[reversedIndex]['uid'],
                           messageID: snapshot.data.docs[reversedIndex].id,
-                          groupId: widget.chatId,
+                          groupId: chatId,
                           url: url)
                     ],
                   );
@@ -273,6 +281,34 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   sendMessage(image) async {
+    if (widget.chatId == 'createDMId' && chatId == '') {
+      var newchat =
+          await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+              .createChat(
+                  widget.userName,
+                  FirebaseAuth.instance.currentUser!.uid,
+                  '*98!1DMChat',
+                  widget.chatedDM);
+      setState(() {
+        chatId = newchat;
+      });
+      var members = await DatabaseService().getMembers(chatId);
+      setState(() {
+        imgurl = members;
+      });
+      var getUser = FirebaseAuth.instance.currentUser;
+      DatabaseService().getChats(chatId).then((val) {
+        setState(() {
+          chats = val;
+          uid = getUser!.uid;
+        });
+      });
+      DatabaseService().getChatAdmin(chatId).then((val) {
+        setState(() {
+          admin = val;
+        });
+      });
+    }
     if (messageController.text.isNotEmpty || image.length >= 1) {
       var imgPath = FireStoreService(context: context, folder: 'chat');
       var path = await imgPath.chatImageUpload(image, uid);
@@ -285,7 +321,7 @@ class _ChatPageState extends State<ChatPage> {
         "deleted": ""
       };
 
-      DatabaseService().sendMessage(widget.chatId, chatMessageMap);
+      DatabaseService().sendMessage(chatId, chatMessageMap);
       setState(() {
         images = [];
         messageController.clear();
