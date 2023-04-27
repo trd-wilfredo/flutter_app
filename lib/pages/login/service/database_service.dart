@@ -341,26 +341,51 @@ class DatabaseService {
   }
 
   // creating a chat
-  Future createChat(String userName, String id, String chatName) async {
+  Future createChat(
+      String userName, String id, String chatName, String userDMID) async {
+    var admin = "${id}_$userName";
+    var chtN = chatName;
+    if (chatName == '*98!1DMChat') {
+      admin = "";
+      chtN = "";
+    }
     DocumentReference chatDocumentReference = await chatCollection.add({
-      "chatName": chatName,
+      "chatName": chtN,
       "chatIcon": "",
-      "admin": "${id}_$userName",
+      "admin": admin,
       "members": [],
       "chatId": "",
       "recentMessage": "",
       "recentMessageSender": "",
     });
-    // update the members
-    await chatDocumentReference.update({
-      "members": FieldValue.arrayUnion(["${uid}_$userName"]),
-      "chatId": chatDocumentReference.id,
-    });
-
-    DocumentReference userDocumentReference = userCollection.doc(uid);
-    return await userDocumentReference.update({
-      "chats": FieldValue.arrayUnion(["${chatDocumentReference.id}_$chatName"])
-    });
+    // if DM
+    if (chatName == '*98!1DMChat') {
+      await chatDocumentReference.update({
+        "members": [],
+        "chatId": chatDocumentReference.id,
+      });
+      DocumentReference userDocumentReference = userCollection.doc(uid);
+      await userDocumentReference.update({
+        "chats":
+            FieldValue.arrayUnion(["dm_${chatDocumentReference.id}_$userDMID"])
+      });
+      DocumentReference userDMDocumentReference = userCollection.doc(userDMID);
+      await userDMDocumentReference.update({
+        "chats": FieldValue.arrayUnion(["dm_${chatDocumentReference.id}_$uid"])
+      });
+      return chatDocumentReference.id;
+    } else {
+      // update the members
+      await chatDocumentReference.update({
+        "members": FieldValue.arrayUnion(["${uid}_$userName"]),
+        "chatId": chatDocumentReference.id,
+      });
+      DocumentReference userDocumentReference = userCollection.doc(uid);
+      return await userDocumentReference.update({
+        "chats":
+            FieldValue.arrayUnion(["${chatDocumentReference.id}_$chatName"])
+      });
+    }
   }
 
   // search
