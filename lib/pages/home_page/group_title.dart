@@ -43,6 +43,7 @@ class _GroupTileState extends State<GroupTile> {
             context,
             ChatPage(
               chatId: widget.groupId,
+              chatedDM: '',
               groupName: widget.groupName,
               userName: widget.userName,
               fonts: widget.fonts,

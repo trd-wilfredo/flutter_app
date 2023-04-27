@@ -45,6 +45,8 @@ class _HomePageState extends State<HomePage> {
   List userData = [];
   List companies = [];
   List friendList = [];
+  List dmUserID = [];
+  List userchatedData = [];
   bool isButtonLongPressed = false;
 
   @override
@@ -65,7 +67,15 @@ class _HomePageState extends State<HomePage> {
 
   // string manipulation
   String getDMId(String res) {
-    return res.substring(1, res.indexOf("_"));
+    List<String> chatid = res.split("_");
+    String id = chatid[1];
+    return id;
+  }
+
+  getChaTOId(String res) {
+    List<String> chatid = res.split("_");
+    var name = userchatedData.map((e) => e[chatid[2]]).first;
+    return name['name'];
   }
 
   String getName(String res) {
@@ -73,6 +83,23 @@ class _HomePageState extends State<HomePage> {
   }
 
   gettingUserData() async {
+    var user =
+        await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+            .getUserById();
+    var userIds = user.docs.first['chats'];
+    for (var id in userIds) {
+      var chekcid = id.split("_");
+      if (chekcid[0] == 'dm') {
+        dmUserID.add(chekcid[2]);
+        var chatdata = await DatabaseService(uid: chekcid[2]).getUserById();
+        var chatedName = chatdata.docs.first['fullName'];
+        setState(() {
+          userchatedData.add({
+            chekcid[2]: {'name': chatedName, 'id': id}
+          });
+        });
+      }
+    }
     // getting the list of snapshots in our stream
     await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
         .getUserChats()
@@ -81,11 +108,6 @@ class _HomePageState extends State<HomePage> {
         chats = snapshot;
       });
     });
-    var user =
-        await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-            .getUserById();
-    // QuerySnapshot snapshot = await DatabaseService(uid: companyId).getAllProduct(companyId);
-    // ;
     QuerySnapshot getAllCompany = await DatabaseService().getAllCompany();
     for (var f in getAllCompany.docs) {
       setState(() {
@@ -108,6 +130,7 @@ class _HomePageState extends State<HomePage> {
         .ref()
         .child(user.docs.first['profilePic'])
         .getDownloadURL();
+
     setState(() {
       profile = link;
       userData = user.docs;
@@ -461,6 +484,8 @@ class _HomePageState extends State<HomePage> {
                       // personal chats
                       return DMTitle(
                         dmId: getDMId(snapshot.data['chats'][reverseIndex]),
+                        chatTo:
+                            getChaTOId(snapshot.data['chats'][reverseIndex]),
                         fonts: widget.fonts,
                         data: snapshot.data,
                       );
@@ -578,7 +603,8 @@ class _HomePageState extends State<HomePage> {
                             .createChat(
                                 userName,
                                 FirebaseAuth.instance.currentUser!.uid,
-                                groupName)
+                                groupName,
+                                '')
                             .whenComplete(() {
                           _isLoading = false;
                         });
@@ -619,6 +645,7 @@ class _HomePageState extends State<HomePage> {
                         textAlign: TextAlign.left,
                       ),
                       content: FriendList(
+                          chated: dmUserID,
                           user: userData,
                           friends: friendList,
                           fonts: widget.fonts,

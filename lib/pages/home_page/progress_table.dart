@@ -225,6 +225,7 @@ class _ProgressTableState extends State<ProgressTable> {
           pecent: '90%',
           link: ChatPage(
             chatId: 'sample',
+            chatedDM: '',
             groupName: 'sample',
             userName: userName,
             fonts: widget.fonts,
