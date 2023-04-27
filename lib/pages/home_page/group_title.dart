@@ -42,7 +42,8 @@ class _GroupTileState extends State<GroupTile> {
         nextScreen(
             context,
             ChatPage(
-              groupId: widget.groupId,
+              chatId: widget.groupId,
+              chatedDM: '',
               groupName: widget.groupName,
               userName: widget.userName,
               fonts: widget.fonts,

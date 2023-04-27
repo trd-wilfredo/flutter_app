@@ -34,17 +34,19 @@ class _HomePageState extends State<HomePage> {
   String userName = "";
   String email = "";
   AuthService authService = AuthService();
-  Stream? groups;
+  Stream? chats;
   bool _isLoading = false;
   String groupName = "";
   String userLevel = "";
   String companyId = "";
   String profile = "";
   String title = "Chat List";
-  String page = "groups";
+  String page = "chats";
   List userData = [];
   List companies = [];
   List friendList = [];
+  List dmUserID = [];
+  List userchatedData = [];
   bool isButtonLongPressed = false;
 
   @override
@@ -63,24 +65,50 @@ class _HomePageState extends State<HomePage> {
     return res.substring(0, res.indexOf("_"));
   }
 
+  // string manipulation
+  String getDMId(String res) {
+    List<String> chatid = res.split("_");
+    String id = chatid[1];
+    return id;
+  }
+
+  getChaTOId(String res) {
+    List<String> chatid = res.split("_");
+    var name = userchatedData
+        .where((item) => item['userID'] == chatid[2])
+        .map((e) => e);
+    return name.first['name'];
+  }
+
   String getName(String res) {
     return res.substring(res.indexOf("_") + 1);
   }
 
   gettingUserData() async {
-    // getting the list of snapshots in our stream
-    await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-        .getUserGroups()
-        .then((snapshot) {
-      setState(() {
-        groups = snapshot;
-      });
-    });
     var user =
         await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
             .getUserById();
-    // QuerySnapshot snapshot = await DatabaseService(uid: companyId).getAllProduct(companyId);
-    // ;
+    var userIds = user.docs.first['chats'];
+    for (var id in userIds) {
+      var chekcid = id.split("_");
+      if (chekcid[0] == 'dm') {
+        dmUserID.add(chekcid[2]);
+        var chatdata = await DatabaseService(uid: chekcid[2]).getUserById();
+        var chatedName = chatdata.docs.first['fullName'];
+        setState(() {
+          userchatedData
+              .add({'name': chatedName, 'id': id, 'userID': chekcid[2]});
+        });
+      }
+    }
+    // getting the list of snapshots in our stream
+    await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+        .getUserChats()
+        .then((snapshot) {
+      setState(() {
+        chats = snapshot;
+      });
+    });
     QuerySnapshot getAllCompany = await DatabaseService().getAllCompany();
     for (var f in getAllCompany.docs) {
       setState(() {
@@ -103,6 +131,7 @@ class _HomePageState extends State<HomePage> {
         .ref()
         .child(user.docs.first['profilePic'])
         .getDownloadURL();
+
     setState(() {
       profile = link;
       userData = user.docs;
@@ -196,13 +225,13 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 setState(() {
                   title = "Chat List";
-                  page = "groups";
+                  page = "chats";
                 });
               },
-              selectedColor: page == "groups"
+              selectedColor: page == "chats"
                   ? Theme.of(context).primaryColor
                   : Colors.black,
-              selected: page == "groups" ? true : false,
+              selected: page == "chats" ? true : false,
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               leading: const Icon(Icons.group),
@@ -360,7 +389,7 @@ class _HomePageState extends State<HomePage> {
 
   switchPage(page) {
     switch (page) {
-      case "groups":
+      case "chats":
         return chatList();
       case "product":
         return ProductPage(
@@ -432,31 +461,34 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: StreamBuilder(
-        stream: groups,
+        stream: chats,
         builder: (context, AsyncSnapshot snapshot) {
           // make some checks
           if (snapshot.hasData) {
-            if (snapshot.data['groups'] != null) {
-              if (snapshot.data['groups'].length != 0) {
+            if (snapshot.data['chats'] != null) {
+              if (snapshot.data['chats'].length != 0) {
                 return ListView.builder(
-                  itemCount: snapshot.data['groups'].length,
+                  itemCount: snapshot.data['chats'].length,
                   itemBuilder: (context, index) {
                     int reverseIndex =
-                        snapshot.data['groups'].length - index - 1;
-                    if (!ifDM(snapshot.data['groups'][reverseIndex])) {
+                        snapshot.data['chats'].length - index - 1;
+                    if (!ifDM(snapshot.data['chats'][reverseIndex])) {
                       return GroupTile(
-                        groupId: getId(snapshot.data['groups'][reverseIndex]),
+                        groupId: getId(snapshot.data['chats'][reverseIndex]),
                         fonts: widget.fonts,
                         groupName:
-                            getName(snapshot.data['groups'][reverseIndex]),
+                            getName(snapshot.data['chats'][reverseIndex]),
                         userName: snapshot.data['fullName'],
                         url: [],
                       );
                     } else {
-                      // personal chat
+                      // personal chats
                       return DMTitle(
+                        dmId: getDMId(snapshot.data['chats'][reverseIndex]),
+                        chatTo:
+                            getChaTOId(snapshot.data['chats'][reverseIndex]),
                         fonts: widget.fonts,
-                        name: snapshot.data['fullName'],
+                        data: snapshot.data,
                       );
                     }
                   },
@@ -499,7 +531,7 @@ class _HomePageState extends State<HomePage> {
             height: 20,
           ),
           const Text(
-            "You've not joined any groups, tap on the add icon to create a group or also search from top search button.",
+            "You've not joined any chats, tap on the add icon to create a group or also search from top search button.",
             textAlign: TextAlign.center,
           )
         ],
@@ -569,10 +601,11 @@ class _HomePageState extends State<HomePage> {
                         });
                         DatabaseService(
                                 uid: FirebaseAuth.instance.currentUser!.uid)
-                            .createGroup(
+                            .createChat(
                                 userName,
                                 FirebaseAuth.instance.currentUser!.uid,
-                                groupName)
+                                groupName,
+                                '')
                             .whenComplete(() {
                           _isLoading = false;
                         });
@@ -613,6 +646,8 @@ class _HomePageState extends State<HomePage> {
                         textAlign: TextAlign.left,
                       ),
                       content: FriendList(
+                          chated: dmUserID,
+                          user: userData,
                           friends: friendList,
                           fonts: widget.fonts,
                           onTrigger: _toggleDialogdWidget),

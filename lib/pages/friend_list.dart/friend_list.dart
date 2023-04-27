@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-
 import '../../widgets/widget.dart';
-import '../home_page/dm_title.dart';
+import '../home_page/chat_page.dart';
 
 class FriendList extends StatefulWidget {
   List friends = [];
   final Function onTrigger;
   dynamic fonts;
+  dynamic user;
+  List chated;
   FriendList(
       {Key? key,
       required this.friends,
       required this.fonts,
+      required this.user,
+      required this.chated,
       required this.onTrigger})
       : super(key: key);
 
@@ -24,6 +27,7 @@ class _FriendListState extends State<FriendList> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget);
     return Container(
       child: Column(
         children: [
@@ -32,13 +36,22 @@ class _FriendListState extends State<FriendList> {
               i++)
             GestureDetector(
               onTap: () {
+                var dmID = widget.chated.contains(widget.friends[i]['uid'])
+                    ? widget.friends[i]
+                        ['uid'] //  change this to actual DM chat ID
+                    : 'createDMId';
+                // get dm Id
                 widget.onTrigger();
                 nextScreen(
-                    context,
-                    DMTitle(
-                      fonts: widget.fonts,
-                      name: widget.friends[i]['fullName'],
-                    ));
+                  context,
+                  ChatPage(
+                    chatId: dmID,
+                    chatedDM: widget.friends[i]['uid'],
+                    groupName: widget.friends[i]['fullName'],
+                    fonts: widget.fonts,
+                    userName: widget.user[i]['fullName'],
+                  ),
+                );
               },
               child: Container(
                 height: 60,
