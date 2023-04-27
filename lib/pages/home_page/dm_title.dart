@@ -7,11 +7,13 @@ class DMTitle extends StatefulWidget {
   dynamic fonts;
   String dmId;
   dynamic data;
+  String chatTo;
   DMTitle({
     Key? key,
     required this.fonts,
     required this.dmId,
     required this.data,
+    required this.chatTo,
   }) : super(key: key);
   @override
   State<DMTitle> createState() => _DMTitleState();
@@ -26,7 +28,8 @@ class _DMTitleState extends State<DMTitle> {
             context,
             ChatPage(
               chatId: widget.dmId,
-              groupName: widget.data['fullName'],
+              chatedDM: '',
+              groupName: widget.chatTo,
               fonts: widget.fonts,
               userName: widget.data['fullName'],
             ));
@@ -38,14 +41,14 @@ class _DMTitleState extends State<DMTitle> {
             radius: 30,
             backgroundColor: Theme.of(context).primaryColor,
             child: Text(
-              widget.data['fullName'].substring(0, 1).toUpperCase(),
+              widget.chatTo.substring(0, 1).toUpperCase(),
               textAlign: TextAlign.center,
               style: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.w500),
             ),
           ),
           title: Text(
-            widget.data['fullName'],
+            widget.chatTo,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           // subtitle: Text(
