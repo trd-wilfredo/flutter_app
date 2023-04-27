@@ -31,7 +31,7 @@ class _GroupInfoState extends State<GroupInfo> {
 
   getMembers() async {
     DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-        .getGroupMembers(widget.groupId)
+        .getChatMembers(widget.groupId)
         .then((val) {
       setState(() {
         members = val;
@@ -81,7 +81,7 @@ class _GroupInfoState extends State<GroupInfo> {
                               DatabaseService(
                                       uid: FirebaseAuth
                                           .instance.currentUser!.uid)
-                                  .toggleGroupJoin(
+                                  .toggleChatJoin(
                                       widget.groupId,
                                       getName(widget.adminName),
                                       widget.groupName)
