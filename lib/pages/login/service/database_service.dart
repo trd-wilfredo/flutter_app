@@ -616,6 +616,7 @@ class DatabaseService {
   sendMessage(String chatId, Map<String, dynamic> chatMessageData) async {
     chatCollection.doc(chatId).collection("messages").add(chatMessageData);
     chatCollection.doc(chatId).update({
+      "seenBy": [],
       "recentMessage": chatMessageData['message'],
       "recentMessageSender": chatMessageData['sender'],
       "recentMessageTime": chatMessageData['time'].toString(),

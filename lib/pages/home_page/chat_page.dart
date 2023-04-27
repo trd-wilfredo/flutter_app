@@ -318,7 +318,8 @@ class _ChatPageState extends State<ChatPage> {
         "sender": widget.userName,
         "message": messageController.text,
         "time": DateTime.now().millisecondsSinceEpoch,
-        "deleted": ""
+        "deleted": "",
+        "seenBy": []
       };
 
       DatabaseService().sendMessage(chatId, chatMessageMap);

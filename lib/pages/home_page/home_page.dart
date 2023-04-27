@@ -74,8 +74,10 @@ class _HomePageState extends State<HomePage> {
 
   getChaTOId(String res) {
     List<String> chatid = res.split("_");
-    var name = userchatedData.map((e) => e[chatid[2]]).first;
-    return name['name'];
+    var name = userchatedData
+        .where((item) => item['userID'] == chatid[2])
+        .map((e) => e);
+    return name.first['name'];
   }
 
   String getName(String res) {
@@ -94,9 +96,8 @@ class _HomePageState extends State<HomePage> {
         var chatdata = await DatabaseService(uid: chekcid[2]).getUserById();
         var chatedName = chatdata.docs.first['fullName'];
         setState(() {
-          userchatedData.add({
-            chekcid[2]: {'name': chatedName, 'id': id}
-          });
+          userchatedData
+              .add({'name': chatedName, 'id': id, 'userID': chekcid[2]});
         });
       }
     }
