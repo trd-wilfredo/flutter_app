@@ -37,7 +37,9 @@ class _ChatPageState extends State<ChatPage> {
   String admin = "";
   String uid = "";
   String url = "";
+  String chatedName = "";
   List imgurl = [];
+  dynamic membersNameId;
   List<XFile>? images = [];
   final storage = FirebaseStorage.instance.ref();
   String chatId = '';
@@ -53,9 +55,11 @@ class _ChatPageState extends State<ChatPage> {
       setState(() {
         chatId = widget.chatId;
       });
-      var members = await DatabaseService().getMembers(chatId);
+      var membersImgUrl = await DatabaseService().getMembers(chatId);
+      var members = await DatabaseService().getMembersdata(chatId);
       setState(() {
-        imgurl = members;
+        imgurl = membersImgUrl;
+        membersNameId = members;
       });
       var getUser = FirebaseAuth.instance.currentUser;
       DatabaseService().getChats(chatId).then((val) {
@@ -69,6 +73,16 @@ class _ChatPageState extends State<ChatPage> {
           admin = val;
         });
       });
+    }
+    // var you = await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+    //     .getUserById();
+    // print(widget.chatedDM);
+    if (widget.chatedDM != '') {
+      var chted = await DatabaseService(uid: widget.chatedDM).getUserById();
+      setState(() {
+        chatedName = chted.docs.first['fullName'];
+      });
+      //   print([chted.docs.first['fullName'], you.docs.first['fullName']]);
     }
   }
 
@@ -116,7 +130,7 @@ class _ChatPageState extends State<ChatPage> {
                     Expanded(
                       child: TextFormField(
                         onFieldSubmitted: (value) {
-                          sendMessage(images);
+                          sendMessage(images, chatedName);
                         },
                         controller: messageController,
                         focusNode: myFocusNode,
@@ -173,7 +187,7 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        sendMessage(images);
+                        sendMessage(images, chatedName);
                       },
                       child: Container(
                         height: 50,
@@ -249,27 +263,63 @@ class _ChatPageState extends State<ChatPage> {
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   final reversedIndex = snapshot.data.docs.length - 1 - index;
+
+                  var messageId = snapshot.data.docs[reversedIndex].id;
+                  var senderId = snapshot.data.docs[reversedIndex]['uid'];
+                  var senderName = snapshot.data.docs[reversedIndex]['sender'];
+                  var message = snapshot.data.docs[reversedIndex]['message'];
+                  var attach = snapshot.data.docs[reversedIndex]['attach'];
+                  var massagetime =
+                      snapshot.data.docs[reversedIndex]['time'].toString();
                   url = 'na';
+                  var userids = [];
                   for (var image in imgurl) {
-                    if (image
-                        .contains(snapshot.data.docs[reversedIndex]['uid'])) {
+                    if (image.contains(senderId)) {
                       url = image;
+                    }
+                  }
+                  for (var user in snapshot.data.docs[reversedIndex]
+                      ['seenBy']) {
+                    // userinchat[user];
+                    // userids.add(userinchat[user);
+                  }
+                  var seenarr = [];
+                  var seenby = '';
+                  var seentime = '';
+                  var seen = false;
+                  if (index == 0) {
+                    DatabaseService().seenMessage(
+                        uid,
+                        DateTime.now().millisecondsSinceEpoch,
+                        messageId,
+                        widget.chatId);
+
+                    for (var seenID in snapshot.data.docs[reversedIndex]
+                        ['seenBy']) {
+                      if (seenID != uid) {
+                        seenarr.add(membersNameId[seenID]);
+                        seenby = seenarr.join(' ');
+                        var dateseen = DateTime.fromMillisecondsSinceEpoch(
+                            snapshot.data.docs[reversedIndex]['timeseen']);
+                        seentime = dateseen.toString();
+                        seen = true;
+                      }
                     }
                   }
                   return Column(
                     children: [
                       MessageTile(
-                          message: snapshot.data.docs[reversedIndex]['message'],
-                          sender: snapshot.data.docs[reversedIndex]['sender'],
-                          attachment: snapshot.data.docs[reversedIndex]
-                              ['attach'],
-                          date: snapshot.data.docs[reversedIndex]['time']
-                              .toString(),
-                          sentByMe: widget.userName ==
-                              snapshot.data.docs[reversedIndex]['sender'],
-                          senderUid: snapshot.data.docs[reversedIndex]['uid'],
-                          messageID: snapshot.data.docs[reversedIndex].id,
+                          message: message,
+                          sender: senderName,
+                          attachment: attach,
+                          date: massagetime,
+                          sentByMe: widget.userName == senderName,
+                          senderUid: senderId,
+                          messageID: messageId,
                           groupId: chatId,
+                          seentime: seentime,
+                          seenBy: seenby,
+                          seen: seen,
                           url: url)
                     ],
                   );
@@ -280,7 +330,7 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  sendMessage(image) async {
+  sendMessage(image, chatedName) async {
     if (widget.chatId == 'createDMId' && chatId == '') {
       var newchat =
           await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
@@ -288,7 +338,8 @@ class _ChatPageState extends State<ChatPage> {
                   widget.userName,
                   FirebaseAuth.instance.currentUser!.uid,
                   '*98!1DMChat',
-                  widget.chatedDM);
+                  widget.chatedDM,
+                  chatedName);
       setState(() {
         chatId = newchat;
       });
@@ -319,7 +370,8 @@ class _ChatPageState extends State<ChatPage> {
         "message": messageController.text,
         "time": DateTime.now().millisecondsSinceEpoch,
         "deleted": "",
-        "seenBy": []
+        "seenBy": [],
+        "timeseen": '',
       };
 
       DatabaseService().sendMessage(chatId, chatMessageMap);

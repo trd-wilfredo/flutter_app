@@ -57,6 +57,37 @@ class DatabaseService {
     return updatefields;
   }
 
+  seenMessage(
+      String seenBy, int timeseen, String messageId, String chatId) async {
+    DocumentReference getChatByID =
+        chatCollection.doc(chatId).collection("messages").doc(messageId);
+
+    DocumentSnapshot chatData = await getChatByID.get();
+
+    // Message seen in chat page
+    if (chatData['timeseen'] == '') {
+      DocumentReference cahtDocumentReference = chatCollection.doc(chatId);
+      await cahtDocumentReference.collection("messages").doc(messageId).update({
+        "timeseen": timeseen,
+      });
+    }
+    if (!chatData['seenBy'].contains(seenBy)) {
+      List ids = chatData['seenBy'];
+      ids.add(seenBy);
+      DocumentReference cahtDocumentReference = chatCollection.doc(chatId);
+      await cahtDocumentReference.collection("messages").doc(messageId).update({
+        "seenBy": ids,
+      });
+    }
+
+    // Massage seen Chat List
+    // // QuerySnapshot getChatByID =
+    //     await chatCollection.where('chatId', isEqualTo: messageId).get();
+    // DocumentReference chatDocumentReference = chatCollection.doc(messageId);
+    // await chatDocumentReference.update({seenBy: []}).then((value) => true);
+    return true;
+  }
+
   //get all user
   Future getAllUser(String companyId, String userLevel) async {
     if (userLevel == 'admin') {
@@ -231,8 +262,8 @@ class DatabaseService {
   // soft delete Message
   Future deleteMessage(
       String chatId, String messageId, String timeDeleted) async {
-    DocumentReference userDocumentReference = chatCollection.doc(chatId);
-    var delete = await userDocumentReference
+    DocumentReference chatDocumentReference = chatCollection.doc(chatId);
+    var delete = await chatDocumentReference
         .collection("messages")
         .doc(messageId)
         .update({
@@ -299,6 +330,19 @@ class DatabaseService {
     return 'na';
   }
 
+  Future getMembersdata(String chatId) async {
+    var users = {};
+    QuerySnapshot snapshot =
+        await chatCollection.where('chatId', isEqualTo: chatId).get();
+    for (var chat in snapshot.docs) {
+      for (var user in chat['members']) {
+        var id = user.split('_');
+        users[id[0]] = id[1];
+      }
+    }
+    return users;
+  }
+
   Future getMembers(String chatId) async {
     final storage = FirebaseStorage.instance.ref();
     var arr = [];
@@ -332,6 +376,7 @@ class DatabaseService {
       "chatId": "",
       "recentMessage": "",
       "recentMessageSender": "",
+      "recentMessageTime": ""
     });
     // update the members
     await chatDocumentReference.update({
@@ -341,27 +386,26 @@ class DatabaseService {
   }
 
   // creating a chat
-  Future createChat(
-      String userName, String id, String chatName, String userDMID) async {
+  Future createChat(String userName, String id, String chatName,
+      String userDMID, String chatedName) async {
     var admin = "${id}_$userName";
     var chtN = chatName;
+    var members = [];
     if (chatName == '*98!1DMChat') {
       admin = "";
       chtN = "";
+      members = ['${id}_$userName"', '${userDMID}_$chatedName"'];
     }
     DocumentReference chatDocumentReference = await chatCollection.add({
       "chatName": chtN,
       "chatIcon": "",
       "admin": admin,
-      "members": [],
+      "members": members,
       "chatId": "",
-      "recentMessage": "",
-      "recentMessageSender": "",
     });
     // if DM
     if (chatName == '*98!1DMChat') {
       await chatDocumentReference.update({
-        "members": [],
         "chatId": chatDocumentReference.id,
       });
       DocumentReference userDocumentReference = userCollection.doc(uid);
