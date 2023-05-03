@@ -605,6 +605,7 @@ class _HomePageState extends State<HomePage> {
                                 userName,
                                 FirebaseAuth.instance.currentUser!.uid,
                                 groupName,
+                                '',
                                 '')
                             .whenComplete(() {
                           _isLoading = false;

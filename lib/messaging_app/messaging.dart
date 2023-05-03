@@ -137,8 +137,11 @@ class _MessagingAppState extends State<MessagingApp> {
                       date: snapshot.data.docs[index]['time'].toString(),
                       senderUid: snapshot.data.docs[index]['sender'],
                       sentByMe: snapshot.data.docs[index]['sender'],
+                      seenBy: snapshot.data.docs[index]['seenBy'],
+                      seen: false,
                       messageID: snapshot.data.docs[index].id,
                       groupId: email,
+                      seentime: '',
                       url: '');
                 },
               )
@@ -155,6 +158,8 @@ class _MessagingAppState extends State<MessagingApp> {
         "sender": email,
         "message": _textController.text,
         "time": DateTime.now().millisecondsSinceEpoch,
+        "seenBy": [],
+        "timeseen": ""
       };
 
       DatabaseService().csSendMessage(email, chatMessageCS);
