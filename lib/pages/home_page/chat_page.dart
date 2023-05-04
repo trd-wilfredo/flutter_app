@@ -272,16 +272,10 @@ class _ChatPageState extends State<ChatPage> {
                   var massagetime =
                       snapshot.data.docs[reversedIndex]['time'].toString();
                   url = 'na';
-                  var userids = [];
                   for (var image in imgurl) {
                     if (image.contains(senderId)) {
                       url = image;
                     }
-                  }
-                  for (var user in snapshot.data.docs[reversedIndex]
-                      ['seenBy']) {
-                    // userinchat[user];
-                    // userids.add(userinchat[user);
                   }
                   var seenarr = [];
                   var seenby = '';
@@ -298,12 +292,14 @@ class _ChatPageState extends State<ChatPage> {
                         ['seenBy']) {
                       if (seenID != uid) {
                         seenarr.add(membersNameId[seenID]);
-                        seenby = seenarr.join(' ');
+                        seenby = seenarr.join(', ');
                         var dateseen = DateTime.fromMillisecondsSinceEpoch(
                             snapshot.data.docs[reversedIndex]['timeseen']);
-                        seentime = dateseen.toString();
-                        seen = true;
+                        String formattedDate =
+                            "${dateseen.year}-${_twoDigits(dateseen.month)}-${_twoDigits(dateseen.day)} ${_twoDigits(dateseen.hour)}:${_twoDigits(dateseen.minute)}";
+                        seentime = formattedDate;
                       }
+                      seen = true;
                     }
                   }
                   return Column(
@@ -328,6 +324,11 @@ class _ChatPageState extends State<ChatPage> {
             : Container();
       },
     );
+  }
+
+  _twoDigits(int n) {
+    if (n >= 10) return "$n";
+    return "0$n";
   }
 
   sendMessage(image, chatedName) async {
