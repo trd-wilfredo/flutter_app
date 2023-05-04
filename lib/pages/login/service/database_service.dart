@@ -59,32 +59,39 @@ class DatabaseService {
 
   seenMessage(
       String seenBy, int timeseen, String messageId, String chatId) async {
-    DocumentReference getChatByID =
+    print(seenBy);
+    DocumentReference getMessageByID =
         chatCollection.doc(chatId).collection("messages").doc(messageId);
 
-    DocumentSnapshot chatData = await getChatByID.get();
+    DocumentSnapshot messageData = await getMessageByID.get();
 
     // Message seen in chat page
-    if (chatData['timeseen'] == '') {
-      DocumentReference cahtDocumentReference = chatCollection.doc(chatId);
-      await cahtDocumentReference.collection("messages").doc(messageId).update({
+    if (messageData['timeseen'] == '') {
+      DocumentReference msgDocRefTime = chatCollection.doc(chatId);
+      await msgDocRefTime.collection("messages").doc(messageId).update({
         "timeseen": timeseen,
       });
     }
-    if (!chatData['seenBy'].contains(seenBy)) {
-      List ids = chatData['seenBy'];
+    if (!messageData['seenBy'].contains(seenBy)) {
+      List ids = messageData['seenBy'];
       ids.add(seenBy);
-      DocumentReference cahtDocumentReference = chatCollection.doc(chatId);
-      await cahtDocumentReference.collection("messages").doc(messageId).update({
+      DocumentReference msgDocRefSeenBY = chatCollection.doc(chatId);
+      await msgDocRefSeenBY.collection("messages").doc(messageId).update({
         "seenBy": ids,
       });
     }
 
     // Massage seen Chat List
-    // // QuerySnapshot getChatByID =
-    //     await chatCollection.where('chatId', isEqualTo: messageId).get();
-    // DocumentReference chatDocumentReference = chatCollection.doc(messageId);
-    // await chatDocumentReference.update({seenBy: []}).then((value) => true);
+    DocumentReference getChatByID = chatCollection.doc(chatId);
+    DocumentSnapshot chatData = await getChatByID.get();
+    if (!chatData['seenBy'].contains(seenBy)) {
+      List idsInChat = chatData['seenBy'];
+      idsInChat.add(seenBy);
+      DocumentReference cahtDocRef = chatCollection.doc(chatId);
+      await cahtDocRef.update({
+        "seenBy": idsInChat,
+      });
+    }
     return true;
   }
 
@@ -341,6 +348,16 @@ class DatabaseService {
       }
     }
     return users;
+  }
+
+  getChatData(String chatId, myid) async {
+    // Massage seen Chat List
+    DocumentReference getChatByID = chatCollection.doc(chatId);
+    DocumentSnapshot chatData = await getChatByID.get();
+    if (chatData['seenBy'].contains(myid)) {
+      return true;
+    }
+    return false;
   }
 
   Future getMembers(String chatId) async {
