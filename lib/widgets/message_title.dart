@@ -167,10 +167,15 @@ class _MessageTileState extends State<MessageTile> {
                           : EdgeInsets.only(right: 5),
                       padding: const EdgeInsets.only(
                           top: 17, bottom: 17, left: 0, right: 0),
-                      child: Text(
-                        textAlign: TextAlign.start,
-                        'Seen By ${widget.seenBy} ${widget.seentime}',
-                      ),
+                      child: widget.seenBy == ""
+                          ? Text(
+                              textAlign: TextAlign.start,
+                              'Sent',
+                            )
+                          : Text(
+                              textAlign: TextAlign.start,
+                              'Seen By ${widget.seenBy} ${widget.seentime}',
+                            ),
                     )
                   : SizedBox(
                       width: 0,

@@ -59,7 +59,6 @@ class DatabaseService {
 
   seenMessage(
       String seenBy, int timeseen, String messageId, String chatId) async {
-    print(seenBy);
     DocumentReference getMessageByID =
         chatCollection.doc(chatId).collection("messages").doc(messageId);
 
@@ -566,7 +565,6 @@ class DatabaseService {
     QuerySnapshot friendRequested =
         await userCollection.where('uid', isEqualTo: hisId).get();
     var fr = friendRequested.docs.first['friendRequest'] as List;
-    print(yourId);
     if (!fr.contains(yourId)) {
       fr.add(yourId);
     }

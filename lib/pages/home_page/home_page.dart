@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   String userLevel = "";
   String companyId = "";
   String profile = "";
+  String myID = "";
   String title = "Chat List";
   String page = "chats";
   List userData = [];
@@ -88,6 +89,9 @@ class _HomePageState extends State<HomePage> {
     var user =
         await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
             .getUserById();
+    setState(() {
+      myID = FirebaseAuth.instance.currentUser!.uid;
+    });
     var userIds = user.docs.first['chats'];
     for (var id in userIds) {
       var chekcid = id.split("_");
@@ -480,6 +484,7 @@ class _HomePageState extends State<HomePage> {
                             getName(snapshot.data['chats'][reverseIndex]),
                         userName: snapshot.data['fullName'],
                         url: [],
+                        myID: myID,
                       );
                     } else {
                       // personal chats
@@ -489,6 +494,7 @@ class _HomePageState extends State<HomePage> {
                             getChaTOId(snapshot.data['chats'][reverseIndex]),
                         fonts: widget.fonts,
                         data: snapshot.data,
+                        myID: myID,
                       );
                     }
                   },
