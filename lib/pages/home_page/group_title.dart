@@ -10,12 +10,14 @@ class GroupTile extends StatefulWidget {
   final String groupName;
   final List url;
   final dynamic fonts;
+  final dynamic myID;
   const GroupTile(
       {Key? key,
       required this.groupId,
       required this.groupName,
       required this.url,
       required this.fonts,
+      required this.myID,
       required this.userName})
       : super(key: key);
 
@@ -24,15 +26,19 @@ class GroupTile extends StatefulWidget {
 }
 
 class _GroupTileState extends State<GroupTile> {
-  final storage = FirebaseStorage.instance.ref();
-  members() async {
-    var arry = [];
-    var members = await DatabaseService().getMembers(widget.groupId);
-    for (var uid in members) {
-      var membersUrl = await storage.child('profile/$uid').getDownloadURL();
-      arry.add({'$uid': membersUrl});
-      if (arry.length == members.length) return arry;
-    }
+  bool seen = false;
+  @override
+  void initState() {
+    super.initState();
+    gettingMsgData();
+  }
+
+  gettingMsgData() async {
+    var chatData =
+        await DatabaseService().getChatData(widget.groupId, widget.myID);
+    setState(() {
+      seen = chatData;
+    });
   }
 
   @override
@@ -62,10 +68,16 @@ class _GroupTileState extends State<GroupTile> {
                   color: Colors.white, fontWeight: FontWeight.w500),
             ),
           ),
-          title: Text(
-            widget.groupName,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
+          title: seen
+              ? Text(
+                  widget.groupName,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )
+              : Text(
+                  widget.groupName,
+                  style: TextStyle(
+                      color: Colors.orange, fontWeight: FontWeight.w900),
+                ),
           subtitle: Text(
             "Join the conversation as ${widget.userName}",
             style: const TextStyle(fontSize: 13),

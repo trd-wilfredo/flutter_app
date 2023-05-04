@@ -16,6 +16,26 @@ class AppVersion extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
+              'App version 1.1.09**',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
+            ),
+            SizedBox(height: 15),
+            Container(
+              margin: EdgeInsets.fromLTRB(15, 0, 0, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('May 5 2023 5:00pm'),
+                  Text('Seen in Chat page'),
+                  Text('Seen in Chat List'),
+                ],
+              ),
+            ),
+            SizedBox(height: 15),
+            Text(
               'App version 1.1.08**',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
