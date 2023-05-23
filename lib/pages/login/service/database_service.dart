@@ -57,6 +57,43 @@ class DatabaseService {
     return updatefields;
   }
 
+  seenMessage(
+      String seenBy, int timeseen, String messageId, String chatId) async {
+    DocumentReference getMessageByID =
+        chatCollection.doc(chatId).collection("messages").doc(messageId);
+
+    DocumentSnapshot messageData = await getMessageByID.get();
+
+    // Message seen in chat page
+    if (messageData['timeseen'] == '') {
+      DocumentReference msgDocRefTime = chatCollection.doc(chatId);
+      await msgDocRefTime.collection("messages").doc(messageId).update({
+        "timeseen": timeseen,
+      });
+    }
+    if (!messageData['seenBy'].contains(seenBy)) {
+      List ids = messageData['seenBy'];
+      ids.add(seenBy);
+      DocumentReference msgDocRefSeenBY = chatCollection.doc(chatId);
+      await msgDocRefSeenBY.collection("messages").doc(messageId).update({
+        "seenBy": ids,
+      });
+    }
+
+    // Massage seen Chat List
+    DocumentReference getChatByID = chatCollection.doc(chatId);
+    DocumentSnapshot chatData = await getChatByID.get();
+    if (!chatData['seenBy'].contains(seenBy)) {
+      List idsInChat = chatData['seenBy'];
+      idsInChat.add(seenBy);
+      DocumentReference cahtDocRef = chatCollection.doc(chatId);
+      await cahtDocRef.update({
+        "seenBy": idsInChat,
+      });
+    }
+    return true;
+  }
+
   //get all user
   Future getAllUser(String companyId, String userLevel) async {
     if (userLevel == 'admin') {
@@ -231,8 +268,8 @@ class DatabaseService {
   // soft delete Message
   Future deleteMessage(
       String chatId, String messageId, String timeDeleted) async {
-    DocumentReference userDocumentReference = chatCollection.doc(chatId);
-    var delete = await userDocumentReference
+    DocumentReference chatDocumentReference = chatCollection.doc(chatId);
+    var delete = await chatDocumentReference
         .collection("messages")
         .doc(messageId)
         .update({
@@ -299,6 +336,29 @@ class DatabaseService {
     return 'na';
   }
 
+  Future getMembersdata(String chatId) async {
+    var users = {};
+    QuerySnapshot snapshot =
+        await chatCollection.where('chatId', isEqualTo: chatId).get();
+    for (var chat in snapshot.docs) {
+      for (var user in chat['members']) {
+        var id = user.split('_');
+        users[id[0]] = id[1];
+      }
+    }
+    return users;
+  }
+
+  getChatData(String chatId, myid) async {
+    // Massage seen Chat List
+    DocumentReference getChatByID = chatCollection.doc(chatId);
+    DocumentSnapshot chatData = await getChatByID.get();
+    if (chatData['seenBy'].contains(myid)) {
+      return true;
+    }
+    return false;
+  }
+
   Future getMembers(String chatId) async {
     final storage = FirebaseStorage.instance.ref();
     var arr = [];
@@ -332,6 +392,7 @@ class DatabaseService {
       "chatId": "",
       "recentMessage": "",
       "recentMessageSender": "",
+      "recentMessageTime": ""
     });
     // update the members
     await chatDocumentReference.update({
@@ -341,27 +402,26 @@ class DatabaseService {
   }
 
   // creating a chat
-  Future createChat(
-      String userName, String id, String chatName, String userDMID) async {
+  Future createChat(String userName, String id, String chatName,
+      String userDMID, String chatedName) async {
     var admin = "${id}_$userName";
     var chtN = chatName;
+    var members = [];
     if (chatName == '*98!1DMChat') {
       admin = "";
       chtN = "";
+      members = ['${id}_$userName"', '${userDMID}_$chatedName"'];
     }
     DocumentReference chatDocumentReference = await chatCollection.add({
       "chatName": chtN,
       "chatIcon": "",
       "admin": admin,
-      "members": [],
+      "members": members,
       "chatId": "",
-      "recentMessage": "",
-      "recentMessageSender": "",
     });
     // if DM
     if (chatName == '*98!1DMChat') {
       await chatDocumentReference.update({
-        "members": [],
         "chatId": chatDocumentReference.id,
       });
       DocumentReference userDocumentReference = userCollection.doc(uid);
@@ -505,7 +565,6 @@ class DatabaseService {
     QuerySnapshot friendRequested =
         await userCollection.where('uid', isEqualTo: hisId).get();
     var fr = friendRequested.docs.first['friendRequest'] as List;
-    print(yourId);
     if (!fr.contains(yourId)) {
       fr.add(yourId);
     }
